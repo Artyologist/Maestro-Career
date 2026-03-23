@@ -35,6 +35,7 @@ export default function AssessmentTestPage() {
         }, 1000);
 
         return () => clearInterval(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [timeLeft, currentIndex]);
 
     const handleNext = () => {

@@ -209,6 +209,7 @@ export async function POST(req: Request) {
 
     await browser.close();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return new NextResponse(pdfBuffer as any, {
       status: 200,
       headers: {

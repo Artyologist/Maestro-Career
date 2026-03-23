@@ -47,6 +47,7 @@ export default function Testimonials() {
                                         <p>{`"${testimonial.body}"`}</p>
                                     </blockquote>
                                     <figcaption className="mt-6 flex items-center gap-x-4">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img className="h-12 w-12 rounded-full bg-gray-50 object-cover" src={testimonial.author.imageUrl} alt="" />
                                         <div>
                                             <div className="font-semibold text-gray-900">{testimonial.author.name}</div>
