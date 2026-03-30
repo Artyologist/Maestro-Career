@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
     return (
         <footer className="bg-[#111827] text-white pt-20 pb-10">
@@ -41,10 +43,10 @@ export default function Footer() {
                         <h4 className="text-lg font-semibold mb-6">Contact Us</h4>
                         <ul className="space-y-4 text-gray-400">
                             <li className="flex items-center">
-                                <span className="truncate">hello@maestrocareer.com</span>
+                                <span className="truncate">info@maestrocareer.com</span>
                             </li>
                             <li className="flex items-center">
-                                <span>+1 (555) 123-4567</span>
+                                <span>+91 98222 28484</span>
                             </li>
                             <li className="flex items-center">
                                 <span>123 Coaching Ave, Suite 100<br />New York, NY 10001</span>
@@ -57,8 +59,9 @@ export default function Footer() {
                 <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-gray-500">
                     <p>&copy; {new Date().getFullYear()} Maestro Career. All rights reserved.</p>
                     <div className="flex space-x-6">
-                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/terms-conditions" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
+                        <Link href="/refund-cancellation" className="hover:text-white transition-colors">Refund &amp; Cancellation</Link>
                     </div>
                 </div>
             </div>

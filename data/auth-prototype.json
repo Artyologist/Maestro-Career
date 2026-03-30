@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": "69341e07-1468-4311-8e4a-e64d0e3361a7",
+      "name": "Ameya Bhagat",
+      "email": "ameyabhagat24@gmail.com",
+      "mobile": "7039924401",
+      "passwordHash": "b4ccdbef594e310102458162b3012e8144e4f6da3c492be73077304eeed387b6bae3cef09f1984ec26de5c89291fde54eea105c578379eb59b379cde5574148b",
+      "passwordSalt": "3b78aeb28e36e2eeabc503509ffb1b1c",
+      "createdAt": "2026-03-27T16:09:46.621Z",
+      "updatedAt": "2026-03-27T17:06:50.205Z",
+      "loginCount": 3,
+      "inquiryCount": 0,
+      "preferredServices": [
+        "Career Coaching",
+        "Psychometric Assessment",
+        "Interview Prep"
+      ],
+      "lastLoginAt": "2026-03-27T17:06:50.205Z",
+      "lastLoginMethod": "otp"
+    }
+  ],
+  "otpChallenges": [],
+  "sessions": [
+    {
+      "id": "88a40ece-3053-4f9a-ab55-8141482d1c06",
+      "userId": "69341e07-1468-4311-8e4a-e64d0e3361a7",
+      "tokenHash": "85322c722508df74adadbbe3f684468272cd0d88dba88c2874c49b907b986a69",
+      "createdAt": "2026-03-27T17:06:50.206Z",
+      "expiresAt": "2026-04-26T17:06:50.206Z"
+    }
+  ],
+  "activities": [
+    {
+      "id": "81d5e95f-d14c-4b8e-a3b5-875ccba4b132",
+      "userId": "69341e07-1468-4311-8e4a-e64d0e3361a7",
+      "type": "login",
+      "message": "Logged in via MOBILE OTP.",
+      "at": "2026-03-27T17:06:50.205Z"
+    },
+    {
+      "id": "8fcdb070-16cf-4372-96e3-78918a0f1ea3",
+      "userId": "69341e07-1468-4311-8e4a-e64d0e3361a7",
+      "type": "login",
+      "message": "Logged in via MOBILE OTP.",
+      "at": "2026-03-27T16:13:33.905Z"
+    },
+    {
+      "id": "5e4bc619-e502-4d2f-86fd-04f9e4445198",
+      "userId": "69341e07-1468-4311-8e4a-e64d0e3361a7",
+      "type": "registration",
+      "message": "Completed registration via mobile OTP.",
+      "at": "2026-03-27T16:09:46.621Z"
+    }
+  ]
+}

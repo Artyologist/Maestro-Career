@@ -29,12 +29,20 @@ export default function Header() {
                     </nav>
 
                     <div className="hidden md:block">
-                        <Link
-                            href="#contact"
-                            className="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary-dark transition-colors shadow-sm"
-                        >
-                            Contact
-                        </Link>
+                        <div className="flex items-center gap-3">
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                            >
+                                Dashboard
+                            </Link>
+                            <Link
+                                href="/auth"
+                                className="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary-dark transition-colors shadow-sm"
+                            >
+                                Login / Register
+                            </Link>
+                        </div>
                     </div>
 
                     {/* Mobile menu button */}
@@ -65,6 +73,20 @@ export default function Header() {
                                 {item}
                             </Link>
                         ))}
+                        <Link
+                            href="/auth"
+                            className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:bg-blue-50"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Login / Register
+                        </Link>
+                        <Link
+                            href="/dashboard"
+                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Dashboard
+                        </Link>
                     </div>
                 </div>
             )}

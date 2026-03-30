@@ -24,3 +24,15 @@ body {
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
+
+input,
+textarea,
+select {
+  color: #111827;
+  caret-color: #111827;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6b7280;
+}

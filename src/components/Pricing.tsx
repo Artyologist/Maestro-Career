@@ -105,7 +105,7 @@ const tiers = [
     },
 ];
 
-export default function PricingSection() {
+export default function Pricing() {
     const [activePlan, setActivePlan] = useState<PlanType | null>(null);
     const [expandedPlans, setExpandedPlans] = useState<Record<string, boolean>>({});
 
@@ -116,7 +116,7 @@ export default function PricingSection() {
 
     return (
         <section className="bg-slate-50 py-24 sm:py-32 relative overflow-hidden" id="pricing">
-            {/* Background decoration elements... */}
+            {/* Background decoration elements for premium feel */}
             <div className="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-slate-100 to-transparent pointer-events-none" />
             <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 pointer-events-none" />
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50 pointer-events-none" />
