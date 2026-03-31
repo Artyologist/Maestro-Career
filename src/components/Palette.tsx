@@ -1,19 +1,19 @@
 export default function Palette() {
     const colors = [
-        { name: "Primary", hex: "#1294DD", bgClass: "bg-[#1294DD]", textClass: "text-white" },
-        { name: "Dark", hex: "#111827", bgClass: "bg-[#111827]", textClass: "text-white" },
-        { name: "White", hex: "#FFFFFF", bgClass: "bg-white", textClass: "text-dark border border-gray-200" },
-        { name: "Black", hex: "#000000", bgClass: "bg-black", textClass: "text-white" },
+        { name: "Primary", hex: "hsl(var(--primary))", bgClass: "bg-primary", textClass: "text-primary-foreground" },
+        { name: "Accent", hex: "hsl(var(--accent))", bgClass: "bg-accent", textClass: "text-accent-foreground" },
+        { name: "Background", hex: "hsl(var(--background))", bgClass: "bg-background", textClass: "text-foreground border border-border" },
+        { name: "Card", hex: "hsl(var(--card))", bgClass: "bg-card", textClass: "text-card-foreground border border-border" },
     ];
 
     return (
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-background transition-colors duration-500">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-dark tracking-tight mb-4">
-                        Design Palette Showcase
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4">
+                        Redesigned Design System
                     </h2>
-                    <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                         These are the core colors that define the brand identity and visual aesthetic of the Maestro Career platform.
                     </p>
                 </div>

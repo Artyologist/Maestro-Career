@@ -1,60 +1,80 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Send, MessageSquare } from "lucide-react";
+
 export default function InquiryForm() {
     return (
-        <section id="contact" className="py-24 bg-gray-50 relative">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="max-w-3xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-dark tracking-tight mb-4">
-                            Get in Touch
+        <section id="contact" className="py-24 relative overflow-hidden bg-background/50 transition-colors duration-500">
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="max-w-4xl mx-auto">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-2xl mb-6 text-primary">
+                            <MessageSquare className="w-6 h-6" />
+                        </div>
+                        <h2 className="text-5xl font-black text-foreground tracking-tighter mb-6">
+                            Start Your <span className="text-gradient">Evolution</span>
                         </h2>
-                        <p className="text-lg text-gray-500">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.
+                        <p className="text-xl text-muted-foreground font-medium">
+                            Ready to discover your true potential? Send us a message and our experts will guide you through the next steps.
                         </p>
-                    </div>
+                    </motion.div>
 
-                    <div className="bg-white rounded-3xl p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-                        <form action="#" method="POST" className="space-y-6">
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 mb-2">First name</label>
-                                    <input
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="glass p-8 md:p-16 rounded-[3rem] relative overflow-hidden"
+                    >
+                        <form action="#" method="POST" className="space-y-8 relative z-10">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-2">
+                                    <label htmlFor="first-name" className="block text-sm font-black text-foreground/70 uppercase tracking-widest ml-1">First name</label>
+                                    <motion.input
+                                        whileFocus={{ scale: 1.01 }}
                                         type="text"
                                         name="first-name"
                                         id="first-name"
-                                        className="block w-full rounded-lg border-gray-300 px-4 py-3 bg-gray-50 text-gray-900 focus:ring-primary focus:border-primary border hover:border-gray-400 outline-none transition-colors"
+                                        className="block w-full rounded-2xl border-2 border-border px-6 py-4 bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:bg-card outline-none transition-all"
                                         placeholder="John"
                                     />
                                 </div>
-                                <div>
-                                    <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 mb-2">Last name</label>
-                                    <input
+                                <div className="space-y-2">
+                                    <label htmlFor="last-name" className="block text-sm font-black text-foreground/70 uppercase tracking-widest ml-1">Last name</label>
+                                    <motion.input
+                                        whileFocus={{ scale: 1.01 }}
                                         type="text"
                                         name="last-name"
                                         id="last-name"
-                                        className="block w-full rounded-lg border-gray-300 px-4 py-3 bg-gray-50 text-gray-900 focus:ring-primary focus:border-primary border hover:border-gray-400 outline-none transition-colors"
+                                        className="block w-full rounded-2xl border-2 border-border px-6 py-4 bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:bg-card outline-none transition-all"
                                         placeholder="Doe"
                                     />
                                 </div>
                             </div>
 
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email address</label>
-                                <input
+                            <div className="space-y-2">
+                                <label htmlFor="email" className="block text-sm font-black text-foreground/70 uppercase tracking-widest ml-1">Email address</label>
+                                <motion.input
+                                    whileFocus={{ scale: 1.01 }}
                                     type="email"
                                     name="email"
                                     id="email"
-                                    className="block w-full rounded-lg border-gray-300 px-4 py-3 bg-gray-50 text-gray-900 focus:ring-primary focus:border-primary border hover:border-gray-400 outline-none transition-colors"
+                                    className="block w-full rounded-2xl border-2 border-border px-6 py-4 bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:bg-card outline-none transition-all"
                                     placeholder="john@example.com"
                                 />
                             </div>
 
-                            <div>
-                                <label htmlFor="inquiry-type" className="block text-sm font-medium text-gray-700 mb-2">Inquiry Category</label>
+                            <div className="space-y-2">
+                                <label htmlFor="inquiry-type" className="block text-sm font-black text-foreground/70 uppercase tracking-widest ml-1">Inquiry Category</label>
                                 <select
                                     id="inquiry-type"
                                     name="inquiry-type"
-                                    className="block w-full rounded-lg border-gray-300 px-4 py-3 bg-gray-50 text-gray-900 focus:ring-primary focus:border-primary border hover:border-gray-400 outline-none transition-colors"
+                                    className="block w-full rounded-2xl border-2 border-border px-6 py-4 bg-card/50 text-foreground focus:border-primary focus:bg-card outline-none transition-all appearance-none cursor-pointer"
                                     defaultValue=""
                                 >
                                     <option value="" disabled>Select a category</option>
@@ -65,29 +85,35 @@ export default function InquiryForm() {
                                 </select>
                             </div>
 
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                                <textarea
+                            <div className="space-y-2">
+                                <label htmlFor="message" className="block text-sm font-black text-foreground/70 uppercase tracking-widest ml-1">Message</label>
+                                <motion.textarea
+                                    whileFocus={{ scale: 1.01 }}
                                     id="message"
                                     name="message"
                                     rows={4}
-                                    className="block w-full rounded-lg border-gray-300 px-4 py-3 bg-gray-50 text-gray-900 focus:ring-primary focus:border-primary border hover:border-gray-400 outline-none transition-colors resize-none"
+                                    className="block w-full rounded-2xl border-2 border-border px-6 py-4 bg-card/50 text-foreground placeholder:text-muted-foreground focus:border-primary focus:bg-card outline-none transition-all resize-none"
                                     placeholder="Tell us how we can help you..."
-                                ></textarea>
+                                ></motion.textarea>
                             </div>
 
-                            <div>
-                                <button
+                                <motion.button
+                                    whileHover={{ scale: 1.02, y: -2 }}
+                                    whileTap={{ scale: 0.98 }}
                                     type="submit"
-                                    className="w-full inline-flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+                                    className="w-full flex justify-center items-center px-8 py-5 bg-primary text-primary-foreground text-lg font-black rounded-2xl shadow-xl shadow-primary/10 hover:shadow-primary/20 transition-all group"
                                 >
-                                    Submit Inquiry
-                                </button>
-                            </div>
+                                Send Inquiry
+                                <Send className="ml-3 h-5 w-5 group-hover:translate-x-2 group-hover:-translate-y-1 transition-transform" />
+                            </motion.button>
                         </form>
-                    </div>
+                        
+                        {/* Decorative background blob in form */}
+                        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0" />
+                    </motion.div>
                 </div>
             </div>
         </section>
     );
 }
+

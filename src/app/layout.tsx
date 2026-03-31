@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+
+import { ThemeProvider } from "@/components/ThemeProvider";
+import Chatbot from "@/components/Chatbot";
+import MainLayout from "@/components/MainLayout";
 
 export const metadata: Metadata = {
-  title: "Maestro Career | Comprehensive Career Solutions",
-  description: "Professional career consulting and coaching platform.",
+  title: "Maestro Career",
+  description: "Experience the future of career exploration with our interactive 3D platform.",
 };
 
 export default function RootLayout({
@@ -15,9 +20,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} antialiased selection:bg-primary selection:text-white`}>
-        {children}
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased selection:bg-primary selection:text-white`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <MainLayout>
+            {children}
+            <Chatbot />
+          </MainLayout>
+        </ThemeProvider>
       </body>
     </html>
   );
