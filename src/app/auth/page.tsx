@@ -18,10 +18,9 @@ export default function AuthPage() {
     const [error, setError] = useState("");
 
     const [registerData, setRegisterData] = useState({
-        name: "",
-        email: "",
-        mobile: "",
-        password: "",
+        identifier: "",
+        dateOfBirth: "",
+        acceptedTerms: false,
         otp: "",
         otpRequested: false,
         debugOtp: "",
@@ -54,10 +53,9 @@ export default function AuthPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    name: registerData.name,
-                    email: registerData.email,
-                    mobile: registerData.mobile,
-                    password: registerData.password,
+                    identifier: registerData.identifier,
+                    dateOfBirth: registerData.dateOfBirth,
+                    acceptedTerms: registerData.acceptedTerms,
                 }),
             });
             const data = await resp.json();
@@ -88,7 +86,7 @@ export default function AuthPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    mobile: registerData.mobile,
+                    identifier: registerData.identifier,
                     otp: registerData.otp,
                 }),
             });
@@ -200,7 +198,7 @@ export default function AuthPage() {
                     <div className="max-w-3xl mx-auto bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden">
                         <div className="p-6 md:p-10 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-white">
                             <h1 className="text-3xl md:text-4xl font-extrabold text-dark tracking-tight">Account Access</h1>
-                            <p className="text-gray-600 mt-2">Register with mobile OTP and login using OTP or password.</p>
+                            <p className="text-gray-600 mt-2">Quick signup with OTP. Profile details can be completed after first login.</p>
                         </div>
 
                         <div className="p-6 md:p-10">
@@ -211,8 +209,7 @@ export default function AuthPage() {
                                         setAuthMode("register");
                                         clearFeedback();
                                     }}
-                                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${authMode === "register" ? "bg-white text-primary shadow-sm" : "text-gray-600"
-                                        }`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${authMode === "register" ? "bg-white text-primary shadow-sm" : "text-gray-600"}`}
                                 >
                                     Register
                                 </button>
@@ -222,8 +219,7 @@ export default function AuthPage() {
                                         setAuthMode("login");
                                         clearFeedback();
                                     }}
-                                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${authMode === "login" ? "bg-white text-primary shadow-sm" : "text-gray-600"
-                                        }`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${authMode === "login" ? "bg-white text-primary shadow-sm" : "text-gray-600"}`}
                                 >
                                     Login
                                 </button>
@@ -244,58 +240,45 @@ export default function AuthPage() {
                                 <div className="space-y-6">
                                     <form onSubmit={handleRegisterRequestOtp} className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number or Email</label>
                                             <input
                                                 type="text"
-                                                value={registerData.name}
-                                                onChange={(e) => setRegisterData((prev) => ({ ...prev, name: e.target.value }))}
+                                                value={registerData.identifier}
+                                                onChange={(e) => setRegisterData((prev) => ({ ...prev, identifier: e.target.value }))}
                                                 className="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 focus:border-primary focus:ring-primary outline-none"
-                                                placeholder="John Doe"
+                                                placeholder="9876543210 or you@example.com"
                                                 required
                                             />
                                         </div>
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                                <input
-                                                    type="email"
-                                                    value={registerData.email}
-                                                    onChange={(e) => setRegisterData((prev) => ({ ...prev, email: e.target.value }))}
-                                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 focus:border-primary focus:ring-primary outline-none"
-                                                    placeholder="you@example.com"
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-                                                <input
-                                                    type="tel"
-                                                    value={registerData.mobile}
-                                                    onChange={(e) => setRegisterData((prev) => ({ ...prev, mobile: e.target.value }))}
-                                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 focus:border-primary focus:ring-primary outline-none"
-                                                    placeholder="9876543210"
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
+
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                                             <input
-                                                type="password"
-                                                value={registerData.password}
-                                                onChange={(e) => setRegisterData((prev) => ({ ...prev, password: e.target.value }))}
+                                                type="date"
+                                                value={registerData.dateOfBirth}
+                                                onChange={(e) => setRegisterData((prev) => ({ ...prev, dateOfBirth: e.target.value }))}
                                                 className="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 focus:border-primary focus:ring-primary outline-none"
-                                                placeholder="Minimum 6 characters"
-                                                minLength={6}
                                                 required
                                             />
                                         </div>
+
+                                        <label className="flex items-start gap-2 text-sm text-gray-700">
+                                            <input
+                                                type="checkbox"
+                                                checked={registerData.acceptedTerms}
+                                                onChange={(e) => setRegisterData((prev) => ({ ...prev, acceptedTerms: e.target.checked }))}
+                                                className="mt-1 h-4 w-4"
+                                                required
+                                            />
+                                            <span>I agree to the Terms and Privacy Policy.</span>
+                                        </label>
+
                                         <button
                                             type="submit"
                                             disabled={loading}
                                             className="w-full rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold py-3 transition-colors disabled:opacity-70"
                                         >
-                                            {loading ? "Requesting OTP..." : "Register: Send OTP"}
+                                            {loading ? "Requesting OTP..." : "Continue: Send OTP"}
                                         </button>
                                     </form>
 
@@ -339,8 +322,7 @@ export default function AuthPage() {
                                                 setLoginMode("otp");
                                                 clearFeedback();
                                             }}
-                                            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${loginMode === "otp" ? "bg-white text-primary shadow-sm" : "text-gray-600"
-                                                }`}
+                                            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${loginMode === "otp" ? "bg-white text-primary shadow-sm" : "text-gray-600"}`}
                                         >
                                             Login with OTP
                                         </button>
@@ -350,8 +332,7 @@ export default function AuthPage() {
                                                 setLoginMode("password");
                                                 clearFeedback();
                                             }}
-                                            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${loginMode === "password" ? "bg-white text-primary shadow-sm" : "text-gray-600"
-                                                }`}
+                                            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${loginMode === "password" ? "bg-white text-primary shadow-sm" : "text-gray-600"}`}
                                         >
                                             Login with Password
                                         </button>

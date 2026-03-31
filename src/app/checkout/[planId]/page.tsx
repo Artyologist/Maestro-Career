@@ -201,7 +201,7 @@ export default function CheckoutPage() {
                         <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                             <p className="text-sm font-semibold text-primary">Final Plan Description</p>
                             <h1 className="text-3xl font-bold text-gray-900 mt-2">{plan.name}</h1>
-                            <p className="text-gray-600 mt-3">{plan.summary}</p>
+                            <p className="text-gray-600 mt-3">{plan.description}</p>
 
                             <div className="mt-6 rounded-xl bg-blue-50 border border-blue-100 p-4">
                                 <p className="text-sm text-blue-700">Total Payable</p>

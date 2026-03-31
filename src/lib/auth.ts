@@ -1,22 +1,26 @@
 import { randomBytes, randomUUID, scryptSync, timingSafeEqual, createHash } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
+import { AUTH_CONFIG } from "@/lib/auth-config";
+import { deliverOtp } from "@/lib/otp-delivery";
 
 export const AUTH_COOKIE_NAME = "maestro_auth_session";
 
-const OTP_TTL_MS = 5 * 60 * 1000;
-const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
-const OTP_MAX_ATTEMPTS = 5;
+const MIN_SIGNUP_AGE = 13;
 
 type LoginMethod = "otp" | "password";
-
 type OtpPurpose = "register" | "login";
+
+type OtpChannel = "mobile" | "email";
 
 interface User {
     id: string;
     name: string;
     email: string;
     mobile: string;
+    dateOfBirth: string;
+    termsAcceptedAt: string;
+    onboardingCompleted: boolean;
     passwordHash: string;
     passwordSalt: string;
     createdAt: string;
@@ -32,17 +36,18 @@ interface OtpChallenge {
     id: string;
     purpose: OtpPurpose;
     identifier: string;
-    channel: "mobile" | "email";
-    otp: string;
+    channel: OtpChannel;
+    otpHash?: string;
+    otpSalt?: string;
+    otp?: string;
     expiresAt: string;
     attempts: number;
     createdAt: string;
     registerPayload?: {
-        name: string;
-        email: string;
-        mobile: string;
-        passwordHash: string;
-        passwordSalt: string;
+        identifier: string;
+        channel: OtpChannel;
+        dateOfBirth: string;
+        termsAcceptedAt: string;
     };
     userId?: string;
 }
@@ -58,7 +63,7 @@ interface Session {
 interface UserActivity {
     id: string;
     userId: string;
-    type: "registration" | "login";
+    type: "registration" | "login" | "profile";
     message: string;
     at: string;
 }
@@ -75,6 +80,8 @@ interface PublicUser {
     name: string;
     email: string;
     mobile: string;
+    onboardingCompleted: boolean;
+    hasPassword: boolean;
     createdAt: string;
     updatedAt: string;
     lastLoginAt?: string;
@@ -113,8 +120,7 @@ function sha256(value: string) {
 }
 
 function normalizeMobile(value: string) {
-    const digits = value.replace(/\D/g, "");
-    return digits;
+    return value.replace(/\D/g, "");
 }
 
 function normalizeEmail(value: string) {
@@ -122,20 +128,21 @@ function normalizeEmail(value: string) {
 }
 
 function normalizeIdentifier(identifier: string) {
-    const trimmed = identifier.trim();
+    const trimmed = String(identifier ?? "").trim();
     if (trimmed.includes("@")) {
         return { channel: "email" as const, value: normalizeEmail(trimmed) };
     }
     return { channel: "mobile" as const, value: normalizeMobile(trimmed) };
 }
 
-function maskValue(channel: "mobile" | "email", value: string) {
+function maskValue(channel: OtpChannel, value: string) {
     if (channel === "mobile") {
         if (value.length <= 4) {
             return value;
         }
         return `${"*".repeat(Math.max(value.length - 4, 0))}${value.slice(-4)}`;
     }
+
     const [name, domain] = value.split("@");
     if (!name || !domain) {
         return value;
@@ -143,6 +150,7 @@ function maskValue(channel: "mobile" | "email", value: string) {
     if (name.length <= 2) {
         return `${name[0] ?? ""}*@${domain}`;
     }
+
     return `${name[0]}${"*".repeat(Math.max(name.length - 2, 1))}${name[name.length - 1]}@${domain}`;
 }
 
@@ -150,9 +158,65 @@ function hashPassword(password: string, salt: string) {
     return scryptSync(password, salt, 64).toString("hex");
 }
 
+function hashOtp(otp: string, salt: string) {
+    return scryptSync(otp, salt, 32).toString("hex");
+}
+
 function generateOtp() {
     const num = Math.floor(100000 + Math.random() * 900000);
     return String(num);
+}
+
+function compareHashedOtp(challenge: OtpChallenge, otp: string) {
+    if (challenge.otpHash && challenge.otpSalt) {
+        const expected = Buffer.from(challenge.otpHash, "hex");
+        const actual = Buffer.from(hashOtp(otp, challenge.otpSalt), "hex");
+        return expected.length === actual.length && timingSafeEqual(expected, actual);
+    }
+
+    if (!challenge.otp) {
+        return false;
+    }
+
+    return challenge.otp === otp;
+}
+
+function calculateAgeYears(dateOfBirthIso: string) {
+    const dob = new Date(dateOfBirthIso);
+    if (Number.isNaN(dob.getTime())) {
+        return -1;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDelta = today.getMonth() - dob.getMonth();
+
+    if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < dob.getDate())) {
+        age -= 1;
+    }
+
+    return age;
+}
+
+function normalizeExistingUser(raw: Partial<User>): User {
+    return {
+        id: String(raw.id ?? randomUUID()),
+        name: String(raw.name ?? "Learner"),
+        email: normalizeEmail(String(raw.email ?? "")),
+        mobile: normalizeMobile(String(raw.mobile ?? "")),
+        dateOfBirth: String(raw.dateOfBirth ?? ""),
+        termsAcceptedAt: String(raw.termsAcceptedAt ?? raw.createdAt ?? nowIso()),
+        onboardingCompleted: Boolean(raw.onboardingCompleted ?? false),
+        passwordHash: String(raw.passwordHash ?? ""),
+        passwordSalt: String(raw.passwordSalt ?? ""),
+        createdAt: String(raw.createdAt ?? nowIso()),
+        updatedAt: String(raw.updatedAt ?? raw.createdAt ?? nowIso()),
+        lastLoginAt: raw.lastLoginAt,
+        lastLoginMethod: raw.lastLoginMethod,
+        loginCount: Number(raw.loginCount ?? 0),
+        inquiryCount: Number(raw.inquiryCount ?? 0),
+        preferredServices: Array.isArray(raw.preferredServices) ? raw.preferredServices : [],
+    };
 }
 
 function cleanupDb(db: AuthDb) {
@@ -174,13 +238,15 @@ async function ensureDbFile() {
 async function readDb(): Promise<AuthDb> {
     await ensureDbFile();
     const raw = await fs.readFile(DB_PATH, "utf8");
-    const parsed = JSON.parse(raw) as AuthDb;
-    const db = {
-        users: parsed.users ?? [],
-        otpChallenges: parsed.otpChallenges ?? [],
-        sessions: parsed.sessions ?? [],
-        activities: parsed.activities ?? [],
+    const parsed = JSON.parse(raw) as Partial<AuthDb>;
+
+    const db: AuthDb = {
+        users: (parsed.users ?? []).map((user) => normalizeExistingUser(user)),
+        otpChallenges: (parsed.otpChallenges ?? []) as OtpChallenge[],
+        sessions: (parsed.sessions ?? []) as Session[],
+        activities: (parsed.activities ?? []) as UserActivity[],
     };
+
     cleanupDb(db);
     return db;
 }
@@ -196,6 +262,8 @@ function toPublicUser(user: User): PublicUser {
         name: user.name,
         email: user.email,
         mobile: user.mobile,
+        onboardingCompleted: user.onboardingCompleted,
+        hasPassword: Boolean(user.passwordHash && user.passwordSalt),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
         lastLoginAt: user.lastLoginAt,
@@ -222,7 +290,7 @@ function addActivity(db: AuthDb, userId: string, type: UserActivity["type"], mes
         message,
         at: nowIso(),
     });
-    db.activities = db.activities.slice(0, 200);
+    db.activities = db.activities.slice(0, 300);
 }
 
 function applySuccessfulLogin(user: User, method: LoginMethod) {
@@ -233,126 +301,147 @@ function applySuccessfulLogin(user: User, method: LoginMethod) {
 }
 
 export async function requestRegistrationOtp(input: {
-    name: string;
-    email: string;
-    mobile: string;
-    password: string;
+    identifier: string;
+    dateOfBirth: string;
+    acceptedTerms: boolean;
 }) {
-    const name = input.name.trim();
-    const email = normalizeEmail(input.email);
-    const mobile = normalizeMobile(input.mobile);
-    const password = input.password;
+    const normalized = normalizeIdentifier(input.identifier);
 
-    if (name.length < 2) {
-        throw new Error("Name must be at least 2 characters.");
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-        throw new Error("Enter a valid email address.");
-    }
-    if (mobile.length < 10) {
+    if (normalized.channel === "mobile" && normalized.value.length < 10) {
         throw new Error("Enter a valid mobile number.");
     }
-    if (password.length < 6) {
-        throw new Error("Password must be at least 6 characters.");
+    if (normalized.channel === "email" && !/^\S+@\S+\.\S+$/.test(normalized.value)) {
+        throw new Error("Enter a valid email address.");
+    }
+    if (!input.acceptedTerms) {
+        throw new Error("You must accept terms and privacy policy to continue.");
+    }
+
+    const age = calculateAgeYears(input.dateOfBirth);
+    if (age < MIN_SIGNUP_AGE) {
+        throw new Error(`You must be at least ${MIN_SIGNUP_AGE} years old to register.`);
+    }
+    if (age > 100) {
+        throw new Error("Enter a valid date of birth.");
     }
 
     const db = await readDb();
-    const duplicate = db.users.find((user) => user.email === email || user.mobile === mobile);
+    const duplicate = findUserByIdentifier(db, normalized.value);
     if (duplicate) {
-        throw new Error("An account with this email or mobile already exists.");
+        throw new Error("An account already exists for this mobile/email.");
     }
 
     db.otpChallenges = db.otpChallenges.filter(
-        (challenge) =>
-            !(challenge.purpose === "register" && challenge.identifier === mobile)
+        (challenge) => !(challenge.purpose === "register" && challenge.identifier === normalized.value)
     );
 
     const otp = generateOtp();
-    const salt = randomBytes(16).toString("hex");
-    const passwordHash = hashPassword(password, salt);
+    const otpSalt = randomBytes(16).toString("hex");
 
-    db.otpChallenges.push({
+    const challenge: OtpChallenge = {
         id: randomUUID(),
         purpose: "register",
-        identifier: mobile,
-        channel: "mobile",
-        otp,
-        expiresAt: new Date(Date.now() + OTP_TTL_MS).toISOString(),
+        identifier: normalized.value,
+        channel: normalized.channel,
+        otpHash: hashOtp(otp, otpSalt),
+        otpSalt,
+        expiresAt: new Date(Date.now() + AUTH_CONFIG.otpTtlMs).toISOString(),
         attempts: 0,
         createdAt: nowIso(),
         registerPayload: {
-            name,
-            email,
-            mobile,
-            passwordHash,
-            passwordSalt: salt,
+            identifier: normalized.value,
+            channel: normalized.channel,
+            dateOfBirth: new Date(input.dateOfBirth).toISOString(),
+            termsAcceptedAt: nowIso(),
         },
+    };
+
+    await deliverOtp({
+        channel: normalized.channel,
+        target: normalized.value,
+        otp,
+        purpose: "register",
     });
 
+    db.otpChallenges.push(challenge);
     await writeDb(db);
 
     return {
-        target: maskValue("mobile", mobile),
-        debugOtp: otp,
-        expiresInSeconds: Math.floor(OTP_TTL_MS / 1000),
+        target: maskValue(normalized.channel, normalized.value),
+        channel: normalized.channel,
+        ...(AUTH_CONFIG.debugOtpEnabled ? { debugOtp: otp } : {}),
+        expiresInSeconds: Math.floor(AUTH_CONFIG.otpTtlMs / 1000),
     };
 }
 
-export async function verifyRegistrationOtp(input: { mobile: string; otp: string }) {
-    const mobile = normalizeMobile(input.mobile);
+export async function verifyRegistrationOtp(input: { identifier: string; otp: string }) {
+    const normalized = normalizeIdentifier(input.identifier);
     const otp = input.otp.trim();
     const db = await readDb();
 
     const challenge = db.otpChallenges.find(
-        (item) => item.purpose === "register" && item.identifier === mobile
+        (item) => item.purpose === "register" && item.identifier === normalized.value
     );
 
     if (!challenge || !challenge.registerPayload) {
-        throw new Error("No active registration OTP found. Please request a new OTP.");
+        throw new Error(
+            AUTH_CONFIG.strictAuthErrors
+                ? "Invalid or expired OTP. Please request a new OTP."
+                : "No active registration OTP found. Please request a new OTP."
+        );
     }
 
-    if (challenge.attempts >= OTP_MAX_ATTEMPTS) {
+    if (challenge.attempts >= AUTH_CONFIG.otpMaxAttempts) {
         db.otpChallenges = db.otpChallenges.filter((item) => item.id !== challenge.id);
         await writeDb(db);
-        throw new Error("Too many invalid attempts. Please request a new OTP.");
+        throw new Error(
+            AUTH_CONFIG.strictAuthErrors
+                ? "Invalid or expired OTP. Please request a new OTP."
+                : "Too many invalid attempts. Please request a new OTP."
+        );
     }
 
-    if (challenge.otp !== otp) {
+    if (!compareHashedOtp(challenge, otp)) {
         challenge.attempts += 1;
         await writeDb(db);
-        throw new Error("Invalid OTP.");
+        throw new Error(
+            AUTH_CONFIG.strictAuthErrors
+                ? "Invalid or expired OTP. Please request a new OTP."
+                : "Invalid OTP."
+        );
     }
 
-    const duplicate = db.users.find(
-        (user) =>
-            user.email === challenge.registerPayload?.email ||
-            user.mobile === challenge.registerPayload?.mobile
-    );
+    const duplicate = findUserByIdentifier(db, challenge.registerPayload.identifier);
     if (duplicate) {
         db.otpChallenges = db.otpChallenges.filter((item) => item.id !== challenge.id);
         await writeDb(db);
-        throw new Error("An account with this email or mobile already exists.");
+        throw new Error("An account already exists for this mobile/email.");
     }
+
+    const isEmail = challenge.registerPayload.channel === "email";
 
     const user: User = {
         id: randomUUID(),
-        name: challenge.registerPayload.name,
-        email: challenge.registerPayload.email,
-        mobile: challenge.registerPayload.mobile,
-        passwordHash: challenge.registerPayload.passwordHash,
-        passwordSalt: challenge.registerPayload.passwordSalt,
+        name: "Learner",
+        email: isEmail ? challenge.registerPayload.identifier : "",
+        mobile: isEmail ? "" : challenge.registerPayload.identifier,
+        dateOfBirth: challenge.registerPayload.dateOfBirth,
+        termsAcceptedAt: challenge.registerPayload.termsAcceptedAt,
+        onboardingCompleted: false,
+        passwordHash: "",
+        passwordSalt: "",
         createdAt: nowIso(),
         updatedAt: nowIso(),
         loginCount: 0,
         inquiryCount: 0,
-        preferredServices: ["Career Coaching", "Psychometric Assessment", "Interview Prep"],
+        preferredServices: [],
     };
 
     applySuccessfulLogin(user, "otp");
 
     db.users.push(user);
     db.otpChallenges = db.otpChallenges.filter((item) => item.id !== challenge.id);
-    addActivity(db, user.id, "registration", "Completed registration via mobile OTP.");
+    addActivity(db, user.id, "registration", `Completed registration via ${challenge.channel.toUpperCase()} OTP.`);
 
     const sessionToken = randomBytes(32).toString("hex");
     db.sessions.push({
@@ -360,7 +449,7 @@ export async function verifyRegistrationOtp(input: { mobile: string; otp: string
         userId: user.id,
         tokenHash: sha256(sessionToken),
         createdAt: nowIso(),
-        expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString(),
+        expiresAt: new Date(Date.now() + AUTH_CONFIG.sessionTtlMs).toISOString(),
     });
 
     await writeDb(db);
@@ -382,36 +471,47 @@ export async function requestLoginOtp(input: { identifier: string }) {
 
     const db = await readDb();
     const user = findUserByIdentifier(db, normalized.value);
-    if (!user) {
+    if (!user && !AUTH_CONFIG.strictAuthErrors) {
         throw new Error("No account found for the provided identifier.");
     }
 
     db.otpChallenges = db.otpChallenges.filter(
-        (challenge) =>
-            !(challenge.purpose === "login" && challenge.identifier === normalized.value)
+        (challenge) => !(challenge.purpose === "login" && challenge.identifier === normalized.value)
     );
 
     const otp = generateOtp();
+    const otpSalt = randomBytes(16).toString("hex");
 
-    db.otpChallenges.push({
-        id: randomUUID(),
-        purpose: "login",
-        identifier: normalized.value,
-        channel: normalized.channel,
-        otp,
-        expiresAt: new Date(Date.now() + OTP_TTL_MS).toISOString(),
-        attempts: 0,
-        createdAt: nowIso(),
-        userId: user.id,
-    });
+    if (user) {
+        const challenge: OtpChallenge = {
+            id: randomUUID(),
+            purpose: "login",
+            identifier: normalized.value,
+            channel: normalized.channel,
+            otpHash: hashOtp(otp, otpSalt),
+            otpSalt,
+            expiresAt: new Date(Date.now() + AUTH_CONFIG.otpTtlMs).toISOString(),
+            attempts: 0,
+            createdAt: nowIso(),
+            userId: user.id,
+        };
 
-    await writeDb(db);
+        await deliverOtp({
+            channel: normalized.channel,
+            target: normalized.value,
+            otp,
+            purpose: "login",
+        });
+
+        db.otpChallenges.push(challenge);
+        await writeDb(db);
+    }
 
     return {
         target: maskValue(normalized.channel, normalized.value),
         channel: normalized.channel,
-        debugOtp: otp,
-        expiresInSeconds: Math.floor(OTP_TTL_MS / 1000),
+        ...(AUTH_CONFIG.debugOtpEnabled && user ? { debugOtp: otp } : {}),
+        expiresInSeconds: Math.floor(AUTH_CONFIG.otpTtlMs / 1000),
     };
 }
 
@@ -425,19 +525,31 @@ export async function verifyLoginOtp(input: { identifier: string; otp: string })
     );
 
     if (!challenge || !challenge.userId) {
-        throw new Error("No active login OTP found. Please request a new OTP.");
+        throw new Error(
+            AUTH_CONFIG.strictAuthErrors
+                ? "Invalid or expired OTP. Please request a new OTP."
+                : "No active login OTP found. Please request a new OTP."
+        );
     }
 
-    if (challenge.attempts >= OTP_MAX_ATTEMPTS) {
+    if (challenge.attempts >= AUTH_CONFIG.otpMaxAttempts) {
         db.otpChallenges = db.otpChallenges.filter((item) => item.id !== challenge.id);
         await writeDb(db);
-        throw new Error("Too many invalid attempts. Please request a new OTP.");
+        throw new Error(
+            AUTH_CONFIG.strictAuthErrors
+                ? "Invalid or expired OTP. Please request a new OTP."
+                : "Too many invalid attempts. Please request a new OTP."
+        );
     }
 
-    if (challenge.otp !== otp) {
+    if (!compareHashedOtp(challenge, otp)) {
         challenge.attempts += 1;
         await writeDb(db);
-        throw new Error("Invalid OTP.");
+        throw new Error(
+            AUTH_CONFIG.strictAuthErrors
+                ? "Invalid or expired OTP. Please request a new OTP."
+                : "Invalid OTP."
+        );
     }
 
     const user = db.users.find((item) => item.id === challenge.userId);
@@ -457,7 +569,7 @@ export async function verifyLoginOtp(input: { identifier: string; otp: string })
         userId: user.id,
         tokenHash: sha256(sessionToken),
         createdAt: nowIso(),
-        expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString(),
+        expiresAt: new Date(Date.now() + AUTH_CONFIG.sessionTtlMs).toISOString(),
     });
 
     await writeDb(db);
@@ -478,8 +590,8 @@ export async function loginWithPassword(input: { identifier: string; password: s
 
     const db = await readDb();
     const user = findUserByIdentifier(db, normalized.value);
-    if (!user) {
-        throw new Error("Invalid credentials.");
+    if (!user || !user.passwordHash || !user.passwordSalt) {
+        throw new Error("This account does not have password login enabled.");
     }
 
     const computedHash = hashPassword(password, user.passwordSalt);
@@ -499,7 +611,7 @@ export async function loginWithPassword(input: { identifier: string; password: s
         userId: user.id,
         tokenHash: sha256(sessionToken),
         createdAt: nowIso(),
-        expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString(),
+        expiresAt: new Date(Date.now() + AUTH_CONFIG.sessionTtlMs).toISOString(),
     });
 
     await writeDb(db);
@@ -508,6 +620,57 @@ export async function loginWithPassword(input: { identifier: string; password: s
         user: toPublicUser(user),
         sessionToken,
     };
+}
+
+export async function completeProfileFromSessionToken(
+    token: string | undefined,
+    input: { name: string; preferredServices: string[]; password?: string }
+) {
+    if (!token) {
+        throw new Error("Unauthorized");
+    }
+
+    const db = await readDb();
+    const tokenHash = sha256(token);
+    const session = db.sessions.find((item) => item.tokenHash === tokenHash);
+    if (!session) {
+        throw new Error("Unauthorized");
+    }
+
+    const user = db.users.find((item) => item.id === session.userId);
+    if (!user) {
+        throw new Error("Unauthorized");
+    }
+
+    const name = input.name.trim();
+    if (name.length < 2) {
+        throw new Error("Name must be at least 2 characters.");
+    }
+
+    const preferredServices = input.preferredServices
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .slice(0, 5);
+
+    user.name = name;
+    user.preferredServices = preferredServices;
+    user.onboardingCompleted = true;
+
+    const password = input.password?.trim() ?? "";
+    if (password) {
+        if (password.length < 8) {
+            throw new Error("Password must be at least 8 characters.");
+        }
+        const salt = randomBytes(16).toString("hex");
+        user.passwordSalt = salt;
+        user.passwordHash = hashPassword(password, salt);
+    }
+
+    user.updatedAt = nowIso();
+    addActivity(db, user.id, "profile", "Completed profile setup.");
+    await writeDb(db);
+
+    return toPublicUser(user);
 }
 
 export async function getUserFromSessionToken(token?: string) {
@@ -586,5 +749,5 @@ export async function getDashboardData(token?: string): Promise<DashboardData | 
 }
 
 export function getCookieMaxAgeSeconds() {
-    return Math.floor(SESSION_TTL_MS / 1000);
+    return Math.floor(AUTH_CONFIG.sessionTtlMs / 1000);
 }

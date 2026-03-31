@@ -2,7 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Sparkles, Brain, Gamepad2, MousePointer2 } from "lucide-react";
-import React, { useRef } from "react";
+import React from "react";
 
 const TiltCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const x = useMotionValue(0);
@@ -42,7 +42,7 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
       }}
       className={`relative rounded-[3rem] ${className}`}
     >
-      <div 
+      <div
         style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
         className="h-full w-full"
       >
@@ -75,7 +75,7 @@ export default function InteractiveSection() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
-          
+
           {/* Tilt Card 1: Gamified Reveal */}
           <TiltCard className="h-[450px] bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 group">
             <div className="h-full w-full glass p-10 flex flex-col justify-between">
@@ -89,7 +89,7 @@ export default function InteractiveSection() {
                 </p>
               </div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                 <MousePointer2 className="w-20 h-20 text-primary/30 rotate-12" />
+                <MousePointer2 className="w-20 h-20 text-primary/30 rotate-12" />
               </div>
             </div>
           </TiltCard>
@@ -113,33 +113,33 @@ export default function InteractiveSection() {
           {/* Tilt Card 3: Micro-Quiz Preview */}
           <TiltCard className="h-[450px] bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/20 md:hidden lg:block">
             <div className="h-full w-full glass p-10 flex flex-col justify-between overflow-hidden">
-               <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-black uppercase tracking-widest text-orange-500">Quick Check</span>
-                    <div className="flex space-x-1">
-                      {[1, 2, 3, 4].map(i => <div key={i} className="w-6 h-1 rounded-full bg-orange-500/20" />)}
-                    </div>
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-black uppercase tracking-widest text-orange-500">Quick Check</span>
+                  <div className="flex space-x-1">
+                    {[1, 2, 3, 4].map(i => <div key={i} className="w-6 h-1 rounded-full bg-orange-500/20" />)}
                   </div>
-                  <h3 className="text-3xl font-black text-foreground leading-tight">What drives you most?</h3>
-                  <div className="space-y-3">
-                    {["Solving Complex Puzzles", "Leading Dynamic Teams", "Creating Visual Art"].map((opt, i) => (
-                      <motion.div 
-                        key={i}
-                        whileHover={{ x: 10 }}
-                        className="p-4 rounded-xl bg-background/50 border border-orange-500/10 text-sm font-bold cursor-pointer hover:border-orange-500/40 transition-colors"
-                      >
-                        {opt}
-                      </motion.div>
-                    ))}
-                  </div>
-               </div>
-               <p className="text-sm text-muted-foreground font-black uppercase tracking-widest mt-4">Demo Active</p>
+                </div>
+                <h3 className="text-3xl font-black text-foreground leading-tight">What drives you most?</h3>
+                <div className="space-y-3">
+                  {["Solving Complex Puzzles", "Leading Dynamic Teams", "Creating Visual Art"].map((opt, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ x: 10 }}
+                      className="p-4 rounded-xl bg-background/50 border border-orange-500/10 text-sm font-bold cursor-pointer hover:border-orange-500/40 transition-colors"
+                    >
+                      {opt}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground font-black uppercase tracking-widest mt-4">Demo Active</p>
             </div>
           </TiltCard>
 
         </div>
       </div>
-      
+
       {/* Background Decor */}
       <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-border to-transparent -z-10" />
       <div className="absolute left-1/2 top-0 w-[1px] h-full bg-gradient-to-b from-transparent via-border to-transparent -z-10" />
