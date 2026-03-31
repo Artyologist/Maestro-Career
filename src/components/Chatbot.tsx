@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { MessageCircle, X, Send, User, Sparkles, ChevronRight, HelpCircle } from "lucide-react"
+import { MessageCircle, X, Send, Sparkles } from "lucide-react"
 
 type Message = {
     role: "bot" | "user"
@@ -43,7 +43,7 @@ export default function Chatbot() {
         setTimeout(() => {
             const normalizedMsg = textToSend.toLowerCase()
             let botReply = "I'm still learning! You can reach our experts via the Contact form if you have a specific question."
-            
+
             for (const key in FAQ_RESPONSES) {
                 if (normalizedMsg.includes(key)) {
                     botReply = FAQ_RESPONSES[key]
@@ -68,9 +68,9 @@ export default function Chatbot() {
                     >
                         {/* Header: Vibrant & Kinetic */}
                         <div className="p-8 bg-foreground flex justify-between items-center relative overflow-hidden group">
-                           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-vibe-pink/20 opacity-50" />
-                           <div className="absolute top-0 right-0 w-32 h-32 bg-vibe-purple/20 blur-3xl -z-10" />
-                           
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-vibe-pink/20 opacity-50" />
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-vibe-purple/20 blur-3xl -z-10" />
+
                             <div className="flex items-center space-x-4 relative z-10">
                                 <div className="w-12 h-12 rounded-2xl bg-background/10 backdrop-blur-xl flex items-center justify-center border border-background/20 group-hover:scale-105 transition-transform">
                                     <Sparkles className="w-6 h-6 text-background" />
@@ -80,10 +80,10 @@ export default function Chatbot() {
                                     <h3 className="text-lg font-black tracking-tight text-background">Maestro Guide</h3>
                                 </div>
                             </div>
-                            <motion.button 
+                            <motion.button
                                 whileHover={{ rotate: 90, scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => setIsOpen(false)} 
+                                onClick={() => setIsOpen(false)}
                                 className="bg-background/10 p-2.5 rounded-xl hover:bg-background/20 transition-colors border border-background/20 relative z-10"
                             >
                                 <X className="w-4 h-4 text-background" />
@@ -91,7 +91,7 @@ export default function Chatbot() {
                         </div>
 
                         {/* Messages Area */}
-                        <div 
+                        <div
                             ref={scrollRef}
                             className="flex-1 overflow-y-auto p-8 space-y-6 scrollbar-hide bg-background/20"
                         >
@@ -102,11 +102,10 @@ export default function Chatbot() {
                                     animate={{ opacity: 1, x: 0 }}
                                     className={`flex ${ms.role === "user" ? "justify-end" : "justify-start"}`}
                                 >
-                                    <div className={`max-w-[85%] px-5 py-4 rounded-[1.8rem] text-sm font-bold shadow-sm ${
-                                        ms.role === "user" 
-                                        ? "bg-primary text-white rounded-br-none shadow-3d" 
-                                        : "bg-secondary text-foreground rounded-tl-none border border-border/30"
-                                    }`}>
+                                    <div className={`max-w-[85%] px-5 py-4 rounded-[1.8rem] text-sm font-bold shadow-sm ${ms.role === "user"
+                                            ? "bg-primary text-white rounded-br-none shadow-3d"
+                                            : "bg-secondary text-foreground rounded-tl-none border border-border/30"
+                                        }`}>
                                         {ms.content}
                                     </div>
                                 </motion.div>
@@ -115,11 +114,11 @@ export default function Chatbot() {
                                 <div className="flex justify-start">
                                     <div className="bg-secondary px-5 py-4 rounded-[1.8rem] rounded-tl-none shadow-sm border border-border/30 flex space-x-1.5">
                                         {[0, 1, 2].map(dot => (
-                                            <motion.div 
+                                            <motion.div
                                                 key={dot}
-                                                animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }} 
-                                                transition={{ repeat: Infinity, duration: 1, delay: dot * 0.2 }} 
-                                                className="w-1.5 h-1.5 rounded-full bg-primary/40" 
+                                                animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }}
+                                                transition={{ repeat: Infinity, duration: 1, delay: dot * 0.2 }}
+                                                className="w-1.5 h-1.5 rounded-full bg-primary/40"
                                             />
                                         ))}
                                     </div>
@@ -131,8 +130,8 @@ export default function Chatbot() {
                         <div className="px-8 py-3 bg-secondary/30 border-t border-border/10">
                             <div className="flex space-x-2 overflow-x-auto scrollbar-hide pb-1">
                                 {["How it works", "Pricing", "Help"].map(q => (
-                                    <motion.button 
-                                        key={q} 
+                                    <motion.button
+                                        key={q}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => handleSend(q)}
@@ -147,14 +146,14 @@ export default function Chatbot() {
                         {/* Input Area */}
                         <div className="p-8 pt-4 bg-background">
                             <div className="relative flex items-center bg-secondary/30 rounded-[2rem] border-2 border-border/20 focus-within:border-primary/20 transition-all p-1.5">
-                                <input 
+                                <input
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
                                     placeholder="Type a message..."
                                     className="flex-1 bg-transparent px-5 py-3 text-sm font-bold text-foreground placeholder:text-muted-foreground/50 outline-none"
                                 />
-                                <motion.button 
+                                <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => handleSend()}
@@ -184,7 +183,7 @@ export default function Chatbot() {
                     ) : (
                         <div className="relative">
                             <MessageCircle className="w-6 h-6" />
-                            <motion.div 
+                            <motion.div
                                 animate={{ scale: [1, 1.4, 1], opacity: [0, 0.4, 0] }}
                                 transition={{ repeat: Infinity, duration: 2 }}
                                 className="absolute inset-0 bg-primary rounded-full blur-xl -z-10"

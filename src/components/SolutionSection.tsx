@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import { ShieldCheck, Zap, Brain, Target, Compass, Sparkles } from "lucide-react";
+import { Zap, Brain, Target, Compass } from "lucide-react";
 
 export default function SolutionSection() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -19,7 +19,7 @@ export default function SolutionSection() {
     const solutions = [
         {
             title: "Neuropsychological Depth",
-            desc: "Move beyond simple personality quizes with absolute cognitive pattern analysis.",
+            desc: "Move beyond simple personality quizzes with absolute cognitive pattern analysis.",
             icon: Brain,
         },
         {
@@ -35,7 +35,7 @@ export default function SolutionSection() {
     ];
 
     return (
-        <section 
+        <section
             id="solution"
             ref={sectionRef}
             className="relative py-32 overflow-hidden bg-background transition-colors duration-500 will-change-transform"
@@ -50,34 +50,34 @@ export default function SolutionSection() {
                     >
                         <span className="text-[10px] font-black uppercase tracking-[0.4em]">SYSTEM.DECODE</span>
                     </motion.div>
-                    
+
                     <h2 className="text-6xl md:text-8xl font-black text-foreground tracking-tightest leading-[0.85] mb-10 uppercase">
                         The Engine <br />
                         Inside You.
                     </h2>
                     <p className="text-xl md:text-2xl text-foreground/40 font-bold max-w-2xl mx-auto uppercase tracking-tighter">
-                        Maestro isn't a test. It's a high-precision engine that decodes your professional DNA and maps it to a future that fits.
+                        Maestro isn&apos;t a test. It&apos;s a high-precision engine that decodes your professional DNA and maps it to a future that fits.
                     </p>
                 </div>
 
                 <div className="grid lg:grid-cols-2 gap-20 items-center">
                     {/* Visual UI Showcase */}
-                    <motion.div 
+                    <motion.div
                         style={{ opacity, y }}
                         className="relative"
                     >
                         <div className="relative aspect-[4/3] overflow-hidden bg-secondary border border-foreground/5 shadow-2xl">
-                            <Image 
-                                src="/images/maestro_mockup.png" 
-                                alt="Platform" 
+                            <Image
+                                src="/images/maestro_mockup.png"
+                                alt="Platform"
                                 fill
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="object-cover transition-transform duration-[2000ms] grayscale"
                             />
                         </div>
-                        
+
                         {/* Architectural Status Marker */}
-                        <motion.div 
+                        <motion.div
                             animate={{ x: [0, 20, 0] }}
                             transition={{ duration: 5, repeat: Infinity }}
                             className="absolute -top-10 -left-10 bg-foreground text-background p-6 shadow-3xl"
@@ -118,7 +118,7 @@ export default function SolutionSection() {
                     </div>
                 </div>
             </div>
-            
+
             {/* Minimal Decorative Wash */}
             <div className="absolute top-0 right-0 w-[40%] h-full bg-foreground/5 blur-[200px] -z-10" />
         </section>
