@@ -22,7 +22,7 @@ export default function Footer() {
                         <p className="text-sm text-foreground/40 font-bold leading-relaxed uppercase tracking-widest max-w-xs">
                             Empowering the next generation with high-fidelity psychometric intelligence. Find your <span className="text-foreground/80">North Star.</span>
                         </p>
-                        
+
                         <div className="flex space-x-6">
                             {[Mail, Phone, Globe].map((Icon, i) => (
                                 <a key={i} href="#" className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all group/icon">
@@ -56,13 +56,22 @@ export default function Footer() {
 
                     {/* Column 4: Identification */}
                     <div className="space-y-12">
-                        <div>
-                            <h4 className="text-[11px] font-black uppercase tracking-[0.4em] mb-6 text-foreground/20">Coordinate</h4>
-                            <p className="text-lg font-black tracking-tight leading-none text-foreground">HQ@MAESTROCAREER.COM</p>
-                        </div>
-                        <div>
-                            <h4 className="text-[11px] font-black uppercase tracking-[0.4em] mb-6 text-foreground/20">Teleport</h4>
-                            <p className="text-lg font-black tracking-tight leading-none text-foreground">+91 98222 28484</p>
+                        <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary/60">Contact Us</h4>
+                        <div className="space-y-8">
+                            <div>
+                                <h4 className="text-[11px] font-black uppercase tracking-[0.4em] mb-4 text-foreground/20">Email</h4>
+                                <p className="text-lg font-black tracking-tight leading-none text-foreground uppercase">info@maestrocareer.com</p>
+                            </div>
+                            <div>
+                                <h4 className="text-[11px] font-black uppercase tracking-[0.4em] mb-4 text-foreground/20">Phone No.</h4>
+                                <p className="text-lg font-black tracking-tight leading-none text-foreground">+91 98222 28484</p>
+                            </div>
+                            <div>
+                                <h4 className="text-[11px] font-black uppercase tracking-[0.4em] mb-4 text-foreground/20">Office Address</h4>
+                                <p className="text-[11px] font-bold leading-relaxed uppercase tracking-widest text-foreground/60 max-w-[200px]">
+                                    Maharashtra State Co-operative Bank, Khamla Rd, Nagpur, Maharashtra 440015
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,6 +88,7 @@ export default function Footer() {
                         <Link href="/privacy-policy" className="hover:text-foreground transition-colors hover:italic">Privacy</Link>
                         <Link href="/terms-conditions" className="hover:text-foreground transition-colors hover:italic">Terms</Link>
                         <Link href="/refund-cancellation" className="hover:text-foreground transition-colors hover:italic">Refunds</Link>
+                        <Link href="/cookie-policy" className="hover:text-foreground transition-colors hover:italic">Cookies</Link>
                     </div>
                 </div>
             </div>

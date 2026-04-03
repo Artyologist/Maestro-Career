@@ -44,7 +44,7 @@ export default function RefundCancellationPage() {
                     <section>
                         <h2 className="text-xl font-semibold text-gray-900 mb-3">5. How to Request a Refund</h2>
                         <p>
-                            To request a cancellation or refund, email hello@maestrocareer.com with your registered details,
+                            To request a cancellation or refund, email info@maestrocareer.com with your registered details,
                             payment information, and reason for the request. Our support team will review and respond promptly.
                         </p>
                     </section>

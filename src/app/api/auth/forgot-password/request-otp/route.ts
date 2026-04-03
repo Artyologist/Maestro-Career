@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requestLoginOtp } from "@/lib/auth";
+import { requestForgotPasswordOtp } from "@/lib/auth";
 import { consumeRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -8,8 +8,8 @@ export async function POST(req: Request) {
     try {
         const ip = getClientIp(req.headers);
         const ipRate = consumeRateLimit({
-            key: `auth:login:request:ip:${ip}`,
-            limit: 25,
+            key: `auth:forgot:request:ip:${ip}`,
+            limit: 20,
             windowMs: 10 * 60 * 1000,
         });
         if (!ipRate.ok) {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         const identifier = String(body?.identifier ?? "").trim().toLowerCase();
         if (identifier) {
             const identifierRate = consumeRateLimit({
-                key: `auth:login:request:identifier:${identifier}`,
+                key: `auth:forgot:request:identifier:${identifier}`,
                 limit: 6,
                 windowMs: 10 * 60 * 1000,
             });
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
             }
         }
 
-        const result = await requestLoginOtp({
+        const result = await requestForgotPasswordOtp({
             identifier: body?.identifier ?? "",
         });
 

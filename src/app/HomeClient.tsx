@@ -13,6 +13,7 @@ import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
 import InteractiveSection from "@/components/InteractiveSection";
 import FinalCTA from "@/components/FinalCTA";
+import MapSection from "@/components/MapSection";
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
       <Pricing />
       <Testimonials />
       <FinalCTA />
+      <MapSection />
       <Footer />
     </main>
   );

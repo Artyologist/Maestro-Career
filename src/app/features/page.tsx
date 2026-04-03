@@ -3,13 +3,21 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion, useTransform, useSpring, useMotionValue } from "framer-motion";
+<<<<<<< HEAD
 import { Cpu, Layout, Layers, Box, MousePointer2 } from "lucide-react";
+=======
+import { Cpu, Layout, Layers, Box, MousePointer2, type LucideIcon } from "lucide-react";
+>>>>>>> 4ba99881ecf3a893fcf84723ab34fbce0ada6681
 import React from "react";
 
 interface FeatureCardProps {
     title: string;
     desc: string;
+<<<<<<< HEAD
     icon: React.ElementType;
+=======
+    icon: LucideIcon;
+>>>>>>> 4ba99881ecf3a893fcf84723ab34fbce0ada6681
     color: string;
 }
 
@@ -21,7 +29,7 @@ const FeatureCard = ({ title, desc, icon: Icon, color }: FeatureCardProps) => {
     const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
     const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const rect = e.currentTarget.getBoundingClientRect();
         x.set((e.clientX - rect.left) / rect.width - 0.5);
         y.set((e.clientY - rect.top) / rect.height - 0.5);

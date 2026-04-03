@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Check, X, ChevronDown, Sparkles } from "lucide-react";
-import { PLANS, formatInr } from "@/data/plans";
+import { PLANS, formatInr, type Plan } from "@/data/plans";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -43,7 +43,7 @@ export default function Pricing() {
     );
 }
 
-function PricingCard({ plan, index }: { plan: any; index: number }) {
+function PricingCard({ plan, index }: { plan: Plan; index: number }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
@@ -123,7 +123,7 @@ function PricingCard({ plan, index }: { plan: any; index: number }) {
                             className="overflow-hidden"
                         >
                             <div className="pt-6 mt-6 border-t border-foreground/5 space-y-6">
-                                <FeatureList features={plan.extraFeatures} />
+                                <FeatureList features={plan.extraFeatures ?? []} />
                             </div>
                         </motion.div>
                     )}
@@ -159,7 +159,6 @@ function FeatureList({ features }: { features: string[] }) {
         <ul className="space-y-5">
             {features.map((feature, idx) => {
                 const isNotIncluded = feature.toLowerCase().includes("not included");
-                const isIncluded = feature.toLowerCase().includes("included");
 
                 return (
                     <li key={idx} className="flex items-start gap-4">

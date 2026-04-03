@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
     Play, X, Compass, Target, LineChart,
     BrainCircuit, Users, BookOpen, Brain, Briefcase,
@@ -312,7 +313,13 @@ export const VideoModalPlayer = () => {
                         className="group relative rounded-3xl overflow-hidden cursor-pointer bg-slate-800 aspect-video border border-slate-700 hover:border-slate-500 transition-colors"
                         onClick={() => setActiveVideo(v.id)}
                     >
-                        <img src={v.thumb} alt={v.title} className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-105" />
+                        <Image
+                            src={v.thumb}
+                            alt={v.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500 group-hover:scale-105"
+                        />
                         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
                             <div className="w-16 h-16 rounded-full bg-primary/90 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-primary/50">
                                 <Play className="w-6 h-6 ml-1" />
@@ -401,7 +408,13 @@ export const InfoSection = () => {
                     </div>
                 </div>
                 <div className="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl border border-white/20">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="Mentorship" className="absolute inset-0 w-full h-full object-cover" />
+                    <Image
+                        src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
+                        alt="Mentorship"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="absolute inset-0 w-full h-full object-cover"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent flex flex-col justify-end p-8 text-white">
                         <p className="font-bold text-xl">The science of human capability.</p>
                         <p className="text-blue-200 mt-2">Validated by global leading universities.</p>

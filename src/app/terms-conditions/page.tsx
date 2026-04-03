@@ -61,7 +61,7 @@ export default function TermsConditionsPage() {
                         <h2 className="text-xl font-semibold text-gray-900 mb-3">7. Updates to Terms</h2>
                         <p>
                             We may revise these Terms &amp; Conditions periodically. Continued use after updates indicates
-                            acceptance of the revised terms.
+                            acceptance of the revised terms. For questions, contact us at info@maestrocareer.com.
                         </p>
                     </section>
                 </div>

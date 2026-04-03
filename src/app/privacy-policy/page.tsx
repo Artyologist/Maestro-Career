@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
                     <section>
                         <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Contact</h2>
                         <p>
-                            For privacy-related questions, contact us at hello@maestrocareer.com.
+                            For privacy-related questions, contact us at info@maestrocareer.com.
                         </p>
                     </section>
                 </div>
