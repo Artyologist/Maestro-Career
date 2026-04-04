@@ -3,63 +3,274 @@
 @tailwind utilities;
 
 :root {
-  /* Vibrant Kinetic Light Theme */
-  --background: 240 20% 99%;
-  --foreground: 240 10% 4%;
-  --card: 0 0% 100%;
-  --card-foreground: 240 10% 4%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 4%;
+  /* Playful Kids Light Theme */
+  --background: 38 100% 84%; /* #FFE2AF - Soft highlight */
+  --foreground: 191 50% 20%; /* Deep teal for high readable contrast */
   
-  /* Primary Brand: Cyber Blue & Royal Violet Base */
-  --primary: 245 100% 60%;
+  --card: 0 0% 100%;
+  --card-foreground: 191 50% 20%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 191 50% 20%;
+  
+  /* Primary Tone: #3F9AAE */
+  --primary: 191 47% 46%;
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 240 10% 96%;
-  --secondary-foreground: 240 10% 4%;
+  /* Secondary Accent: #79C9C5 */
+  --secondary: 177 43% 63%;
+  --secondary-foreground: 191 50% 20%;
   
-  --muted: 240 5% 90%;
-  --muted-foreground: 240 5% 40%;
+  --muted: 38 100% 92%;
+  --muted-foreground: 191 30% 40%;
   
-  --accent: 245 100% 60%;
+  /* Vibrant Accent for CTAs: #F96E5B */
+  --accent: 7 93% 67%;
   --accent-foreground: 0 0% 100%;
   
-  --border: 240 10% 90%;
-  --input: 240 10% 90%;
-  --ring: 245 100% 60%;
-  --radius: 1rem;
+  --border: 191 47% 46%;
+  --input: 191 20% 85%;
+  --ring: 7 93% 67%;
+  --radius: 2rem; /* Kid friendly roundness */
 
-  /* Vibe Chart */
-  --vibe-blue: 210 100% 50%;
-  --vibe-purple: 270 100% 60%;
-  --vibe-pink: 330 100% 60%;
-  --vibe-emerald: 160 100% 45%;
+  /* Vibe Chart colors adapted for kids */
+  --vibe-blue: 191 47% 46%;
+  --vibe-purple: 270 80% 60%;
+  --vibe-pink: 330 80% 60%;
+  --vibe-emerald: 160 80% 45%;
 }
 
-.dark {
-  /* Vibrant Kinetic Dark Theme */
-  --background: 240 15% 3%;
-  --foreground: 0 0% 100%;
-  --card: 240 15% 5%;
-  --card-foreground: 0 0% 100%;
-  --popover: 240 15% 3%;
-  --popover-foreground: 0 0% 100%;
-  
-  --primary: 245 100% 65%;
+.dark,
+.dark[data-theme="kids"] {
+  /* Playful Kids Dark Theme (Deep Sea Edition) */
+  --background: 191 50% 10%; 
+  --foreground: 38 100% 90%; 
+  --card: 191 50% 15%;
+  --card-foreground: 38 100% 90%;
+  --popover: 191 50% 15%;
+  --popover-foreground: 38 100% 90%;
+  --primary: 191 47% 56%; 
   --primary-foreground: 0 0% 100%;
-  
-  --secondary: 240 15% 8%;
-  --secondary-foreground: 0 0% 100%;
-  
-  --muted: 240 15% 12%;
-  --muted-foreground: 240 5% 60%;
-  
-  --accent: 245 100% 65%;
+  --secondary: 177 43% 63%;
+  --secondary-foreground: 191 50% 10%;
+  --muted: 191 40% 25%;
+  --muted-foreground: 177 30% 70%;
+  --accent: 7 93% 67%;
   --accent-foreground: 0 0% 100%;
-  
-  --border: 240 15% 12%;
-  --input: 240 15% 12%;
-  --ring: 245 100% 65%;
+  --border: 191 40% 25%;
+  --input: 191 40% 25%;
+  --ring: 7 93% 67%;
+  --radius: 2rem;
+}
+
+/* THEME: CYBER (NEON VIBE) */
+:root[data-theme="cyber"] {
+  --background: 260 40% 98%; 
+  --foreground: 260 100% 12%; /* Deep Purple */
+  --card: 0 0% 100%;
+  --card-foreground: 260 100% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 260 100% 12%;
+  --primary: 260 100% 42%; /* #4700D8 */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 278 100% 47%; /* #9900F0 */
+  --secondary-foreground: 0 0% 100%;
+  --muted: 260 40% 92%;
+  --muted-foreground: 260 20% 40%;
+  --accent: 314 100% 49%; /* #F900BF */
+  --accent-foreground: 0 0% 100%;
+  --border: 260 100% 42% / 0.15;
+  --input: 260 40% 90%;
+  --ring: 314 100% 49%;
+  --radius: 0.75rem;
+}
+.dark[data-theme="cyber"] {
+  --background: 260 100% 6%; /* Deep #4700D8 variant */
+  --foreground: 314 100% 95%; 
+  --card: 260 100% 10%;
+  --card-foreground: 314 100% 95%;
+  --popover: 260 100% 10%;
+  --popover-foreground: 314 100% 95%;
+  --primary: 314 100% 49%; /* #F900BF Pink */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 278 100% 47%; /* #9900F0 Violet */
+  --secondary-foreground: 0 0% 100%;
+  --muted: 260 50% 15%;
+  --muted-foreground: 314 20% 70%;
+  --accent: 337 100% 76%; /* #FF85B3 Soft Pink */
+  --accent-foreground: 260 100% 6%;
+  --border: 314 100% 49% / 0.3;
+  --input: 260 50% 15%;
+  --ring: 314 100% 49%;
+  --radius: 0.75rem;
+}
+
+/* THEME: MINIMAL */
+:root[data-theme="minimal"] {
+  --background: 210 20% 98%; 
+  --foreground: 210 11% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 11% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 11% 15%;
+  --primary: 210 11% 15%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 10% 90%;
+  --secondary-foreground: 210 11% 15%;
+  --muted: 210 10% 90%;
+  --muted-foreground: 210 11% 40%;
+  --accent: 210 11% 30%;
+  --accent-foreground: 0 0% 100%;
+  --border: 210 10% 85%;
+  --input: 210 10% 85%;
+  --ring: 210 11% 15%;
+  --radius: 0.25rem;
+}
+.dark[data-theme="minimal"] {
+  --background: 0 0% 7%;
+  --foreground: 0 0% 90%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 90%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 90%;
+  --primary: 0 0% 90%; 
+  --primary-foreground: 0 0% 7%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 90%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 0 0% 20%;
+  --accent-foreground: 0 0% 90%;
+  --border: 0 0% 20%;
+  --input: 0 0% 15%;
+  --ring: 0 0% 90%;
+  --radius: 0.25rem;
+}
+
+/* THEME: SUNSET */
+:root[data-theme="sunset"] {
+  --background: 30 100% 92%; 
+  --foreground: 10 50% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 10 50% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 10 50% 20%;
+  --primary: 22 96% 49%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 350 80% 60%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 30 50% 85%;
+  --muted-foreground: 10 30% 40%;
+  --accent: 350 80% 60%;
+  --accent-foreground: 0 0% 100%;
+  --border: 22 96% 49%;
+  --input: 30 50% 85%;
+  --ring: 22 96% 49%;
+  --radius: 1rem;
+}
+.dark[data-theme="sunset"] {
+  --background: 10 45% 12%;
+  --foreground: 30 100% 90%;
+  --card: 10 45% 16%;
+  --card-foreground: 30 100% 90%;
+  --popover: 10 45% 16%;
+  --popover-foreground: 30 100% 90%;
+  --primary: 22 96% 55%; 
+  --primary-foreground: 0 0% 100%;
+  --secondary: 350 80% 55%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 10 30% 25%;
+  --muted-foreground: 30 50% 60%;
+  --accent: 350 80% 55%;
+  --accent-foreground: 0 0% 100%;
+  --border: 10 40% 30%;
+  --input: 10 30% 25%;
+  --ring: 22 96% 55%;
+  --radius: 1rem;
+}
+
+/* THEME: EMERALD (NATURAL) */
+:root[data-theme="emerald"] {
+  --background: 41 100% 96%; /* #FFF8EC */
+  --foreground: 93 40% 15%; 
+  --card: 0 0% 100%;
+  --card-foreground: 93 40% 15%;
+  --popover: 41 100% 98%;
+  --popover-foreground: 93 40% 15%;
+  --primary: 93 25% 34%; /* #546B41 */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 82 24% 58%; /* #99AD7A */
+  --secondary-foreground: 93 40% 15%;
+  --muted: 41 60% 92%;
+  --muted-foreground: 93 20% 40%;
+  --accent: 41 30% 77%; /* #DCCCAC */
+  --accent-foreground: 93 40% 15%;
+  --border: 93 25% 34% / 0.15;
+  --input: 41 60% 92%;
+  --ring: 93 25% 34%;
+  --radius: 1.5rem;
+}
+.dark[data-theme="emerald"] {
+  --background: 93 25% 25%; /* Deep #546B41 variant */
+  --foreground: 41 100% 96%; /* #FFF8EC */
+  --card: 93 25% 20%;
+  --card-foreground: 41 100% 96%;
+  --popover: 93 25% 20%;
+  --popover-foreground: 41 100% 96%;
+  --primary: 82 24% 58%; /* #99AD7A Pops in dark */
+  --primary-foreground: 93 25% 10%;
+  --secondary: 41 30% 77%; /* #DCCCAC */
+  --secondary-foreground: 93 25% 10%;
+  --muted: 93 25% 15%;
+  --muted-foreground: 82 20% 70%;
+  --accent: 41 100% 96%; /* #FFF8EC Highlights */
+  --accent-foreground: 93 25% 10%;
+  --border: 82 24% 58% / 0.25;
+  --input: 93 25% 15%;
+  --ring: 82 24% 58%;
+  --radius: 1.5rem;
+}
+
+/* THEME: OCEAN */
+:root[data-theme="ocean"] {
+  --background: 0 0% 93%; 
+  --foreground: 216 18% 16%;
+  --card: 0 0% 98%;
+  --card-foreground: 216 18% 16%;
+  --popover: 0 0% 98%;
+  --popover-foreground: 216 18% 16%;
+  --primary: 183 100% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 10% 85%;
+  --secondary-foreground: 216 18% 16%;
+  --muted: 0 0% 85%;
+  --muted-foreground: 216 18% 40%;
+  --accent: 183 100% 35%;
+  --accent-foreground: 0 0% 100%;
+  --border: 217 10% 80%;
+  --input: 217 10% 85%;
+  --ring: 183 100% 35%;
+  --radius: 1rem;
+}
+.dark[data-theme="ocean"] {
+  --background: 216 18% 16%;
+  --foreground: 0 0% 93%;
+  --card: 217 10% 25%;
+  --card-foreground: 0 0% 93%;
+  --popover: 217 10% 25%;
+  --popover-foreground: 0 0% 93%;
+  --primary: 183 100% 35%; 
+  --primary-foreground: 216 18% 16%;
+  --secondary: 217 10% 20%;
+  --secondary-foreground: 0 0% 93%;
+  --muted: 217 10% 20%;
+  --muted-foreground: 0 0% 70%;
+  --accent: 183 100% 35%;
+  --accent-foreground: 216 18% 16%;
+  --border: 217 10% 35%;
+  --input: 217 10% 20%;
+  --ring: 183 100% 35%;
+  --radius: 1rem;
 }
 
 html {
@@ -151,4 +362,13 @@ select {
 input::placeholder,
 textarea::placeholder {
   @apply opacity-30 font-medium;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 35s linear infinite;
 }

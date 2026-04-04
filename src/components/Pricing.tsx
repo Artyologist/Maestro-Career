@@ -14,22 +14,13 @@ export default function Pricing() {
 
             <div className="container mx-auto px-6 lg:px-12 relative z-10">
                 <div className="max-w-4xl mx-auto text-center mb-24">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="inline-flex items-center px-6 py-2 bg-foreground text-background mb-8 text-[10px] font-black uppercase tracking-[0.4em]"
-                    >
-                        <Sparkles className="w-3.5 h-3.5 mr-3 text-primary" />
-                        <span>Investment.Strategy</span>
-                    </motion.div>
 
                     <h2 className="text-5xl md:text-8xl font-black text-foreground tracking-tightest leading-[0.85] mb-10 uppercase">
-                        Precision <br />
-                        <span className="text-primary italic text-6xl md:text-9xl">Alignment.</span>
+                        Simple <br />
+                        <span className="text-primary italic text-6xl md:text-9xl">Pricing.</span>
                     </h2>
                     <p className="text-lg md:text-xl text-foreground/40 font-bold max-w-2xl mx-auto uppercase tracking-tighter leading-tight">
-                        Select the architecture for your next career phase. Results-driven alignment with zero guesswork.
+                        Choose the right plan for your career journey. Clear paths, zero hidden costs, and dedicated expert guidance.
                     </p>
                 </div>
 
@@ -48,22 +39,13 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
     const [isSelected, setIsSelected] = useState(false);
 
     const getAuraColor = (color: string) => {
-        switch (color) {
-            case 'blue': return 'group-hover:shadow-[0_0_80px_-10px_rgba(59,130,246,0.5)]';
-            case 'purple': return 'group-hover:shadow-[0_0_80px_-10px_rgba(139,92,246,0.5)]';
-            case 'cyan': return 'group-hover:shadow-[0_0_80px_-10px_rgba(6,182,212,0.5)]';
-            default: return '';
-        }
+        // Use theme-aware shadows instead of hardcoded colors
+        return 'group-hover:shadow-[0_0_80px_-10px_hsla(var(--primary),0.3)] hover:border-primary/50';
     };
 
-    const getSelectedGlow = (color: string) => {
-        if (!isSelected) return 'border-foreground/5';
-        switch (color) {
-            case 'blue': return 'border-blue-500 shadow-[0_0_40px_rgba(59,130,246,0.2)] bg-blue-500/5';
-            case 'purple': return 'border-purple-500 shadow-[0_0_40px_rgba(139,92,246,0.2)] bg-purple-500/5';
-            case 'cyan': return 'border-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.2)] bg-cyan-500/5';
-            default: return 'border-primary';
-        }
+    const getSelectedStyle = () => {
+        if (!isSelected) return 'border-border/40';
+        return 'border-primary shadow-[0_0_40px_hsla(var(--primary),0.1)] bg-primary/5 ring-2 ring-primary/20';
     };
 
     return (
@@ -74,11 +56,11 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
             onClick={() => setIsSelected(!isSelected)}
-            className={`group relative rounded-[3rem] p-10 xl:p-14 border transition-all duration-500 flex flex-col bg-secondary/10 dark:bg-white/[0.02] backdrop-blur-xl cursor-pointer min-h-[800px] lg:min-h-[950px] ${getAuraColor(plan.color)} ${getSelectedGlow(plan.color)} ${plan.mostPopular && !isSelected ? 'ring-1 ring-primary/20' : ''}`}
+            className={`group relative rounded-[3rem] p-10 xl:p-14 border transition-all duration-500 flex flex-col bg-card/10 backdrop-blur-xl cursor-pointer min-h-[800px] lg:min-h-[950px] ${getAuraColor(plan.color)} ${getSelectedStyle()} ${plan.mostPopular && !isSelected ? 'ring-1 ring-primary/10' : ''}`}
         >
             {plan.mostPopular && (
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full shadow-2xl z-30 ring-4 ring-background">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-white leading-none whitespace-nowrap">
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-primary text-primary-foreground rounded-full shadow-2xl z-30 ring-4 ring-background animate-bounce-subtle">
+                    <p className="text-[10px] font-black uppercase tracking-widest leading-none whitespace-nowrap">
                         ⭐ Most Popular
                     </p>
                 </div>
@@ -98,17 +80,6 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">/one-time</span>
                 </div>
             </div>
-
-            <Link
-                href={`/checkout/${plan.id}`}
-                onClick={(e) => e.stopPropagation()}
-                className={`w-full py-6 rounded-2xl flex items-center justify-center text-[11px] font-black uppercase tracking-[0.4em] transition-all duration-300 border mb-12 ${plan.mostPopular
-                    ? 'bg-primary text-white border-transparent hover:scale-[1.02] shadow-xl shadow-primary/30'
-                    : 'bg-foreground text-background border-transparent hover:scale-[1.02]'
-                    }`}
-            >
-                Get Started
-            </Link>
 
             <div className="space-y-6 flex-1">
                 <FeatureList features={plan.features} />
@@ -130,25 +101,38 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
                 </AnimatePresence>
             </div>
 
-            <button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setIsExpanded(!isExpanded);
-                }}
-                className="mt-10 flex items-center justify-center gap-3 w-full py-5 rounded-2xl border border-foreground/5 bg-foreground/[0.02] hover:bg-foreground/[0.05] transition-all group/btn"
-                aria-expanded={isExpanded}
-            >
-                <span className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground/40 group-hover/btn:text-foreground transition-colors">
-                    {isExpanded ? "Collapse View" : "See Details"}
-                </span>
-                <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                    <ChevronDown className="w-4 h-4 text-foreground/40 group-hover/btn:text-foreground" />
-                </div>
-            </button>
+            <div className="mt-12 space-y-4">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsExpanded(!isExpanded);
+                    }}
+                    className="flex items-center justify-center gap-3 w-full py-5 rounded-2xl border border-border/50 bg-foreground/[0.02] hover:bg-foreground/[0.05] transition-all group/btn"
+                    aria-expanded={isExpanded}
+                >
+                    <span className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground/40 group-hover/btn:text-foreground transition-colors">
+                        {isExpanded ? "Collapse Features" : "View All Features"}
+                    </span>
+                    <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
+                        <ChevronDown className="w-4 h-4 text-foreground/40 group-hover/btn:text-foreground" />
+                    </div>
+                </button>
 
-            {/* Kinetic Decoration from early version */}
+                <Link
+                    href={`/checkout/${plan.id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`w-full py-6 rounded-2xl flex items-center justify-center text-[11px] font-black uppercase tracking-[0.4em] transition-all duration-300 border ${plan.mostPopular
+                        ? 'bg-primary text-primary-foreground border-transparent hover:scale-[1.02] shadow-xl shadow-primary/30'
+                        : 'bg-foreground text-background border-transparent hover:scale-[1.02] hover:bg-primary hover:text-primary-foreground'
+                        }`}
+                >
+                    Get Started
+                </Link>
+            </div>
+
+            {/* Kinetic Decoration */}
             <div className={`absolute bottom-6 right-10 opacity-[0.03] transition-all duration-700 pointer-events-none ${plan.mostPopular ? 'opacity-[0.07] scale-110' : ''}`}>
-                <h4 className="text-9xl font-black leading-none select-none">0{index + 1}</h4>
+                <h4 className="text-9xl font-black leading-none select-none text-primary">0{index + 1}</h4>
             </div>
         </motion.div>
     );

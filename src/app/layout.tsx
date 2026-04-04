@@ -21,6 +21,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                let theme = localStorage.getItem('color-theme');
+                if (!theme) theme = 'kids';
+                document.documentElement.setAttribute('data-theme', theme);
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased selection:bg-primary selection:text-white`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <MainLayout>

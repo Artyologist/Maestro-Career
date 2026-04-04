@@ -13,7 +13,6 @@ import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
 import InteractiveSection from "@/components/InteractiveSection";
 import FinalCTA from "@/components/FinalCTA";
-import MapSection from "@/components/MapSection";
 
 export default function Home() {
   return (
@@ -22,15 +21,15 @@ export default function Home() {
       <AnimatedProgress />
       <Header />
       <Hero />
-      <ProblemSection />
-      <SolutionSection />
-      <CareerPath />
       <InteractiveSection />
-      <OutcomeSection />
-      <Pricing />
+      {/* <ProblemSection /> */}
+      {/* <SolutionSection /> */}
+      <CareerPath />
       <Testimonials />
+      {/* <OutcomeSection /> */}
+      <Pricing />
+
       <FinalCTA />
-      <MapSection />
       <Footer />
     </main>
   );

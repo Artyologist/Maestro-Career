@@ -57,17 +57,9 @@ export default function InteractiveSection() {
     <section id="interactive" className="relative py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-24 max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center px-4 py-2 space-x-2 rounded-full bg-primary/5 text-primary border border-primary/10 mb-8"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-black uppercase tracking-widest">The Playroom</span>
-          </motion.div>
           <h2 className="text-6xl md:text-8xl font-black text-foreground tracking-tighter leading-none mb-8">
             Experience <br />
-            <span className="text-gradient">The Un-Test.</span>
+            <span className="text-primary">The Un-Test.</span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto">
             Traditional tests are boring. Our journey is a tactile, 3D experience designed for the way you naturally think.
@@ -76,17 +68,19 @@ export default function InteractiveSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
 
-          {/* Tilt Card 1: Gamified Reveal */}
+          {/* Card 1: Our Objective */}
           <TiltCard className="h-[450px] bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 group">
-            <div className="h-full w-full glass p-10 flex flex-col justify-between">
+            <div className="h-full w-full p-10 flex flex-col justify-between bg-card/50 backdrop-blur-md rounded-[3rem]">
               <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center">
                 <Gamepad2 className="w-8 h-8 text-primary" />
               </div>
-              <div className="space-y-4">
-                <h3 className="text-3xl font-black text-foreground">Interactive DNA</h3>
-                <p className="text-lg text-muted-foreground font-medium">
-                  Watch your results evolve in real-time as you complete gamified modules.
-                </p>
+              <div className="space-y-3">
+                <span className="text-xs font-black uppercase tracking-widest text-primary">What we do</span>
+                <h3 className="text-3xl font-black text-foreground">Our Objective</h3>
+                <div className="text-base text-muted-foreground font-medium space-y-3 pt-2">
+                  <p>• Finalize your career with self-assessment</p>
+                  <p>• Subject matter expertise in career coaching</p>
+                </div>
               </div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 <MousePointer2 className="w-20 h-20 text-primary/30 rotate-12" />
@@ -94,46 +88,39 @@ export default function InteractiveSection() {
             </div>
           </TiltCard>
 
-          {/* Tilt Card 2: 3D Visualization */}
-          <TiltCard className="h-[450px] bg-gradient-to-br from-accent-purple/10 to-transparent border border-accent-purple/20">
-            <div className="h-full w-full glass p-10 flex flex-col justify-between">
-              <div className="w-16 h-16 rounded-2xl bg-accent-purple/20 flex items-center justify-center">
-                <Brain className="w-8 h-8 text-accent-purple" />
+          {/* Card 2: Our Schedule */}
+          <TiltCard className="h-[450px] bg-gradient-to-br from-secondary/20 to-transparent border border-secondary/30">
+            <div className="h-full w-full p-10 flex flex-col justify-between bg-card/50 backdrop-blur-md rounded-[3rem]">
+              <div className="w-16 h-16 rounded-2xl bg-secondary/30 flex items-center justify-center">
+                <Brain className="w-8 h-8 text-secondary-foreground" />
               </div>
-              <div className="space-y-4">
-                <h3 className="text-3xl font-black text-foreground">Spatial Analysis</h3>
-                <p className="text-lg text-muted-foreground font-medium">
-                  We measure cognitive speed, logic, and creativity through spatial puzzles.
-                </p>
+              <div className="space-y-3">
+                <span className="text-xs font-black uppercase tracking-widest text-secondary-foreground">When we do</span>
+                <h3 className="text-3xl font-black text-foreground">Our Schedule</h3>
+                <div className="text-base text-muted-foreground font-medium space-y-3 pt-2">
+                  <p>• As soon as you become our subscriber</p>
+                  <p>• We identify your gaps and help in skill development</p>
+                </div>
               </div>
-              <div className="absolute inset-0 bg-accent-purple/5 -z-10 blur-3xl rounded-full" />
+              <div className="absolute inset-0 bg-secondary/5 -z-10 blur-3xl rounded-full" />
             </div>
           </TiltCard>
 
-          {/* Tilt Card 3: Micro-Quiz Preview */}
-          <TiltCard className="h-[450px] bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/20 md:hidden lg:block">
-            <div className="h-full w-full glass p-10 flex flex-col justify-between overflow-hidden">
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-black uppercase tracking-widest text-orange-500">Quick Check</span>
-                  <div className="flex space-x-1">
-                    {[1, 2, 3, 4].map(i => <div key={i} className="w-6 h-1 rounded-full bg-orange-500/20" />)}
-                  </div>
-                </div>
-                <h3 className="text-3xl font-black text-foreground leading-tight">What drives you most?</h3>
-                <div className="space-y-3">
-                  {["Solving Complex Puzzles", "Leading Dynamic Teams", "Creating Visual Art"].map((opt, i) => (
-                    <motion.div
-                      key={i}
-                      whileHover={{ x: 10 }}
-                      className="p-4 rounded-xl bg-background/50 border border-orange-500/10 text-sm font-bold cursor-pointer hover:border-orange-500/40 transition-colors"
-                    >
-                      {opt}
-                    </motion.div>
-                  ))}
+          {/* Card 3: Our Activity */}
+          <TiltCard className="h-[450px] bg-gradient-to-br from-accent/10 to-transparent border border-accent/20">
+            <div className="h-full w-full p-10 flex flex-col justify-between bg-card/50 backdrop-blur-md rounded-[3rem]">
+              <div className="w-16 h-16 rounded-2xl bg-accent/20 flex items-center justify-center">
+                <Sparkles className="w-8 h-8 text-accent" />
+              </div>
+              <div className="space-y-3">
+                <span className="text-xs font-black uppercase tracking-widest text-accent">How we do</span>
+                <h3 className="text-3xl font-black text-foreground leading-tight">Our Activity</h3>
+                <div className="text-base text-muted-foreground font-medium space-y-3 pt-2">
+                  <p>• Amplify your professional journey by staying updated with the latest trends and technologies</p>
+                  <p>• Learn life skills and domain expertise through our guidance</p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground font-black uppercase tracking-widest mt-4">Demo Active</p>
+              <div className="absolute inset-0 bg-accent/5 -z-10 blur-3xl rounded-full" />
             </div>
           </TiltCard>
 

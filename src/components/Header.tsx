@@ -8,6 +8,8 @@ import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
+import ThemeChanger from "./ThemeChanger";
+
 interface MeResponse {
     success: boolean;
     data?: {
@@ -28,6 +30,8 @@ export default function Header() {
     const [authLoading, setAuthLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+    const [isThemeChangerOpen, setIsThemeChangerOpen] = useState(false);
     const [profileName, setProfileName] = useState("");
     const [profileEmail, setProfileEmail] = useState("");
     const [profileMobile, setProfileMobile] = useState("");
@@ -38,6 +42,7 @@ export default function Header() {
     const pathname = usePathname();
     const isHome = pathname === "/";
     const profileMenuRef = useRef<HTMLDivElement | null>(null);
+    const moreMenuRef = useRef<HTMLDivElement | null>(null);
 
     // Scroll Progress Logic
     const { scrollYProgress } = useScroll();
@@ -103,12 +108,11 @@ export default function Header() {
 
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
-            if (!profileMenuRef.current) {
-                return;
-            }
-
-            if (!profileMenuRef.current.contains(event.target as Node)) {
+            if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
                 setIsProfileMenuOpen(false);
+            }
+            if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+                setIsMoreMenuOpen(false);
             }
         };
 
@@ -154,74 +158,104 @@ export default function Header() {
     if (!mounted) return null;
 
     return (
-        <header className={`sticky top-0 z-50 w-full transition-all duration-300 bg-background/80 backdrop-blur-md border-b border-foreground/5 h-20 flex items-center`}>
+        <header className={`sticky top-0 z-50 w-full transition-all duration-300 bg-background border-b-[3px] border-primary/20 h-28 flex items-center shadow-sm`}>
             {/* Scroll Progress Bar */}
             <motion.div
-                className="fixed top-0 left-0 right-0 h-1 bg-foreground origin-left z-[60]"
+                className="fixed top-0 left-0 right-0 h-2 bg-primary origin-left z-[60]"
                 style={{ scaleX }}
             />
 
             <div className="container mx-auto px-6 lg:px-12">
                 <div className="flex items-center justify-between">
                     <div className="flex-shrink-0">
-                        <Link href="/" className="flex items-center gap-3 group">
-                            <div className="relative w-12 h-12 overflow-hidden flex items-center justify-center transition-all bg-white dark:bg-transparent rounded-lg">
+                        <Link href="/" className="flex items-center gap-4 group">
+                            <div className="relative w-16 h-16 overflow-hidden flex items-center justify-center transition-all bg-white dark:bg-transparent rounded-2xl shadow-sm border-2 border-primary/10">
                                 <Image
                                     src="/maestro_logo_only.png"
                                     alt="Logo"
-                                    width={32}
-                                    height={32}
+                                    width={40}
+                                    height={40}
                                     priority
-                                    style={{ width: "32px", height: "auto" }}
-                                    className="object-contain transition-transform duration-500 group-hover:scale-110"
+                                    style={{ width: "40px", height: "auto" }}
+                                    className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
                                 />
                             </div>
-                            <span className="text-xl font-black tracking-tightest uppercase text-foreground leading-none">
+                            <span className="text-3xl font-black tracking-tightest uppercase text-primary leading-none">
                                 Maestro <br />
-                                <span className="text-sm font-bold opacity-30 text-foreground">Career</span>
+                                <span className="text-lg font-bold text-secondary-foreground">Career</span>
                             </span>
                         </Link>
-                    </div>
+                     </div>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden md:flex items-center space-x-10">
+                    <nav className="hidden md:flex items-center space-x-8">
                         {navItems.map((item) => (
                             <Link
                                 key={item.name}
                                 href={item.href}
                                 onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-[13px] font-black uppercase tracking-widest text-foreground/40 hover:text-foreground transition-all"
+                                className="text-base font-black uppercase tracking-widest text-foreground/70 hover:text-primary transition-all hover:-translate-y-1"
                             >
                                 {item.name}
                             </Link>
                         ))}
 
-                        <div className="h-6 w-px bg-foreground/10" />
+                        <div className="relative" ref={moreMenuRef}>
+                            <button
+                                onClick={() => setIsMoreMenuOpen((prev) => !prev)}
+                                className="text-base font-black uppercase tracking-widest text-foreground/70 hover:text-primary transition-all hover:-translate-y-1 flex items-center gap-1"
+                            >
+                                More <span className="text-xs">▼</span>
+                            </button>
+                            <AnimatePresence>
+                                {isMoreMenuOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        className="absolute right-0 top-full mt-4 w-56 rounded-2xl border-4 border-primary/20 bg-background p-2 shadow-2xl origin-top-right overflow-hidden"
+                                    >
+                                        <button
+                                            onClick={() => {
+                                                setIsMoreMenuOpen(false);
+                                                setIsThemeChangerOpen(true);
+                                            }}
+                                            className="w-full text-left px-4 py-3 rounded-xl hover:bg-primary hover:text-white transition-colors text-sm font-black uppercase tracking-widest"
+                                        >
+                                            Theme Changer 🎨
+                                        </button>
+                                        {/* Other potential links here */}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
+                        <div className="h-8 w-[3px] rounded-full bg-primary/20 mx-2" />
 
                         {/* Theme Toggle */}
                         <motion.button
-                            whileTap={{ scale: 0.95 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            className="p-2 text-foreground/60 hover:text-foreground transition-colors"
+                            className="p-3 bg-secondary/30 rounded-full text-foreground hover:bg-secondary/60 hover:text-primary transition-colors"
                         >
-                            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                            {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
                         </motion.button>
 
                         {!authLoading && !isAuthenticated && (
                             <Link
                                 href="/auth"
-                                className="flex items-center gap-2 px-6 py-3 bg-foreground text-background text-xs font-black uppercase tracking-widest hover:opacity-90 transition-opacity"
+                                className="flex items-center gap-2 px-8 py-4 bg-accent text-white text-sm font-black uppercase tracking-widest rounded-full hover:scale-105 hover:shadow-lg hover:shadow-accent/40 transition-all border-b-4 border-black/20 active:border-b-0 active:translate-y-1"
                             >
                                 Get Started
-                                <ArrowRight size={14} />
+                                <ArrowRight size={18} />
                             </Link>
                         )}
 
                         {!authLoading && isAuthenticated && (
-                            <div className="flex items-center gap-3" ref={profileMenuRef}>
+                            <div className="flex items-center gap-4" ref={profileMenuRef}>
                                 <Link
                                     href="/dashboard"
-                                    className="px-5 py-3 bg-foreground text-background text-xs font-black uppercase tracking-widest hover:opacity-90 transition-opacity"
+                                    className="px-6 py-4 bg-primary text-white text-sm font-black uppercase tracking-widest rounded-full hover:scale-105 hover:shadow-lg transition-all border-b-4 border-black/20 active:border-b-0 active:translate-y-1"
                                 >
                                     Dashboard
                                 </Link>
@@ -230,7 +264,7 @@ export default function Header() {
                                     aria-label="Open profile"
                                     title="Open profile"
                                     onClick={() => setIsProfileMenuOpen((prev) => !prev)}
-                                    className="h-10 w-10 rounded-full border border-foreground/20 text-foreground flex items-center justify-center text-sm font-black"
+                                    className="h-14 w-14 rounded-full bg-accent text-white border-b-4 border-black/20 flex items-center justify-center text-xl font-black hover:scale-105 transition-transform active:border-b-0 active:translate-y-1"
                                 >
                                     {profileInitial}
                                 </button>
@@ -241,29 +275,29 @@ export default function Header() {
                                             initial={{ opacity: 0, y: 8, scale: 0.98 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                                            className="absolute right-12 top-[76px] w-72 rounded-2xl border border-foreground/10 bg-background p-4 shadow-2xl"
+                                            className="absolute right-12 top-[90px] w-72 rounded-[2rem] border-4 border-primary/20 bg-background p-5 shadow-2xl"
                                         >
-                                            <p className="text-sm font-black text-foreground">{profileName || "User"}</p>
-                                            <p className="mt-1 text-xs text-foreground/60">{profileEmail}</p>
+                                            <p className="text-lg font-black text-foreground">{profileName || "User"}</p>
+                                            <p className="mt-1 text-sm text-foreground/60 font-bold">{profileEmail}</p>
 
-                                            <div className="mt-4 space-y-2 rounded-xl border border-foreground/10 p-3 text-xs text-foreground/80">
-                                                <p><span className="font-semibold">Mobile:</span> {profileMobile}</p>
-                                                <p><span className="font-semibold">User Type:</span> {profileType}</p>
-                                                <p><span className="font-semibold">City:</span> {profileCity}</p>
+                                            <div className="mt-5 space-y-3 rounded-2xl border-2 border-primary/10 bg-white/50 p-4 text-sm text-foreground/80">
+                                                <p><span className="font-black text-primary">Mobile:</span> {profileMobile}</p>
+                                                <p><span className="font-black text-primary">Type:</span> {profileType}</p>
+                                                <p><span className="font-black text-primary">City:</span> {profileCity}</p>
                                             </div>
 
-                                            <div className="mt-4 grid gap-2">
+                                            <div className="mt-5 grid gap-3">
                                                 <Link
                                                     href="/dashboard"
                                                     onClick={() => setIsProfileMenuOpen(false)}
-                                                    className="w-full rounded-lg border border-foreground/15 px-3 py-2 text-center text-xs font-bold uppercase tracking-wide text-foreground hover:bg-foreground/5"
+                                                    className="w-full rounded-xl border-2 border-primary/20 px-4 py-3 text-center text-sm font-black uppercase tracking-widest text-primary hover:bg-primary/10 transition-colors"
                                                 >
                                                     Open Profile
                                                 </Link>
                                                 <button
                                                     type="button"
                                                     onClick={handleLogout}
-                                                    className="w-full rounded-lg bg-red-600 px-3 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-red-700"
+                                                    className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-black uppercase tracking-widest text-white hover:bg-red-500 hover:scale-105 transition-all border-b-4 border-black/20 active:border-b-0 active:translate-y-1"
                                                 >
                                                     Logout
                                                 </button>
@@ -356,6 +390,12 @@ export default function Header() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Theme Selector Modal */}
+            <ThemeChanger 
+                isOpen={isThemeChangerOpen} 
+                onClose={() => setIsThemeChangerOpen(false)} 
+            />
         </header>
     );
 }

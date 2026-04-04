@@ -15,32 +15,32 @@ export default function HowItWorks() {
 
   const steps = [
     {
-      title: "Take The Deep-Dive",
-      desc: "An immersive 45-minute psychometric journey that goes beyond superficial interests.",
+      title: "Discover Your Strengths",
+      desc: "We start by understanding what you're naturally good at through simple, engaging assessments, not just boring tests.",
       icon: ClipboardList,
       color: "from-blue-500 to-cyan-400",
-      detail: "Phase 01: Assessment"
+      detail: "Step 01: Self-Discovery"
     },
     {
-      title: "Decode Your DNA",
-      desc: "Our engine analyzes cognitive patterns, value systems, and hidden potentials.",
+      title: "Identify The Gaps",
+      desc: "Next, we pinpoint exactly what skills you're currently missing to reach your target role in today's job market.",
       icon: BrainCircuit,
       color: "from-purple-600 to-blue-500",
-      detail: "Phase 02: Processing"
+      detail: "Step 02: Skill Mapping"
     },
     {
-      title: "Get The Roadmap",
-      desc: "Receive a personalized, data-driven report with direct industry alignments.",
+      title: "Build Your Profile",
+      desc: "Work directly with our career coaches to polish your resume, improve interview skills, and build a standout portfolio.",
       icon: Lightbulb,
       color: "from-orange-500 to-amber-400",
-      detail: "Phase 03: Insights"
+      detail: "Step 03: Preparation"
     },
     {
-      title: "Launch Future",
-      desc: "Connect with mentors and actionable steps to start your new professional path.",
+      title: "Connect & Grow",
+      desc: "Finally, we connect you with actionable opportunities and industry mentors so you can officially kickstart your career journey.",
       icon: Rocket,
       color: "from-emerald-500 to-green-400",
-      detail: "Phase 04: Ignition"
+      detail: "Step 04: Real World"
     }
   ];
 
@@ -52,26 +52,30 @@ export default function HowItWorks() {
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="mb-24 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center px-4 py-2 space-x-2 rounded-full bg-primary/5 text-primary border border-primary/10 mb-8"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span className="text-sm font-black uppercase tracking-widest">The Blueprint</span>
-            </motion.div>
+
             <h2 className="text-6xl md:text-8xl font-black text-foreground tracking-tighter leading-none mb-8">
               How It <span className="text-gradient">Flows.</span>
             </h2>
           </div>
 
           <div className="relative">
-            {/* Main Vertical/Mobile Line */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-border rounded-full lg:block hidden">
-              <motion.div
-                style={{ scaleY: smoothProgress, originY: 0 }}
-                className="w-full h-full bg-gradient-to-b from-primary via-accent-purple to-accent-orange"
-              />
+            {/* Winding Road Path SVG for Desktop */}
+            <div className="absolute inset-0 lg:block hidden pointer-events-none -z-10 overflow-visible">
+              {/* Subtle background track */}
+              <svg className="w-full h-full opacity-30" preserveAspectRatio="none" viewBox="0 0 100 100" fill="none">
+                <path
+                  d="M 50,12.5 C 75,12.5 75,37.5 50,37.5 C 25,37.5 25,62.5 50,62.5 C 75,62.5 75,87.5 50,87.5"
+                  stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-primary/40" vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+              {/* Animated glowing path overlay tracked to scroll progress */}
+              <svg className="absolute top-0 left-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100" fill="none">
+                <motion.path
+                  style={{ pathLength: smoothProgress }}
+                  d="M 50,12.5 C 75,12.5 75,37.5 50,37.5 C 25,37.5 25,62.5 50,62.5 C 75,62.5 75,87.5 50,87.5"
+                  stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-primary drop-shadow-[0_0_12px_rgba(var(--primary),0.8)]" vectorEffect="non-scaling-stroke"
+                />
+              </svg>
             </div>
 
             <div className="space-y-32">

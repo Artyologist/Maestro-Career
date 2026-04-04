@@ -20,22 +20,14 @@ export default function FinalCTA() {
 
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-24">
-          
+
           {/* Left: Narrative Message */}
           <div className="flex-1 space-y-12">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center px-6 py-2 bg-foreground text-background"
-            >
-              <span className="text-[10px] font-black uppercase tracking-[0.4em]">SYSTEM.START</span>
-            </motion.div>
-            
             <h2 className="text-7xl md:text-9xl font-black text-foreground tracking-tightest leading-[0.82] uppercase mb-12">
               Ready to <br />
               <span>Decide?</span>
             </h2>
-            
+
             <p className="text-xl md:text-2xl text-foreground/40 font-bold max-w-xl leading-relaxed uppercase tracking-tight">
               The longest journey begins with a single, high-precision decision. Join the elite who stopped guessing.
             </p>
@@ -62,7 +54,7 @@ export default function FinalCTA() {
           >
             <div className="bg-secondary/30 p-12 md:p-16 border border-foreground/5 shadow-2xl relative">
               {formState === "sent" ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="h-full flex flex-col items-center justify-center text-center space-y-8 py-24"
@@ -77,20 +69,20 @@ export default function FinalCTA() {
                 <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
                   <div className="space-y-8">
                     <div className="relative border-b-2 border-foreground/10 focus-within:border-foreground transition-all">
-                      <input 
+                      <input
                         required
-                        type="text" 
-                        placeholder="IDENTIFY: YOUR NAME" 
-                        className="w-full bg-transparent py-5 text-sm font-black text-foreground placeholder:text-foreground/20 outline-none uppercase tracking-widest" 
+                        type="text"
+                        placeholder="IDENTIFY: YOUR NAME"
+                        className="w-full bg-transparent py-5 text-sm font-black text-foreground placeholder:text-foreground/20 outline-none uppercase tracking-widest"
                       />
                       <MessageSquare className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
                     </div>
                     <div className="relative border-b-2 border-foreground/10 focus-within:border-foreground transition-all">
-                      <input 
+                      <input
                         required
-                        type="email" 
-                        placeholder="IDENTIFY: EMAIL ADDRESS" 
-                        className="w-full bg-transparent py-5 text-sm font-black text-foreground placeholder:text-foreground/20 outline-none uppercase tracking-widest" 
+                        type="email"
+                        placeholder="IDENTIFY: EMAIL ADDRESS"
+                        className="w-full bg-transparent py-5 text-sm font-black text-foreground placeholder:text-foreground/20 outline-none uppercase tracking-widest"
                       />
                       <Send className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
                     </div>

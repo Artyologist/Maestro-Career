@@ -3,8 +3,20 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { Brain as BrainIcon, Target, SearchCode, Sparkles, ArrowRight } from "lucide-react";
-import React from "react";
+import {
+  Brain as BrainIcon,
+  Target,
+  GraduationCap,
+  Briefcase,
+  Rocket,
+  Users,
+  Sparkles,
+  ArrowRight,
+  MessageCircle,
+  Lightbulb
+} from "lucide-react";
+import React, { useState } from "react";
+import Link from "next/link";
 
 const TiltCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const x = useMotionValue(0);
@@ -27,9 +39,9 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
       onMouseMove={handleMouseMove}
       onMouseLeave={() => { x.set(0); y.set(0); }}
       style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
-      className={`relative rounded-[2.5rem] group transition-all duration-500 ${className}`}
+      className={`relative h-full rounded-[2.5rem] group transition-all duration-500 overflow-hidden ${className}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-vibe-pink/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2.5rem]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2.5rem]" />
       <div style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }} className="h-full w-full relative z-10">
         {children}
       </div>
@@ -38,141 +50,164 @@ const TiltCard = ({ children, className }: { children: React.ReactNode; classNam
 };
 
 export default function ServicesPage() {
+  const [activeTab, setActiveTab] = useState("all");
+
   const services = [
     {
-      title: "Cognitive Assessment",
-      description: "Move beyond simple personality tests. We decode the deep-seated cognitive patterns that define how you process logic, creativity, and decisions.",
+      id: "assessment",
+      title: "Psychometric Assessment",
+      description: "Discover your strengths, interests, and personality traits through scientifically validated tools. Get deep insights into your core career aptitude.",
       icon: BrainIcon,
-      color: "text-vibe-blue",
-      bg: "bg-vibe-blue/10"
+      category: "Assessment Test"
     },
     {
-      title: "Architectural AI Mapping",
-      description: "Our proprietary AI engine maps your cognitive DNA to 500+ modern industries, identifying roles that didn't even exist five years ago.",
-      icon: Target,
-      color: "text-vibe-purple",
-      bg: "bg-vibe-purple/10"
+      id: "counselling",
+      title: "Career Counselling",
+      description: "One-on-one sessions with expert coaches to help you make informed academic and career decisions. Personalized high-precision guidance.",
+      icon: MessageCircle,
+      category: "Counselling"
     },
     {
-      title: "Precision Gap Analysis",
-      description: "We don't just find your destination; we build the bridge. Get a precise list of missing skills and certifications needed to launch your career.",
-      icon: SearchCode,
-      color: "text-vibe-pink",
-      bg: "bg-vibe-pink/10"
+      id: "student",
+      title: "Student Guidance",
+      description: "Career planning from Class 8 onwards, including stream selection, college guidance, entrance exam strategies, and profiling.",
+      icon: GraduationCap,
+      category: "Career Solutions"
+    },
+    {
+      id: "professional",
+      title: "Professional Development",
+      description: "Support for working professionals with upskilling, industry insights, and career growth planning to stay ahead in the 2030+ workforce.",
+      icon: Briefcase,
+      category: "Career Solutions"
+    },
+    {
+      id: "readiness",
+      title: "Career Readiness Training",
+      description: "Build essential skills like resume writing, interview preparation, communication, and professional etiquette for zero guesswork outcomes.",
+      icon: Rocket,
+      category: "Career Solutions"
+    },
+    {
+      id: "mentorship",
+      title: "Mentorship Programs",
+      description: "Connect with industry experts for ongoing guidance, support, and real-world insights that bridge the gap from aspiration to achievement.",
+      icon: Users,
+      category: "Counselling"
     },
   ];
+
+  const filteredServices = activeTab === "all"
+    ? services
+    : services.filter(s => s.category === activeTab);
 
   return (
     <main className="min-h-screen bg-background relative overflow-hidden transition-colors duration-500">
       <Header />
 
       {/* Ambient background energy */}
-      <div className="fixed inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-[10%] left-[5%] w-[40rem] h-[40rem] bg-vibe-blue/5 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-[10%] right-[5%] w-[35rem] h-[35rem] bg-vibe-purple/5 rounded-full blur-[120px] animate-pulse [animation-delay:1s]" />
+      <div className="fixed inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-[10%] left-[5%] w-[40rem] h-[40rem] bg-primary/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute bottom-[10%] right-[5%] w-[35rem] h-[35rem] bg-accent/10 rounded-full blur-[120px] animate-pulse [animation-delay:1s]" />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 py-48 lg:py-64 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-40">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center px-6 py-2 bg-foreground text-background mb-10 rounded-full"
-          >
-            <Sparkles className="w-3.5 h-3.5 mr-3 text-vibe-pink" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em]">SYSTEM.SERVICES</span>
-          </motion.div>
+      <div className="container mx-auto px-6 lg:px-12 py-32 md:py-48 relative z-10">
+        <div className="max-w-4xl mx-auto text-center mb-20">
+
 
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-7xl md:text-9xl font-black tracking-tightest leading-[0.85] mb-12 uppercase text-gradient"
+            className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-8 uppercase text-foreground"
           >
-            Solutions for <br />
-            <span>The Future.</span>
+            Our <span className="text-primary">Services</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl md:text-2xl text-foreground/50 font-bold max-w-2xl mx-auto uppercase tracking-tighter"
+            className="text-lg md:text-xl text-foreground/40 font-bold max-w-2xl mx-auto uppercase tracking-tight leading-relaxed"
           >
-            Maestro is more than a platform; it&apos;s a high-precision career architect. We combine science and data to illuminate your professional clarity.
+            Tailored career solutions designed to navigate the complexities of the modern workforce with scientific precision and human-centric coaching.
           </motion.p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
-          {services.map((s, i) => (
+        {/* Tab Navigation */}
+        <div className="flex flex-wrap justify-center gap-4 mb-24">
+          {["all", "Assessment Test", "Counselling", "Career Solutions"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all border ${activeTab === tab
+                ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-primary/20 scale-105"
+                : "bg-card/50 text-foreground/40 border-foreground/5 hover:border-primary/40"
+                }`}
+            >
+              {tab === "all" ? "All Offerings" : tab}
+            </button>
+          ))}
+        </div>
+
+        <motion.div
+          layout
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto"
+        >
+          {filteredServices.map((s, i) => (
             <motion.div
-              key={i}
+              layout
+              key={s.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
+              transition={{ delay: i * 0.1 }}
             >
-              <TiltCard className="bg-secondary/20 border border-foreground/5 hover:border-primary/20 hover:shadow-2xl h-full backdrop-blur-md">
-                <div className="h-full w-full p-12 flex flex-col justify-between min-h-[480px]">
+              <TiltCard className="bg-card/30 border border-foreground/5 group hover:border-primary/20 backdrop-blur-xl">
+                <div className="p-10 lg:p-14 h-full flex flex-col justify-between min-h-[450px]">
                   <div>
-                    <div className={`w-20 h-20 ${s.bg} flex items-center justify-center mb-10 rounded-3xl shadow-lg border border-white/5`}>
-                      <s.icon className={`w-10 h-10 ${s.color}`} />
+                    <div className="w-20 h-20 bg-primary/10 flex items-center justify-center mb-10 rounded-[2rem] border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
+                      <s.icon size={32} strokeWidth={2.5} />
                     </div>
-                    <h2 className="text-4xl font-black mb-8 text-foreground uppercase tracking-tightest leading-none group-hover:text-primary transition-colors">{s.title}</h2>
-                    <p className="text-sm text-foreground/40 font-bold uppercase tracking-widest leading-relaxed">{s.description}</p>
+                    <h3 className="text-3xl font-black mb-6 text-foreground uppercase tracking-tightest leading-none">
+                      {s.title}
+                    </h3>
+                    <p className="text-sm text-foreground/50 font-medium leading-relaxed">
+                      {s.description}
+                    </p>
                   </div>
 
-                  <motion.div
-                    whileHover={{ x: 10 }}
-                    className="mt-16 flex items-center space-x-4 font-black text-[11px] uppercase tracking-[0.4em] text-foreground/30 cursor-pointer hover:text-primary transition-colors"
+                  <Link
+                    href="#contact"
+                    className="mt-12 flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-primary hover:gap-6 transition-all"
                   >
-                    <span>System.View_Details</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </motion.div>
+                    Learn More
+                    <ArrowRight size={14} />
+                  </Link>
                 </div>
               </TiltCard>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Phase Breakdown Detail */}
+        {/* Final Interactive Strip */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-72 rounded-[4rem] bg-secondary/10 p-16 md:p-32 border border-foreground/5 relative overflow-hidden group shadow-3d"
+          className="mt-48 p-16 md:p-24 bg-foreground rounded-[4rem] text-background flex flex-col md:flex-row items-center justify-between gap-12 group overflow-hidden relative"
         >
-          <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-l from-primary/5 to-transparent -z-10 group-hover:from-vibe-purple/10 transition-all duration-1000" />
+          <div className="absolute inset-0 bg-primary/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-1000 ease-in-out -z-10" />
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-32 gap-12">
-            <h3 className="text-6xl md:text-8xl font-black text-foreground uppercase tracking-tightest leading-[0.85] flex-1">
-              The <br />
-              <span className="text-primary italic">Advantage.</span>
-            </h3>
-            <p className="text-sm font-bold uppercase tracking-widest text-foreground/40 max-w-sm lg:mb-4">
-              High-fidelity psychometric systems designed to eliminate industry friction and individual misalignment.
-            </p>
+          <div className="space-y-4 text-center md:text-left relative z-10">
+            <h4 className="text-4xl md:text-6xl font-black uppercase tracking-tightest leading-none">Not sure where <br /> <span className="text-primary italic">to start?</span></h4>
+            <p className="text-xs md:text-sm font-bold uppercase tracking-widest opacity-40">Let our experts design a custom career roadmap for you.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-20">
-            {[
-              { label: "Accuracy", value: "98.4%", color: "text-vibe-blue" },
-              { label: "Database", value: "500+", color: "text-vibe-purple" },
-              { label: "Duration", value: "45m", color: "text-vibe-emerald" },
-              { label: "Impact", value: "15k", color: "text-vibe-pink" }
-            ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 30 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="space-y-6"
-              >
-                <p className={`text-7xl font-black tracking-tightest leading-none ${item.color}`}>{item.value}</p>
-                <div className="h-px w-10 bg-foreground/10" />
-                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-foreground/20">{item.label}</p>
-              </motion.div>
-            ))}
-          </div>
+          <Link
+            href="/auth"
+            className="px-12 py-6 bg-background text-foreground font-black text-xs uppercase tracking-[0.5em] rounded-full hover:bg-primary hover:text-white transition-all shadow-2xl relative z-10"
+          >
+            Start Assessment
+          </Link>
         </motion.div>
       </div>
 
@@ -180,3 +215,4 @@ export default function ServicesPage() {
     </main>
   );
 }
+
