@@ -57,7 +57,7 @@ export default function Footer() {
                     {/* Column 4: Identification */}
                     <div className="space-y-5">
                         <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60">Contact Us</h4>
-                        
+
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-[9px] font-black uppercase text-foreground/40">Email:</h4>
@@ -98,13 +98,13 @@ export default function Footer() {
 
                 {/* Bottom Kinetic Strip */}
                 <div className="pt-6 border-t border-border flex flex-col md:flex-row items-center relative space-y-6 md:space-y-0">
-                    
+
                     {/* Left: Policy Links */}
-                    <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-[9px] font-black uppercase tracking-widest text-foreground/40 md:w-1/3">
-                        <Link href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy</Link>
-                        <Link href="/terms-conditions" className="hover:text-foreground transition-colors">Terms</Link>
-                        <Link href="/refund-cancellation" className="hover:text-foreground transition-colors">Refunds</Link>
-                        <Link href="/cookie-policy" className="hover:text-foreground transition-colors">Cookies</Link>
+                    <div className="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-4 text-[10px] sm:text-xs font-black uppercase tracking-widest text-foreground/40 md:w-1/3">
+                        <Link href="/privacy-policy" className="hover:text-foreground transition-colors px-2 py-1">Privacy</Link>
+                        <Link href="/terms-conditions" className="hover:text-foreground transition-colors px-2 py-1">Terms</Link>
+                        <Link href="/refund-cancellation" className="hover:text-foreground transition-colors px-2 py-1">Refunds</Link>
+                        <Link href="/cookie-policy" className="hover:text-foreground transition-colors px-2 py-1">Cookies</Link>
                     </div>
 
                     {/* Center: Copyright */}
@@ -117,7 +117,7 @@ export default function Footer() {
 
                     {/* Right: Structural Buffer for absolute flex centering */}
                     <div className="hidden md:block md:w-1/3" />
-                    
+
                 </div>
             </div>
         </footer>

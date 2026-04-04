@@ -158,7 +158,7 @@ export default function Header() {
     if (!mounted) return null;
 
     return (
-        <header className={`sticky top-0 z-50 w-full transition-all duration-300 bg-background border-b-[3px] border-primary/20 h-28 flex items-center shadow-sm`}>
+        <header className={`sticky top-0 z-50 w-full transition-all duration-300 bg-background border-b-[3px] border-primary/20 h-20 md:h-28 flex items-center shadow-sm`}>
             {/* Scroll Progress Bar */}
             <motion.div
                 className="fixed top-0 left-0 right-0 h-2 bg-primary origin-left z-[60]"
@@ -169,7 +169,7 @@ export default function Header() {
                 <div className="flex items-center justify-between">
                     <div className="flex-shrink-0">
                         <Link href="/" className="flex items-center gap-4 group">
-                            <div className="relative w-16 h-16 overflow-hidden flex items-center justify-center transition-all bg-white dark:bg-transparent rounded-2xl shadow-sm border-2 border-primary/10">
+                            <div className="relative w-12 h-12 md:w-16 md:h-16 overflow-hidden flex items-center justify-center transition-all bg-white dark:bg-transparent rounded-2xl shadow-sm border-2 border-primary/10">
                                 <Image
                                     src="/maestro_logo_only.png"
                                     alt="Logo"
@@ -180,12 +180,12 @@ export default function Header() {
                                     className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
                                 />
                             </div>
-                            <span className="text-3xl font-black tracking-tightest uppercase text-primary leading-none">
+                            <span className="text-xl md:text-3xl font-black tracking-tightest uppercase text-primary leading-none">
                                 Maestro <br />
-                                <span className="text-lg font-bold text-secondary-foreground">Career</span>
+                                <span className="text-sm md:text-lg font-bold text-secondary-foreground">Career</span>
                             </span>
                         </Link>
-                     </div>
+                    </div>
 
                     {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center space-x-8">
@@ -392,9 +392,9 @@ export default function Header() {
             </AnimatePresence>
 
             {/* Theme Selector Modal */}
-            <ThemeChanger 
-                isOpen={isThemeChangerOpen} 
-                onClose={() => setIsThemeChangerOpen(false)} 
+            <ThemeChanger
+                isOpen={isThemeChangerOpen}
+                onClose={() => setIsThemeChangerOpen(false)}
             />
         </header>
     );

@@ -26,7 +26,7 @@ const Typewriter = ({ text }: { text: string }) => {
     }, [index, text]);
 
     return (
-        <span className="inline-block min-w-[20ch]">
+        <span className="inline-block min-w-[10ch] sm:min-w-[15ch] lg:min-w-[20ch]">
             {displayText}
             <motion.span
                 animate={{ opacity: [1, 0] }}
@@ -75,10 +75,10 @@ export default function Hero() {
 
                     {/* Centered Heading */}
                     <div className="w-full max-w-5xl mx-auto flex flex-col items-center text-center gap-4 font-black text-foreground tracking-tightest leading-none uppercase">
-                        <h1 className="text-4xl md:text-6xl xl:text-8xl">
+                        <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl">
                             <Typewriter text="Crafting Careers," />
                         </h1>
-                        <h1 className="text-4xl md:text-6xl xl:text-8xl text-primary italic">
+                        <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl text-primary italic">
                             <Typewriter text="Cultivating Success." />
                         </h1>
                     </div>

@@ -53,7 +53,7 @@ export default function HowItWorks() {
         <div className="max-w-5xl mx-auto">
           <div className="mb-24 text-center">
 
-            <h2 className="text-6xl md:text-8xl font-black text-foreground tracking-tighter leading-none mb-8">
+            <h2 className="text-4xl md:text-8xl font-black text-foreground tracking-tighter leading-none mb-8">
               How It <span className="text-gradient">Flows.</span>
             </h2>
           </div>

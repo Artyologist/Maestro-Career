@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Check, X, ChevronDown } from "lucide-react";
-import { PLANS, formatInr, type Plan } from "@/data/plans";
+import { PLANS, type Plan } from "@/data/plans";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -15,9 +15,9 @@ export default function Pricing() {
             <div className="container mx-auto px-6 lg:px-12 relative z-10">
                 <div className="max-w-4xl mx-auto text-center mb-24">
 
-                    <h2 className="text-5xl md:text-8xl font-black text-foreground tracking-tightest leading-[0.85] mb-10 uppercase">
+                    <h2 className="text-3xl md:text-8xl font-black text-foreground tracking-tightest leading-[0.85] mb-10 uppercase">
                         Simple <br />
-                        <span className="text-primary italic text-6xl md:text-9xl">Pricing.</span>
+                        <span className="text-primary italic text-4xl md:text-9xl">Pricing.</span>
                     </h2>
                     <p className="text-lg md:text-xl text-foreground/40 font-bold max-w-2xl mx-auto uppercase tracking-tighter leading-tight">
                         Choose the right plan for your career journey. Clear paths, zero hidden costs, and dedicated expert guidance.
@@ -56,7 +56,7 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
             onClick={() => setIsSelected(!isSelected)}
-            className={`group relative rounded-[3rem] p-10 xl:p-14 border transition-all duration-500 flex flex-col bg-card/10 backdrop-blur-xl cursor-pointer min-h-[800px] lg:min-h-[950px] ${getAuraColor()} ${getSelectedStyle()} ${plan.mostPopular && !isSelected ? 'ring-1 ring-primary/10' : ''}`}
+            className={`group relative rounded-[3rem] p-6 md:p-10 xl:p-14 border transition-all duration-500 flex flex-col bg-card/10 backdrop-blur-xl cursor-pointer min-h-[600px] md:min-h-[800px] lg:min-h-[950px] ${getAuraColor()} ${getSelectedStyle()} ${plan.mostPopular && !isSelected ? 'ring-1 ring-primary/10' : ''}`}
         >
             {plan.mostPopular && (
                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-primary text-primary-foreground rounded-full shadow-2xl z-30 ring-4 ring-background animate-bounce-subtle">
@@ -74,12 +74,7 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
                 {plan.description}
             </p>
 
-            <div className="mb-12">
-                <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black tracking-tightest text-foreground">{formatInr(plan.priceInr)}</span>
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">/one-time</span>
-                </div>
-            </div>
+
 
             <div className="space-y-6 flex-1">
                 <FeatureList features={plan.features} />

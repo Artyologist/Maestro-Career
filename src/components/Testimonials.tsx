@@ -77,7 +77,7 @@ export default function Testimonials() {
                     {testimonials.map((testimonial, idx) => (
                         <div
                             key={idx}
-                            className="relative w-[350px] md:w-[450px] shrink-0 rounded-[2.5rem] bg-card p-10 shadow-xl shadow-primary/5 border border-border flex flex-col justify-between whitespace-normal"
+                            className="relative w-[280px] sm:w-[350px] md:w-[450px] shrink-0 rounded-[2.5rem] bg-card p-6 md:p-10 shadow-xl shadow-primary/5 border border-border flex flex-col justify-between whitespace-normal"
                         >
                             <Quote className="absolute top-8 right-8 w-10 h-10 text-primary/10" />
 
