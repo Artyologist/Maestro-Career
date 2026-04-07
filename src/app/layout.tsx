@@ -5,9 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
+import AppShell from "@/components/AppShell";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Chatbot from "@/components/Chatbot";
-import MainLayout from "@/components/MainLayout";
 
 export const metadata: Metadata = {
   title: "Maestro Career",
@@ -36,10 +35,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased selection:bg-primary selection:text-white`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <MainLayout>
-            {children}
-            <Chatbot />
-          </MainLayout>
+          <AppShell>{children}</AppShell>
         </ThemeProvider>
       </body>
     </html>

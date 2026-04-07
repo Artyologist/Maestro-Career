@@ -762,7 +762,7 @@ export async function requestForgotPasswordEmail(input: { email: string }) {
     const { appUrl } = getSupabaseConfig();
     const publicClient = createPublicServerClient();
     const { error } = await publicClient.auth.resetPasswordForEmail(email, {
-        redirectTo: `${appUrl}/auth?recovery=1`,
+        redirectTo: `${appUrl}/login?recovery=1`,
     });
 
     if (error) {
@@ -895,6 +895,36 @@ export async function selectPlanFromSession(supabase: SupabaseClient, planId: st
     });
 
     await insertActivity(user.id, "profile", `Selected the "${planId}" plan.`);
+    return toPublicUser(user, profile);
+}
+
+export async function markPaymentSuccessfulFromSession(
+    supabase: SupabaseClient,
+    input: {
+        paymentId: string;
+        orderId: string;
+        signature: string;
+    }
+) {
+    ensureSupabaseConfigured();
+
+    const user = await requireAuthenticatedUser(supabase);
+    const paymentId = String(input.paymentId ?? "").trim();
+    const orderId = String(input.orderId ?? "").trim();
+    const signature = String(input.signature ?? "").trim();
+
+    if (!paymentId || !orderId || !signature) {
+        throw new Error("Missing verified payment details.");
+    }
+
+    const profile = await upsertProfile(user, {
+        payment_status: "paid",
+        payment_id: paymentId,
+        transaction_id: orderId,
+        payment_token: signature,
+    });
+
+    await insertActivity(user.id, "profile", `Payment verified. Payment ID: ${paymentId}.`);
     return toPublicUser(user, profile);
 }
 

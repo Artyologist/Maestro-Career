@@ -4,34 +4,37 @@
 
 :root {
   /* Playful Kids Light Theme */
-  --background: 38 100% 84%; /* #FFE2AF - Soft highlight */
-  --foreground: 191 50% 20%; /* Deep teal for high readable contrast */
-  
+  --background: 38 100% 84%;
+  /* #FFE2AF - Soft highlight */
+  --foreground: 191 50% 20%;
+  /* Deep teal for high readable contrast */
+
   --card: 0 0% 100%;
   --card-foreground: 191 50% 20%;
-  
+
   --popover: 0 0% 100%;
   --popover-foreground: 191 50% 20%;
-  
+
   /* Primary Tone: #3F9AAE */
   --primary: 191 47% 46%;
   --primary-foreground: 0 0% 100%;
-  
+
   /* Secondary Accent: #79C9C5 */
   --secondary: 177 43% 63%;
   --secondary-foreground: 191 50% 20%;
-  
+
   --muted: 38 100% 92%;
   --muted-foreground: 191 30% 40%;
-  
+
   /* Vibrant Accent for CTAs: #F96E5B */
   --accent: 7 93% 67%;
   --accent-foreground: 0 0% 100%;
-  
+
   --border: 191 47% 46%;
   --input: 191 20% 85%;
   --ring: 7 93% 67%;
-  --radius: 2rem; /* Kid friendly roundness */
+  --radius: 2rem;
+  /* Kid friendly roundness */
 
   /* Vibe Chart colors adapted for kids */
   --vibe-blue: 191 47% 46%;
@@ -43,13 +46,13 @@
 .dark,
 .dark[data-theme="kids"] {
   /* Playful Kids Dark Theme (Deep Sea Edition) */
-  --background: 191 50% 10%; 
-  --foreground: 38 100% 90%; 
+  --background: 191 50% 10%;
+  --foreground: 38 100% 90%;
   --card: 191 50% 15%;
   --card-foreground: 38 100% 90%;
   --popover: 191 50% 15%;
   --popover-foreground: 38 100% 90%;
-  --primary: 191 47% 56%; 
+  --primary: 191 47% 56%;
   --primary-foreground: 0 0% 100%;
   --secondary: 177 43% 63%;
   --secondary-foreground: 191 50% 10%;
@@ -65,39 +68,48 @@
 
 /* THEME: CYBER (NEON VIBE) */
 :root[data-theme="cyber"] {
-  --background: 260 40% 98%; 
-  --foreground: 260 100% 12%; /* Deep Purple */
+  --background: 260 40% 98%;
+  --foreground: 260 100% 12%;
+  /* Deep Purple */
   --card: 0 0% 100%;
   --card-foreground: 260 100% 12%;
   --popover: 0 0% 100%;
   --popover-foreground: 260 100% 12%;
-  --primary: 260 100% 42%; /* #4700D8 */
+  --primary: 260 100% 42%;
+  /* #4700D8 */
   --primary-foreground: 0 0% 100%;
-  --secondary: 278 100% 47%; /* #9900F0 */
+  --secondary: 278 100% 47%;
+  /* #9900F0 */
   --secondary-foreground: 0 0% 100%;
   --muted: 260 40% 92%;
   --muted-foreground: 260 20% 40%;
-  --accent: 314 100% 49%; /* #F900BF */
+  --accent: 314 100% 49%;
+  /* #F900BF */
   --accent-foreground: 0 0% 100%;
   --border: 260 100% 42% / 0.15;
   --input: 260 40% 90%;
   --ring: 314 100% 49%;
   --radius: 0.75rem;
 }
+
 .dark[data-theme="cyber"] {
-  --background: 260 100% 6%; /* Deep #4700D8 variant */
-  --foreground: 314 100% 95%; 
+  --background: 260 100% 6%;
+  /* Deep #4700D8 variant */
+  --foreground: 314 100% 95%;
   --card: 260 100% 10%;
   --card-foreground: 314 100% 95%;
   --popover: 260 100% 10%;
   --popover-foreground: 314 100% 95%;
-  --primary: 314 100% 49%; /* #F900BF Pink */
+  --primary: 314 100% 49%;
+  /* #F900BF Pink */
   --primary-foreground: 0 0% 100%;
-  --secondary: 278 100% 47%; /* #9900F0 Violet */
+  --secondary: 278 100% 47%;
+  /* #9900F0 Violet */
   --secondary-foreground: 0 0% 100%;
   --muted: 260 50% 15%;
   --muted-foreground: 314 20% 70%;
-  --accent: 337 100% 76%; /* #FF85B3 Soft Pink */
+  --accent: 337 100% 76%;
+  /* #FF85B3 Soft Pink */
   --accent-foreground: 260 100% 6%;
   --border: 314 100% 49% / 0.3;
   --input: 260 50% 15%;
@@ -107,7 +119,7 @@
 
 /* THEME: MINIMAL */
 :root[data-theme="minimal"] {
-  --background: 210 20% 98%; 
+  --background: 210 20% 98%;
   --foreground: 210 11% 15%;
   --card: 0 0% 100%;
   --card-foreground: 210 11% 15%;
@@ -126,6 +138,7 @@
   --ring: 210 11% 15%;
   --radius: 0.25rem;
 }
+
 .dark[data-theme="minimal"] {
   --background: 0 0% 7%;
   --foreground: 0 0% 90%;
@@ -133,7 +146,7 @@
   --card-foreground: 0 0% 90%;
   --popover: 0 0% 10%;
   --popover-foreground: 0 0% 90%;
-  --primary: 0 0% 90%; 
+  --primary: 0 0% 90%;
   --primary-foreground: 0 0% 7%;
   --secondary: 0 0% 15%;
   --secondary-foreground: 0 0% 90%;
@@ -149,7 +162,7 @@
 
 /* THEME: SUNSET */
 :root[data-theme="sunset"] {
-  --background: 30 100% 92%; 
+  --background: 30 100% 92%;
   --foreground: 10 50% 20%;
   --card: 0 0% 100%;
   --card-foreground: 10 50% 20%;
@@ -168,6 +181,7 @@
   --ring: 22 96% 49%;
   --radius: 1rem;
 }
+
 .dark[data-theme="sunset"] {
   --background: 10 45% 12%;
   --foreground: 30 100% 90%;
@@ -175,7 +189,7 @@
   --card-foreground: 30 100% 90%;
   --popover: 10 45% 16%;
   --popover-foreground: 30 100% 90%;
-  --primary: 22 96% 55%; 
+  --primary: 22 96% 55%;
   --primary-foreground: 0 0% 100%;
   --secondary: 350 80% 55%;
   --secondary-foreground: 0 0% 100%;
@@ -191,39 +205,49 @@
 
 /* THEME: EMERALD (NATURAL) */
 :root[data-theme="emerald"] {
-  --background: 41 100% 96%; /* #FFF8EC */
-  --foreground: 93 40% 15%; 
+  --background: 41 100% 96%;
+  /* #FFF8EC */
+  --foreground: 93 40% 15%;
   --card: 0 0% 100%;
   --card-foreground: 93 40% 15%;
   --popover: 41 100% 98%;
   --popover-foreground: 93 40% 15%;
-  --primary: 93 25% 34%; /* #546B41 */
+  --primary: 93 25% 34%;
+  /* #546B41 */
   --primary-foreground: 0 0% 100%;
-  --secondary: 82 24% 58%; /* #99AD7A */
+  --secondary: 82 24% 58%;
+  /* #99AD7A */
   --secondary-foreground: 93 40% 15%;
   --muted: 41 60% 92%;
   --muted-foreground: 93 20% 40%;
-  --accent: 41 30% 77%; /* #DCCCAC */
+  --accent: 41 30% 77%;
+  /* #DCCCAC */
   --accent-foreground: 93 40% 15%;
   --border: 93 25% 34% / 0.15;
   --input: 41 60% 92%;
   --ring: 93 25% 34%;
   --radius: 1.5rem;
 }
+
 .dark[data-theme="emerald"] {
-  --background: 93 25% 25%; /* Deep #546B41 variant */
-  --foreground: 41 100% 96%; /* #FFF8EC */
+  --background: 93 25% 25%;
+  /* Deep #546B41 variant */
+  --foreground: 41 100% 96%;
+  /* #FFF8EC */
   --card: 93 25% 20%;
   --card-foreground: 41 100% 96%;
   --popover: 93 25% 20%;
   --popover-foreground: 41 100% 96%;
-  --primary: 82 24% 58%; /* #99AD7A Pops in dark */
+  --primary: 82 24% 58%;
+  /* #99AD7A Pops in dark */
   --primary-foreground: 93 25% 10%;
-  --secondary: 41 30% 77%; /* #DCCCAC */
+  --secondary: 41 30% 77%;
+  /* #DCCCAC */
   --secondary-foreground: 93 25% 10%;
   --muted: 93 25% 15%;
   --muted-foreground: 82 20% 70%;
-  --accent: 41 100% 96%; /* #FFF8EC Highlights */
+  --accent: 41 100% 96%;
+  /* #FFF8EC Highlights */
   --accent-foreground: 93 25% 10%;
   --border: 82 24% 58% / 0.25;
   --input: 93 25% 15%;
@@ -233,7 +257,7 @@
 
 /* THEME: OCEAN */
 :root[data-theme="ocean"] {
-  --background: 0 0% 93%; 
+  --background: 0 0% 93%;
   --foreground: 216 18% 16%;
   --card: 0 0% 98%;
   --card-foreground: 216 18% 16%;
@@ -252,6 +276,7 @@
   --ring: 183 100% 35%;
   --radius: 1rem;
 }
+
 .dark[data-theme="ocean"] {
   --background: 216 18% 16%;
   --foreground: 0 0% 93%;
@@ -259,7 +284,7 @@
   --card-foreground: 0 0% 93%;
   --popover: 217 10% 25%;
   --popover-foreground: 0 0% 93%;
-  --primary: 183 100% 35%; 
+  --primary: 183 100% 35%;
   --primary-foreground: 216 18% 16%;
   --secondary: 217 10% 20%;
   --secondary-foreground: 0 0% 93%;
@@ -339,7 +364,7 @@ body::before {
   }
 
   .shadow-3d {
-    @apply shadow-[0_32px_64px_-16px_rgba(0,0,0,0.15)];
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.15);
   }
 
   .tracking-tightest {
@@ -355,18 +380,65 @@ input,
 textarea,
 select {
   color: hsl(var(--foreground));
+  -webkit-text-fill-color: hsl(var(--foreground));
   caret-color: hsl(var(--foreground));
   @apply transition-all duration-300;
 }
 
 input::placeholder,
 textarea::placeholder {
-  @apply opacity-30 font-medium;
+  color: hsl(var(--muted-foreground));
+  opacity: 0.6;
+  @apply font-medium;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  background-color: hsl(var(--card) / 0.96);
+  border-color: hsl(var(--foreground) / 0.25);
+  box-shadow: 0 1px 0 hsl(var(--background) / 0.65) inset;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus,
+select:focus {
+  background-color: hsl(var(--card)) !important;
+  border-color: hsl(var(--ring) / 0.85) !important;
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.2);
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: hsl(var(--card) / 0.92) !important;
+  border-color: hsl(var(--foreground) / 0.4) !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: hsl(var(--foreground)) !important;
+  caret-color: hsl(var(--foreground));
+  -webkit-box-shadow: 0 0 0 1000px hsl(var(--card) / 0.95) inset;
+  box-shadow: 0 0 0 1000px hsl(var(--card) / 0.95) inset;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Sparkles, ShieldCheck, ArrowRight, Lock, User } from "lucide-react";
+import { ShieldCheck, ArrowRight, Lock, User } from "lucide-react";
 
 export default function AdminLoginPage() {
     const [userId, setUserId] = useState("");
@@ -13,24 +13,34 @@ export default function AdminLoginPage() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setLoading(true);
 
-        // Required credentials
-        if (userId === "maestrocareer" && password === "m") {
-            // Simple session management for task purposes
-            localStorage.setItem("admin_session", "true");
+        try {
+            const resp = await fetch("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId, password }),
+            });
+            const data = await resp.json();
+
+            if (!resp.ok || !data.success) {
+                throw new Error(data.message || "Security mismatch. Please re-authenticate.");
+            }
+
             router.push("/admin/dashboard");
-        } else {
-            setError("Security mismatch. Please re-authenticate.");
+            router.refresh();
+        } catch (loginError) {
+            setError(loginError instanceof Error ? loginError.message : "Security mismatch. Please re-authenticate.");
+        } finally {
             setLoading(false);
         }
     };
 
     return (
-        <main className="min-h-screen bg-[#050B15] selection:bg-primary/30">
+        <main className="min-h-screen bg-background text-foreground selection:bg-primary/30 transition-colors duration-500">
             <Header />
 
             <div className="relative min-h-[90vh] flex flex-col items-center justify-center p-4">

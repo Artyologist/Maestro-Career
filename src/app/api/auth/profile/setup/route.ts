@@ -4,6 +4,7 @@ import { consumeRateLimit, getClientIp } from "@/lib/rate-limit";
 import { createRouteHandlerClient } from "@/lib/supabase/route";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
     try {

@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
-import { formatInr, getPlanById } from "@/data/plans";
-import { ChevronRight, CreditCard, ExternalLink, ShieldCheck, LogOut, LayoutDashboard, User, Activity, Sparkles, Building, Briefcase, GraduationCap, MapPin, TabletSmartphone } from "lucide-react";
+import { formatInr, getPlanById, PLANS } from "@/data/plans";
+import { ChevronRight, CreditCard, ExternalLink, ShieldCheck, LogOut, LayoutDashboard, User, Activity, Sparkles, Building, MapPin, TabletSmartphone } from "lucide-react";
 
 import { DashboardData } from "@/lib/auth-supabase";
 
@@ -16,6 +16,35 @@ interface DashboardResponse {
     data?: DashboardData;
     message?: string;
 }
+
+interface RazorpaySuccessResponse {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+}
+
+interface RazorpayOptions {
+    key: string;
+    amount: number;
+    currency: string;
+    name: string;
+    description: string;
+    order_id: string;
+    prefill: {
+        name: string;
+        email: string;
+        contact: string;
+    };
+    theme: {
+        color: string;
+    };
+    handler: (response: RazorpaySuccessResponse) => Promise<void>;
+    modal: {
+        ondismiss: () => void;
+    };
+}
+
+type RazorpayCtor = new (options: RazorpayOptions) => { open: () => void };
 
 const SERVICE_OPTIONS = [
     "Career Coaching",
@@ -33,6 +62,7 @@ export default function DashboardPage() {
     const [profileMessage, setProfileMessage] = useState("");
     const [dashboard, setDashboard] = useState<DashboardResponse["data"]>(undefined);
     const [isPaying, setIsPaying] = useState(false);
+    const [selectingPlanId, setSelectingPlanId] = useState<string | null>(null);
 
     const selectedPlan = dashboard?.profile.selectedPlanId ? getPlanById(dashboard.profile.selectedPlanId) : null;
 
@@ -42,13 +72,13 @@ export default function DashboardPage() {
         password: "",
     });
 
-    const loadData = async () => {
+    const loadData = useCallback(async () => {
         try {
             const resp = await fetch("/api/auth/me", { method: "GET" });
             const data: DashboardResponse = await resp.json();
 
             if (!resp.ok || !data.success || !data.data) {
-                router.replace("/auth");
+                router.replace("/login");
                 return;
             }
 
@@ -64,15 +94,15 @@ export default function DashboardPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [router]);
 
     useEffect(() => {
-        loadData();
-    }, [router]);
+        void loadData();
+    }, [loadData]);
 
     const handleLogout = async () => {
         await fetch("/api/auth/logout", { method: "POST" });
-        router.push("/auth");
+        router.push("/login");
     };
 
     const toggleService = (service: string) => {
@@ -125,7 +155,7 @@ export default function DashboardPage() {
         if (!selectedPlan || !dashboard) return;
 
         setError("");
-        const razorpayCtor = (window as any).Razorpay;
+        const razorpayCtor = (window as Window & { Razorpay?: RazorpayCtor }).Razorpay;
         if (!razorpayCtor) {
             setError("Payment gateway did not load. Please refresh.");
             return;
@@ -163,7 +193,7 @@ export default function DashboardPage() {
                     contact: dashboard.profile.mobile,
                 },
                 theme: { color: "#1294DD" },
-                handler: async function (response: any) {
+                handler: async function (response: RazorpaySuccessResponse) {
                     try {
                         const verifyResp = await fetch("/api/payments/verify", {
                             method: "POST",
@@ -198,8 +228,32 @@ export default function DashboardPage() {
         }
     };
 
+    const handleSelectPlan = async (planId: string) => {
+        setError("");
+        setSelectingPlanId(planId);
+
+        try {
+            const resp = await fetch("/api/profile/select-plan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ planId }),
+            });
+            const data = await resp.json();
+
+            if (!resp.ok || !data.success) {
+                throw new Error(data.message || "Unable to select plan.");
+            }
+
+            // Redirect to payment/checkout page instead of just reloading data
+            router.push(`/checkout/${planId}`);
+        } catch (planError) {
+            setError(planError instanceof Error ? planError.message : "Unable to select plan.");
+            setSelectingPlanId(null);
+        }
+    };
+
     return (
-        <main className="min-h-screen bg-[#F8FAFC]">
+        <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
             <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
             <Header />
 
@@ -303,14 +357,37 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="rounded-[2rem] border border-dashed border-primary/20 bg-white/50 p-12 flex flex-col items-center justify-center text-center group hover:bg-primary/5 transition-all duration-500 hover:border-solid hover:border-primary/40">
-                                        <div className="p-8 bg-white rounded-full shadow-2xl shadow-blue-500/10 mb-8 group-hover:scale-110 transition-transform duration-500">
+                                    <div className="rounded-[2rem] border border-dashed border-primary/20 bg-white/50 p-12 flex flex-col text-center group hover:bg-primary/5 transition-all duration-500 hover:border-solid hover:border-primary/40">
+                                        <div className="p-8 bg-white rounded-full shadow-2xl shadow-blue-500/10 mb-8 self-center group-hover:scale-110 transition-transform duration-500">
                                             <Sparkles className="w-12 h-12 text-primary" />
                                         </div>
                                         <h3 className="text-2xl font-black text-dark uppercase italic tracking-tightest mb-4">No Plan Locked</h3>
-                                        <p className="text-gray-400 font-bold text-sm max-w-xs leading-relaxed uppercase tracking-widest text-[10px]">Your career intelligence path is waiting. Explore our premium plans to begin your journey.</p>
-                                        <Link href="/#pricing" className="mt-10 px-10 py-5 bg-dark text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-black/20">
-                                            Explore Plans <ChevronRight className="w-4 h-4" />
+                                        <p className="text-gray-400 font-bold text-sm max-w-xl mx-auto leading-relaxed uppercase tracking-widest text-[10px]">Select one of the 3 plans below. The selected plan will be saved to your profile and the Pay Now action will be enabled automatically.</p>
+
+                                        <div className="mt-10 grid md:grid-cols-3 gap-4 text-left">
+                                            {PLANS.map((plan) => {
+                                                const active = selectingPlanId === plan.id;
+                                                return (
+                                                    <div key={plan.id} className="rounded-2xl border border-primary/10 bg-white p-5 shadow-lg shadow-blue-500/5 flex flex-col gap-4">
+                                                        <div>
+                                                            <p className="text-lg font-black text-dark uppercase italic tracking-tight">{plan.name}</p>
+                                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">{formatInr(plan.priceInr)}</p>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleSelectPlan(plan.id)}
+                                                            disabled={!!selectingPlanId}
+                                                            className="rounded-xl bg-primary text-white px-4 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-primary-dark transition-all disabled:opacity-60"
+                                                        >
+                                                            {active ? "Selecting..." : "Select Plan"}
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+
+                                        <Link href="/#pricing" className="mt-8 px-10 py-5 bg-dark text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-black/20 self-center">
+                                            Compare Full Plan Details <ChevronRight className="w-4 h-4" />
                                         </Link>
                                     </div>
                                 )}

@@ -7,11 +7,20 @@ export const runtime = "nodejs";
 
 function getSafeRedirectTarget(rawNext: string | null, type: string | null) {
     if (type === "recovery") {
-        return "/auth?recovery=1";
+        return "/login?recovery=1";
     }
 
     if (!rawNext || !rawNext.startsWith("/")) {
         return "/dashboard";
+    }
+
+    if (rawNext === "/auth") {
+        return "/login";
+    }
+
+    if (rawNext.startsWith("/auth?")) {
+        const nextUrl = new URL(rawNext, "http://localhost");
+        return `${nextUrl.searchParams.get("setup") === "1" ? "/register" : "/login"}${nextUrl.search}`;
     }
 
     return rawNext;
@@ -26,7 +35,7 @@ export async function GET(request: NextRequest) {
     const next = getSafeRedirectTarget(searchParams.get("next"), type);
 
     const errorToRedirect = (msg: string) => {
-        const fallback = new URL("/auth", request.url);
+        const fallback = new URL("/login", request.url);
         fallback.searchParams.set("error", "invalid_or_expired_link");
         fallback.searchParams.set("details", msg);
         return NextResponse.redirect(fallback);

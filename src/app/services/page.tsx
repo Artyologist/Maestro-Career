@@ -200,7 +200,7 @@ export default function ServicesPage() {
           </div>
 
           <Link
-            href="/auth"
+            href="/register"
             className="px-12 py-6 bg-background text-foreground font-black text-xs uppercase tracking-[0.5em] rounded-full hover:bg-primary hover:text-white transition-all shadow-2xl relative z-10"
           >
             Start Assessment

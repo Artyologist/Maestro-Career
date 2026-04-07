@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { getPlanById, formatInr } from "@/data/plans";
 import {
     Search, User, Mail, Smartphone, Calendar, Briefcase,
-    CreditCard, ExternalLink, ShieldCheck, Activity,
+    ExternalLink, ShieldCheck, Activity,
     Database, Filter, ChevronRight, LogOut, LayoutDashboard, Sparkles
 } from "lucide-react";
 
@@ -37,14 +37,15 @@ export default function AdminDashboardPage() {
     const router = useRouter();
 
     useEffect(() => {
-        const session = localStorage.getItem("admin_session");
-        if (!session) {
-            router.replace("/admin");
-            return;
-        }
-
         const fetchUsers = async () => {
             try {
+                const sessionResp = await fetch("/api/admin/session", { cache: "no-store" });
+                const sessionData = await sessionResp.json();
+                if (!sessionData?.authenticated) {
+                    router.replace("/admin");
+                    return;
+                }
+
                 const resp = await fetch("/api/admin/users");
                 const data = await resp.json();
                 if (data.success) {
@@ -89,8 +90,10 @@ export default function AdminDashboardPage() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("admin_session");
-        router.push("/admin");
+        fetch("/api/admin/logout", { method: "POST" }).finally(() => {
+            router.push("/admin");
+            router.refresh();
+        });
     };
 
     const calculateAge = (dob: string) => {
@@ -111,7 +114,7 @@ export default function AdminDashboardPage() {
     );
 
     return (
-        <main className="min-h-screen bg-[#F8FAFC]">
+        <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
             <Header />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -250,8 +253,16 @@ export default function AdminDashboardPage() {
                                                                 <span className="text-xs font-black text-primary italic uppercase">{plan ? formatInr(plan.priceInr) : "—"}</span>
                                                             </div>
                                                             <div className="flex flex-col gap-1 pt-4 border-t border-gray-100">
-                                                                <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Payment ID/Token</span>
-                                                                <span className="text-[10px] font-bold text-dark truncate font-mono tracking-tighter opacity-50">{user.payment_id || user.payment_token || "PENDING ISSUANCE"}</span>
+                                                                <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Payment ID</span>
+                                                                <span className="text-[10px] font-bold text-dark truncate font-mono tracking-tighter opacity-50">{user.payment_id || "TBD"}</span>
+                                                            </div>
+                                                            <div className="flex flex-col gap-1">
+                                                                <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Transaction ID</span>
+                                                                <span className="text-[10px] font-bold text-dark truncate font-mono tracking-tighter opacity-50">{user.transaction_id || "TBD"}</span>
+                                                            </div>
+                                                            <div className="flex flex-col gap-1">
+                                                                <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Payment Token</span>
+                                                                <span className="text-[10px] font-bold text-dark truncate font-mono tracking-tighter opacity-50">{user.payment_token || "TBD"}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -277,16 +288,20 @@ export default function AdminDashboardPage() {
                                                             </div>
                                                             <button
                                                                 onClick={() => handleSendLink(user.id)}
-                                                                disabled={sendingLink[user.id] || !linkInput[user.id]}
+                                                                disabled={sendingLink[user.id] || !linkInput[user.id] || user.payment_status !== "paid"}
                                                                 className="w-full group/btn relative overflow-hidden flex items-center justify-center gap-3 bg-dark hover:bg-black text-white px-8 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all disabled:opacity-50 active:scale-95 shadow-xl shadow-black/10"
                                                             >
                                                                 {sendingLink[user.id] ? "Transmitting..." : (
                                                                     <>
-                                                                        Issue Assessment <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                                                                        {user.payment_status === "paid" ? "Issue Assessment" : "Await Payment"} <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                                                                     </>
                                                                 )}
                                                             </button>
                                                         </div>
+
+                                                        {user.payment_status !== "paid" && (
+                                                            <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest">Payment must be marked PAID before sending the test link.</p>
+                                                        )}
 
                                                         {user.psychometric_test_link && (
                                                             <div className="mt-4 flex items-center gap-2 text-emerald-600 font-black text-[9px] uppercase tracking-widest">
