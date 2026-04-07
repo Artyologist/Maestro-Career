@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { useParams, useRouter } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { formatInr, getPlanById } from "@/data/plans";
@@ -64,6 +64,25 @@ export default function CheckoutPage() {
     const [isPaying, setIsPaying] = useState(false);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+
+    // Auto-fill user details if logged in
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const resp = await fetch("/api/auth/me");
+                const data = await resp.json();
+                if (data?.success && data.data?.profile) {
+                    const profile = data.data.profile;
+                    if (profile.name && profile.name !== "Learner") setBuyerName(profile.name);
+                    if (profile.email) setBuyerEmail(profile.email);
+                    if (profile.mobile) setBuyerMobile(profile.mobile);
+                }
+            } catch (err) {
+                console.error("Failed to load prefill data:", err);
+            }
+        };
+        fetchUserData();
+    }, []);
 
     const handlePayNow = async (e: FormEvent) => {
         e.preventDefault();

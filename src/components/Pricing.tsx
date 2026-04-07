@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Check, X, ChevronDown } from "lucide-react";
 import { PLANS, type Plan } from "@/data/plans";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
@@ -51,7 +50,7 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
             const { data: { user } } = await supabase.auth.getUser();
 
             if (!user) {
-                router.push("/auth");
+                router.push("/register");
                 return;
             }
 
@@ -63,11 +62,12 @@ function PricingCard({ plan, index }: { plan: Plan; index: number }) {
             const data = await resp.json();
 
             if (data.success) {
-                router.push("/dashboard");
+                // Redirect to specialized checkout page with plan details
+                router.push(`/checkout/${plan.id}`);
             } else {
-                router.push("/dashboard"); // Fallback
+                router.push("/dashboard"); // Fallback to current behavior
             }
-        } catch (error) {
+        } catch {
             router.push("/dashboard"); // Fallback
         } finally {
             setIsLoading(false);

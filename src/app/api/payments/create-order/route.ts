@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { getPlanById } from "@/data/plans";
+import { NextRequest } from "next/server";
+import { createRouteHandlerClient } from "@/lib/supabase/route";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function getRazorpayClient() {
     const keyId = process.env.RAZORPAY_KEY_ID;
@@ -21,8 +24,17 @@ function getRazorpayClient() {
     };
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
+        const { supabase, applyToResponse } = createRouteHandlerClient(req);
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+        }
+
         const body = await req.json();
         const planId = String(body?.planId ?? "");
 
@@ -44,7 +56,7 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json({
+        return applyToResponse(NextResponse.json({
             success: true,
             keyId,
             order,
@@ -53,8 +65,9 @@ export async function POST(req: Request) {
                 name: plan.name,
                 amountPaise,
             },
-        });
+        }));
     } catch (error) {
+        console.error("[Razorpay Order Create Error]:", error);
         const message = error instanceof Error ? error.message : "Unable to create payment order.";
         return NextResponse.json({ success: false, message }, { status: 500 });
     }

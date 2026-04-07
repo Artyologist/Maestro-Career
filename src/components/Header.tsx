@@ -128,7 +128,7 @@ export default function Header() {
         } finally {
             setIsProfileMenuOpen(false);
             setIsAuthenticated(false);
-            router.push("/auth");
+            router.push("/login");
             router.refresh();
         }
     };
@@ -242,13 +242,21 @@ export default function Header() {
                         </motion.button>
 
                         {!authLoading && !isAuthenticated && (
-                            <Link
-                                href="/auth"
-                                className="flex items-center gap-2 px-8 py-4 bg-accent text-white text-sm font-black uppercase tracking-widest rounded-full hover:scale-105 hover:shadow-lg hover:shadow-accent/40 transition-all border-b-4 border-black/20 active:border-b-0 active:translate-y-1"
-                            >
-                                Get Started
-                                <ArrowRight size={18} />
-                            </Link>
+                            <div className="flex items-center gap-3">
+                                <Link
+                                    href="/login"
+                                    className="px-6 py-4 text-sm font-black uppercase tracking-widest rounded-full border-2 border-primary/20 text-foreground hover:border-primary hover:text-primary transition-all"
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    className="flex items-center gap-2 px-8 py-4 bg-accent text-white text-sm font-black uppercase tracking-widest rounded-full hover:scale-105 hover:shadow-lg hover:shadow-accent/40 transition-all border-b-4 border-black/20 active:border-b-0 active:translate-y-1"
+                                >
+                                    Register
+                                    <ArrowRight size={18} />
+                                </Link>
+                            </div>
                         )}
 
                         {!authLoading && isAuthenticated && (
@@ -349,13 +357,22 @@ export default function Header() {
                             ))}
                             <div className="pt-6 border-t border-foreground/5 space-y-4">
                                 {!authLoading && !isAuthenticated && (
-                                    <Link
-                                        href="/auth"
-                                        className="block w-full py-5 text-center font-black uppercase tracking-widest text-background bg-foreground text-sm"
-                                        onClick={() => setIsOpen(false)}
-                                    >
-                                        Launch Platform
-                                    </Link>
+                                    <div className="grid gap-3">
+                                        <Link
+                                            href="/login"
+                                            className="block w-full py-5 text-center font-black uppercase tracking-widest text-foreground border border-foreground/10 text-sm"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            Login
+                                        </Link>
+                                        <Link
+                                            href="/register"
+                                            className="block w-full py-5 text-center font-black uppercase tracking-widest text-background bg-foreground text-sm"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            Register
+                                        </Link>
+                                    </div>
                                 )}
                                 {!authLoading && isAuthenticated && (
                                     <>

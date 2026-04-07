@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isAdminAuthenticatedRequest } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
     try {
-        // Simple admin-only logic (token-based or just role-based if authenticated as admin in Supabase)
-        // For this task, user wants hardcoded credentials. 
-        // I'll check a simple cookie or header for "/admin" access in real apps, 
-        // but let's fulfill the list requirement.
+        if (!isAdminAuthenticatedRequest(req)) {
+            return NextResponse.json({ success: false, message: "Admin authentication required." }, { status: 401 });
+        }
 
         const admin = createAdminClient();
         const { data: users, error } = await admin
