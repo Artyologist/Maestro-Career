@@ -76,7 +76,7 @@ export default function Footer() {
                             <div className="w-full h-24 rounded-xl overflow-hidden border border-foreground/5 shadow-sm relative group">
                                 <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.96054024997!2d79.0674004!3d21.114139299999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x619795a114f30ecf%3A0x58b687f6fa0c4f40!2sMaestrocareer!5e0!3m2!1sen!2sin!4v1775239385123!5m2!1sen!2sin"
-                                    className="w-full h-full grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                                    className="w-full h-full"
                                     style={{ border: 0 }}
                                     allowFullScreen={true}
                                     loading="lazy"
@@ -109,7 +109,6 @@ export default function Footer() {
 
                     {/* Center: Copyright */}
                     <div className="flex items-center justify-center space-x-4 md:w-1/3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                         <p className="text-[9px] font-black uppercase tracking-[0.3em] text-foreground/40 text-center">
                             &copy; {new Date().getFullYear()} Maestro Career. All Rights Reserved.
                         </p>

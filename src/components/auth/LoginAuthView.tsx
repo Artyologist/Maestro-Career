@@ -160,9 +160,9 @@ export function LoginAuthView({
                         {loading ? "Updating password..." : "Reset password"}
                     </PrimaryButton>
 
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-foreground/60">
                         Return to{" "}
-                        <Link href="/login" className="font-medium text-[#01015B] hover:text-[#1DC5FE]">
+                        <Link href="/login" className="font-medium text-primary hover:text-primary/80 transition-colors">
                             login
                         </Link>
                         .
@@ -177,15 +177,15 @@ export function LoginAuthView({
                     />
 
                     <Divider label="Or continue with email" />
-
-                    <div className="inline-flex rounded-full bg-slate-100 p-1">
+    
+                    <div className="inline-flex rounded-full bg-background/50 border border-border/20 p-1">
                         <button
                             type="button"
                             onClick={() => onLoginModeChange("password")}
                             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                                 loginMode === "password"
-                                    ? "bg-white text-[#01015B] shadow-sm"
-                                    : "text-slate-500 hover:text-[#01015B]"
+                                    ? "bg-primary text-primary-foreground shadow-sm"
+                                    : "text-foreground/60 hover:text-foreground hover:bg-background/80"
                             }`}
                         >
                             Password
@@ -195,14 +195,14 @@ export function LoginAuthView({
                             onClick={() => onLoginModeChange("otp")}
                             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                                 loginMode === "otp"
-                                    ? "bg-white text-[#01015B] shadow-sm"
-                                    : "text-slate-500 hover:text-[#01015B]"
+                                    ? "bg-primary text-primary-foreground shadow-sm"
+                                    : "text-foreground/60 hover:text-foreground hover:bg-background/80"
                             }`}
                         >
                             Email OTP
                         </button>
                     </div>
-
+    
                     <AnimatePresence mode="wait">
                         {loginMode === "password" ? (
                             <motion.form
@@ -239,7 +239,7 @@ export function LoginAuthView({
                                     <button
                                         type="button"
                                         onClick={onToggleForgot}
-                                        className="text-sm font-medium text-[#01015B] hover:text-[#1DC5FE]"
+                                        className="text-sm font-medium text-primary hover:text-primary/80"
                                     >
                                         Forgot your password?
                                     </button>
@@ -284,7 +284,7 @@ export function LoginAuthView({
                                         type="button"
                                         onClick={() => void onLoginRequestOtp()}
                                         disabled={loading || otpCooldown > 0}
-                                        className="text-left text-sm font-medium text-slate-500 transition hover:text-[#01015B] disabled:text-slate-400"
+                                        className="text-left text-sm font-medium text-foreground/60 transition hover:text-primary disabled:text-foreground/40"
                                     >
                                         {otpCooldown > 0 ? `Resend available in ${otpCooldown}s` : "Resend OTP"}
                                     </button>
@@ -312,12 +312,12 @@ export function LoginAuthView({
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 onSubmit={onForgotPasswordRequest}
-                                className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 p-5"
+                                className="overflow-hidden rounded-3xl border border-border/20 bg-card p-5 shadow-sm"
                             >
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <h3 className="text-base font-semibold text-slate-900">Reset password</h3>
-                                        <p className="text-sm leading-6 text-slate-600">
+                                        <h3 className="text-base font-semibold text-foreground">Reset password</h3>
+                                        <p className="text-sm leading-6 text-foreground/60">
                                             We&apos;ll email a secure recovery link to this address.
                                         </p>
                                     </div>
@@ -353,9 +353,9 @@ export function LoginAuthView({
                         ) : null}
                     </AnimatePresence>
 
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-foreground/60">
                         New here?{" "}
-                        <Link href="/register" className="font-medium text-[#01015B] hover:text-[#1DC5FE]">
+                        <Link href="/register" className="font-medium text-primary hover:text-primary/80 transition-colors">
                             Create an account
                         </Link>
                         .
