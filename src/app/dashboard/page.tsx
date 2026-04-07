@@ -7,7 +7,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
 import { formatInr, getPlanById, PLANS } from "@/data/plans";
-import { ChevronRight, CreditCard, ExternalLink, ShieldCheck, LogOut, LayoutDashboard, User, Activity, Sparkles, Building, MapPin, TabletSmartphone } from "lucide-react";
 
 import { DashboardData } from "@/lib/auth-supabase";
 
@@ -260,208 +259,172 @@ export default function DashboardPage() {
             <section className="py-14 md:py-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {loading && (
-                        <div className="max-w-4xl mx-auto rounded-3xl border border-blue-100 bg-white p-20 text-center shadow-xl shadow-blue-500/5 animate-pulse">
-                            <div className="flex flex-col items-center gap-6">
-                                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center">
-                                    <Sparkles className="w-8 h-8 text-primary animate-spin-slow" />
-                                </div>
-                                <p className="text-gray-400 font-black uppercase tracking-[0.3em] text-xs">Authenticating Session</p>
+                        <div className="max-w-4xl mx-auto rounded-3xl border border-border/20 bg-card p-12 text-center shadow-sm animate-pulse">
+                            <div className="flex flex-col items-center gap-4">
+                                <p className="text-foreground/60 font-medium text-sm">Loading your dashboard...</p>
                             </div>
                         </div>
                     )}
 
                     {!loading && error && (
-                        <div className="max-w-4xl mx-auto rounded-3xl border border-rose-100 bg-rose-50 p-8 text-rose-700 shadow-xl shadow-rose-500/5 text-center">
-                            <div className="mb-4 inline-flex items-center justify-center w-12 h-12 bg-rose-100 rounded-full">
-                                <Activity className="w-6 h-6" />
-                            </div>
-                            <h3 className="text-lg font-black uppercase tracking-tight mb-2">Operation Halted</h3>
-                            <p className="text-sm font-medium opacity-80">{error}</p>
-                            <button onClick={loadData} className="mt-6 px-8 py-3 bg-rose-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-rose-700 transition-all">Retry Synchronization</button>
+                        <div className="max-w-4xl mx-auto rounded-3xl border border-destructive/20 bg-destructive/10 p-8 text-destructive text-center">
+                            <h3 className="text-lg font-semibold mb-2">Error loading data</h3>
+                            <p className="text-sm opacity-80">{error}</p>
+                            <button onClick={loadData} className="mt-6 px-6 py-2.5 bg-destructive text-destructive-foreground rounded-lg text-sm font-medium hover:bg-destructive/90 transition-colors">Try again</button>
                         </div>
                     )}
 
                     {!loading && dashboard && (
                         <div className="max-w-7xl mx-auto space-y-8">
                             {/* Top Header Card */}
-                            <div className="rounded-[2.5rem] border border-white bg-white/40 backdrop-blur-3xl p-8 md:p-12 shadow-2xl shadow-blue-500/5 flex flex-col md:flex-row md:items-center md:justify-between gap-8 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none group-hover:bg-primary/10 transition-all duration-1000" />
-                                <div className="relative z-10 flex flex-col items-start gap-4">
-                                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
-                                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">Secure Portal Active</span>
-                                    </div>
-                                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-dark tracking-tightest leading-none uppercase italic">
+                            <div className="rounded-3xl border border-border/20 bg-card p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative overflow-hidden transition-all shadow-sm w-full">
+                                <div className="relative z-10 flex flex-col items-start gap-2">
+                                    <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                                         Welcome, <span className="text-primary">{dashboard.profile.name}</span>
                                     </h1>
-                                    <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Maestro Dashboard v2.0</p>
+                                    <p className="text-foreground/60 text-sm">Manage your profile, assessments, and services.</p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={handleLogout}
-                                    className="relative z-10 rounded-2xl bg-dark hover:bg-black text-white px-10 py-5 font-black uppercase tracking-[0.3em] text-[10px] transition-all hover:scale-[1.05] shadow-2xl shadow-black/20 flex items-center gap-3 active:scale-95"
+                                    className="relative z-10 rounded-xl bg-background border border-border/20 hover:border-border/40 text-foreground px-6 py-2.5 text-sm font-medium transition-colors flex items-center gap-2"
                                 >
-                                    <LogOut className="w-4 h-4" />
-                                    End Session
+                                    Logout
                                 </button>
                             </div>
 
                             {/* Plan and Assessment Section */}
                             <div className="grid lg:grid-cols-2 gap-8">
                                 {dashboard.profile.selectedPlanId ? (
-                                    <div className="rounded-[2rem] border border-primary/20 bg-primary/5 p-10 shadow-xl shadow-primary/5 flex flex-col justify-between relative group overflow-hidden">
-                                        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 p-20 opacity-5 group-hover:opacity-10 transition-opacity">
-                                            <CreditCard className="w-64 h-64 text-primary" />
-                                        </div>
+                                    <div className="rounded-3xl border border-border/20 bg-card p-8 flex flex-col justify-between shadow-sm relative overflow-hidden">
                                         <div className="relative z-10">
-                                            <div className="flex items-center gap-4 mb-8">
-                                                <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20 shadow-lg shadow-primary/10">
-                                                    <CreditCard className="w-6 h-6 text-primary" />
-                                                </div>
-                                                <h2 className="text-xl font-black text-dark tracking-wide uppercase italic">Career Path Selected</h2>
+                                            <div className="flex items-center gap-3 justify-start mb-6">
+                                                <h2 className="text-lg font-semibold text-foreground">Current Plan</h2>
                                             </div>
-                                            <h3 className="text-5xl font-black text-dark tracking-tightest leading-tight uppercase italic mb-4">{selectedPlan?.name}</h3>
+                                            <h3 className="text-2xl font-bold text-foreground mb-4">{selectedPlan?.name}</h3>
 
-                                            <div className="mt-10 flex items-center justify-between bg-white/70 backdrop-blur-md border border-white rounded-[2rem] p-8 shadow-inner">
+                                            <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-background border border-border/20 rounded-2xl p-6 gap-4">
                                                 <div>
-                                                    <p className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-2">Total Investment</p>
-                                                    <p className="text-4xl font-black text-primary leading-none tracking-tighter">{formatInr(selectedPlan?.priceInr || 0)}</p>
+                                                    <p className="text-xs font-medium text-foreground/50 mb-1">Total Fee</p>
+                                                    <p className="text-xl font-bold text-primary">{formatInr(selectedPlan?.priceInr || 0)}</p>
                                                 </div>
-                                                <div className="text-right">
-                                                    <p className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] mb-2">Account Status</p>
-                                                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-black text-[10px] uppercase tracking-widest ${dashboard.profile.paymentStatus === 'paid' ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-200' : 'bg-rose-500/10 text-rose-600 border border-rose-200'}`}>
-                                                        {dashboard.profile.paymentStatus === 'paid' && <ShieldCheck className="w-3 h-3" />}
-                                                        {dashboard.profile.paymentStatus?.toUpperCase() || 'UNPAID'}
+                                                <div className="text-left sm:text-right">
+                                                    <p className="text-xs font-medium text-foreground/50 mb-1">Status</p>
+                                                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold uppercase ${dashboard.profile.paymentStatus === 'paid' ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-600 border border-rose-500/20'}`}>
+                                                        {dashboard.profile.paymentStatus || 'UNPAID'}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="mt-12 relative z-10">
+                                        <div className="mt-8 relative z-10">
                                             {dashboard.profile.paymentStatus === 'paid' ? (
-                                                <div className="flex items-center gap-4 text-emerald-600 font-black bg-white rounded-2xl p-6 justify-center shadow-xl shadow-emerald-500/5 group/verified transition-all hover:scale-[1.02] border border-emerald-50">
-                                                    <div className="w-8 h-8 bg-emerald-500/10 rounded-full flex items-center justify-center group-hover/verified:scale-110 transition-transform">
-                                                        <ShieldCheck className="w-5 h-5" />
-                                                    </div>
-                                                    <span className="uppercase tracking-[0.2em] text-xs font-black">Lifecycle Verified</span>
+                                                <div className="flex items-center gap-3 text-emerald-600 font-medium bg-emerald-500/5 rounded-xl p-4 justify-center border border-emerald-500/20">
+                                                    <span className="text-sm">Payment Verified</span>
                                                 </div>
                                             ) : (
                                                 <button
                                                     onClick={handlePayNow}
                                                     disabled={isPaying}
-                                                    className="w-full group/pay relative overflow-hidden rounded-[1.5rem] bg-primary hover:bg-primary-dark text-white font-black uppercase tracking-[0.4em] text-[11px] py-7 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 shadow-2xl shadow-primary/40"
+                                                    className="w-full rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm py-4 transition-colors disabled:opacity-70"
                                                 >
-                                                    {isPaying ? "Synchronizing with Gateway..." : "Finalize & Pay Now"}
+                                                    {isPaying ? "Loading gateway..." : "Pay Now"}
                                                 </button>
                                             )}
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="rounded-[2rem] border border-dashed border-primary/20 bg-white/50 p-12 flex flex-col text-center group hover:bg-primary/5 transition-all duration-500 hover:border-solid hover:border-primary/40">
-                                        <div className="p-8 bg-white rounded-full shadow-2xl shadow-blue-500/10 mb-8 self-center group-hover:scale-110 transition-transform duration-500">
-                                            <Sparkles className="w-12 h-12 text-primary" />
-                                        </div>
-                                        <h3 className="text-2xl font-black text-dark uppercase italic tracking-tightest mb-4">No Plan Locked</h3>
-                                        <p className="text-gray-400 font-bold text-sm max-w-xl mx-auto leading-relaxed uppercase tracking-widest text-[10px]">Select one of the 3 plans below. The selected plan will be saved to your profile and the Pay Now action will be enabled automatically.</p>
+                                    <div className="rounded-3xl border border-border/20 bg-card p-10 flex flex-col text-center shadow-sm">
+                                        <h3 className="text-xl font-semibold text-foreground mb-2">No Plan Selected</h3>
+                                        <p className="text-foreground/60 text-sm max-w-sm mx-auto mb-8">Select a plan from below. Once selected, you&apos;ll be able to proceed with payment.</p>
 
-                                        <div className="mt-10 grid md:grid-cols-3 gap-4 text-left">
+                                        <div className="grid sm:grid-cols-3 gap-4 text-left mb-6">
                                             {PLANS.map((plan) => {
                                                 const active = selectingPlanId === plan.id;
                                                 return (
-                                                    <div key={plan.id} className="rounded-2xl border border-primary/10 bg-white p-5 shadow-lg shadow-blue-500/5 flex flex-col gap-4">
+                                                    <div key={plan.id} className="rounded-2xl border border-border/20 bg-background p-4 flex flex-col gap-3">
                                                         <div>
-                                                            <p className="text-lg font-black text-dark uppercase italic tracking-tight">{plan.name}</p>
-                                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">{formatInr(plan.priceInr)}</p>
+                                                            <p className="text-sm font-semibold text-foreground">{plan.name}</p>
+                                                            <p className="text-xs text-foreground/60 mt-1">{formatInr(plan.priceInr)}</p>
                                                         </div>
                                                         <button
                                                             type="button"
                                                             onClick={() => handleSelectPlan(plan.id)}
                                                             disabled={!!selectingPlanId}
-                                                            className="rounded-xl bg-primary text-white px-4 py-3 text-[10px] font-black uppercase tracking-widest hover:bg-primary-dark transition-all disabled:opacity-60"
+                                                            className="rounded-lg bg-primary text-primary-foreground px-3 py-2 text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-60 text-center"
                                                         >
-                                                            {active ? "Selecting..." : "Select Plan"}
+                                                            {active ? "Selecting..." : "Select"}
                                                         </button>
                                                     </div>
                                                 );
                                             })}
                                         </div>
 
-                                        <Link href="/#pricing" className="mt-8 px-10 py-5 bg-dark text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-black/20 self-center">
-                                            Compare Full Plan Details <ChevronRight className="w-4 h-4" />
+                                        <Link href="/#pricing" className="text-sm text-primary hover:text-primary/80 font-medium inline-flex items-center justify-center gap-1">
+                                            Compare full plan details &rarr;
                                         </Link>
                                     </div>
                                 )}
 
                                 {dashboard.profile.psychometricTestLink ? (
-                                    <div className="rounded-[2rem] border border-accent-purple/20 bg-accent-purple/5 p-10 shadow-xl shadow-accent-purple/5 flex flex-col justify-between relative group overflow-hidden">
-                                        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 p-20 opacity-5 group-hover:opacity-10 transition-opacity">
-                                            <ExternalLink className="w-64 h-64 text-accent-purple" />
-                                        </div>
+                                    <div className="rounded-3xl border border-primary/20 bg-primary/5 p-8 flex flex-col justify-between relative overflow-hidden">
                                         <div className="relative z-10">
-                                            <div className="flex items-center gap-4 mb-8">
-                                                <div className="p-3 bg-accent-purple/10 rounded-2xl border border-accent-purple/20 shadow-lg shadow-accent-purple/10">
-                                                    <ExternalLink className="w-6 h-6 text-accent-purple" />
-                                                </div>
-                                                <h2 className="text-xl font-black text-dark tracking-wide uppercase italic">Assessment Issued</h2>
+                                            <div className="flex items-center gap-3 justify-start mb-6">
+                                                <h2 className="text-lg font-semibold text-foreground">Psychometric Assessment</h2>
                                             </div>
-                                            <p className="text-gray-500 font-bold text-sm leading-loose uppercase tracking-widest text-[10px]">Our experts have finalized your personalized industrial psychometric test link. Access the partner portal below.</p>
+                                            <p className="text-sm text-foreground/60 leading-relaxed mb-8">
+                                                Your personalized psychometric assessment is ready. Click below to begin.
+                                            </p>
                                         </div>
-                                        <div className="mt-12 relative z-10">
+                                        <div className="relative z-10 mt-auto">
                                             <a
                                                 href={dashboard.profile.psychometricTestLink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="w-full inline-flex items-center justify-center rounded-[1.5rem] bg-accent-purple hover:bg-accent-purple/90 text-white font-black uppercase tracking-[0.4em] text-[11px] py-7 transition-all hover:scale-[1.02] active:scale-95 shadow-2xl shadow-accent-purple/40"
+                                                className="w-full inline-flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm py-4 transition-colors"
                                             >
-                                                Launch Assessment <ChevronRight className="ml-2 w-4 h-4" />
+                                                Start Assessment &rarr;
                                             </a>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="rounded-[2rem] border border-dashed border-gray-200 bg-white/50 p-12 flex flex-col items-center justify-center text-center">
-                                        <div className="p-8 bg-white rounded-full shadow-2xl shadow-gray-500/10 mb-8">
-                                            <ShieldCheck className="w-12 h-12 text-gray-200" />
-                                        </div>
-                                        <h3 className="text-2xl font-black text-gray-400 uppercase italic tracking-tightest mb-4">Awaiting Link</h3>
-                                        <p className="text-gray-400 font-bold text-sm max-w-xs leading-relaxed uppercase tracking-widest text-[10px]">Following plan selection and verification, our expert team will distribute your assessment link within 24-48 hours.</p>
+                                    <div className="rounded-3xl border border-border/20 bg-card p-10 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <h3 className="text-xl font-semibold text-foreground mb-2">Assessment Link Pending</h3>
+                                        <p className="text-sm text-foreground/60 max-w-sm">After you complete your payment, your assessment link will be generated and displayed here within 24-48 hours.</p>
                                     </div>
                                 )}
                             </div>
 
                             {!dashboard.profile.onboardingCompleted && (
-                                <div className="rounded-[3rem] border border-white bg-white p-12 shadow-2xl shadow-blue-500/5 relative overflow-hidden group">
-                                    <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:scale-110 transition-transform duration-1000">
-                                        <Sparkles className="w-32 h-32 text-primary" />
-                                    </div>
+                                <div className="rounded-3xl border border-border/20 bg-card p-8 md:p-10 shadow-sm relative overflow-hidden">
                                     <div className="relative z-10">
-                                        <h2 className="text-3xl font-black text-dark tracking-tightest uppercase italic mb-2">Finalize Credentials</h2>
-                                        <p className="text-gray-400 font-bold uppercase tracking-widest text-xs mb-10">Tailoring your Maestro Career experience.</p>
+                                        <h2 className="text-xl font-semibold text-foreground mb-1">Complete your profile</h2>
+                                        <p className="text-sm text-foreground/60 mb-8">Provide a few more details to finalize your account setup.</p>
 
                                         {profileMessage && (
-                                            <div className="mb-8 rounded-2xl border border-emerald-100 bg-emerald-50 px-6 py-4 text-xs font-black uppercase tracking-widest text-emerald-700">
+                                            <div className="mb-6 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-600">
                                                 {profileMessage}
                                             </div>
                                         )}
 
-                                        <form onSubmit={handleCompleteProfile} className="space-y-8 max-w-2xl">
-                                            <div className="space-y-3">
-                                                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Full Name</label>
+                                        <form onSubmit={handleCompleteProfile} className="space-y-6 max-w-xl">
+                                            <div className="space-y-2">
+                                                <label className="block text-sm font-medium text-foreground/80">Full Name</label>
                                                 <div className="relative">
-                                                    <User className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                                                     <input
                                                         type="text"
                                                         value={onboardingData.name}
                                                         onChange={(e) => setOnboardingData((prev) => ({ ...prev, name: e.target.value }))}
-                                                        className="w-full rounded-2xl border border-gray-100 bg-gray-50/50 pl-14 pr-6 py-5 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-dark"
-                                                        placeholder="ENTER YOUR FULL NAME"
+                                                        className="block w-full rounded-xl border border-border/30 bg-background px-4 py-3 text-[15px] text-foreground shadow-sm outline-none transition placeholder:text-foreground/40 focus:border-primary focus:ring-4 focus:ring-primary/20"
+                                                        placeholder="Your full name"
                                                         required
                                                     />
                                                 </div>
                                             </div>
 
-                                            <div className="space-y-4">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Target Verticals (SELECT UP TO 5)</p>
-                                                <div className="flex flex-wrap gap-3">
+                                            <div className="space-y-3">
+                                                <p className="block text-sm font-medium text-foreground/80">Services of Interest (Up to 5)</p>
+                                                <div className="flex flex-wrap gap-2">
                                                     {SERVICE_OPTIONS.map((service) => {
                                                         const selected = onboardingData.preferredServices.includes(service);
                                                         return (
@@ -469,7 +432,7 @@ export default function DashboardPage() {
                                                                 key={service}
                                                                 type="button"
                                                                 onClick={() => toggleService(service)}
-                                                                className={`rounded-xl border px-6 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${selected ? "bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-105" : "bg-white text-gray-400 border-gray-100 hover:border-primary hover:text-primary"}`}
+                                                                className={`rounded-lg border px-4 py-2 text-sm font-medium transition-all ${selected ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground/70 border-border/30 hover:border-border/60 hover:text-foreground"}`}
                                                             >
                                                                 {service}
                                                             </button>
@@ -481,9 +444,9 @@ export default function DashboardPage() {
                                             <button
                                                 type="submit"
                                                 disabled={savingProfile}
-                                                className="relative group overflow-hidden rounded-2xl bg-dark hover:bg-black text-white px-12 py-6 font-black uppercase tracking-[0.4em] text-[10px] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 shadow-2xl shadow-black/20"
+                                                className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-sm font-medium transition-colors disabled:opacity-70 mt-4"
                                             >
-                                                {savingProfile ? "Writing Data..." : "Apply Profile Updates"}
+                                                {savingProfile ? "Saving..." : "Save Profile"}
                                             </button>
                                         </form>
                                     </div>
@@ -491,72 +454,72 @@ export default function DashboardPage() {
                             )}
 
                             {/* Stats Cards */}
-                            <div className="grid md:grid-cols-3 gap-8">
+                            <div className="grid md:grid-cols-3 gap-6">
                                 {[
-                                    { label: "Session Duration", value: `${dashboard.metrics.accountAgeDays}d`, icon: Sparkles },
-                                    { label: "Synchronization Density", value: dashboard.metrics.totalLogins, icon: LayoutDashboard },
-                                    { label: "Direct Inquiries", value: dashboard.metrics.inquiryCount, icon: User },
+                                    { label: "Days Active", value: dashboard.metrics.accountAgeDays },
+                                    { label: "Total Logins", value: dashboard.metrics.totalLogins },
+                                    { label: "Inquiries", value: dashboard.metrics.inquiryCount },
                                 ].map((stat, idx) => (
-                                    <div key={idx} className="rounded-[2.5rem] bg-white border border-white p-10 shadow-2xl shadow-blue-500/5 group hover:scale-[1.02] transition-all relative overflow-hidden">
-                                        <stat.icon className="absolute -bottom-4 -right-4 w-24 h-24 text-gray-50 group-hover:text-primary/5 transition-colors" />
-                                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 relative z-10">{stat.label}</p>
-                                        <p className="text-5xl font-black text-dark mt-4 tracking-tighter relative z-10">{stat.value}</p>
+                                    <div key={idx} className="rounded-3xl bg-card border border-border/20 p-8 shadow-sm flex flex-col justify-center">
+                                        <p className="text-sm font-medium text-foreground/50">{stat.label}</p>
+                                        <p className="text-3xl font-bold text-foreground mt-1">{stat.value}</p>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="grid lg:grid-cols-2 gap-8">
+                            <div className="grid lg:grid-cols-2 gap-6">
                                 {/* Profile Details Card */}
-                                <div className="rounded-[3rem] border border-white bg-white p-12 shadow-2xl shadow-blue-500/5 relative group">
-                                    <h2 className="text-2xl font-black text-dark tracking-tightest uppercase italic mb-10 flex items-center gap-3">
-                                        Account <span className="text-primary">Intelligence</span>
+                                <div className="rounded-3xl border border-border/20 bg-card p-8 shadow-sm">
+                                    <h2 className="text-lg font-semibold text-foreground mb-6">
+                                        Account Details
                                     </h2>
-                                    <div className="space-y-6">
+                                    <div className="space-y-4">
                                         {[
-                                            { label: "Entity Name", value: dashboard.profile.name, icon: User },
-                                            { label: "Digital Mail", value: dashboard.profile.email, icon: Building },
-                                            { label: "Mobile Uplink", value: dashboard.profile.mobile, icon: TabletSmartphone },
-                                            { label: "Onboarding", value: dashboard.profile.onboardingCompleted ? "SECURE" : "INCOMPLETE", icon: ShieldCheck },
-                                            { label: "Locality", value: dashboard.profile.city || "PENDING", icon: MapPin },
+                                            { label: "Name", value: dashboard.profile.name },
+                                            { label: "Email", value: dashboard.profile.email },
+                                            { label: "Phone", value: dashboard.profile.mobile },
+                                            { label: "Status", value: dashboard.profile.onboardingCompleted ? "Complete" : "Incomplete" },
+                                            { label: "City", value: dashboard.profile.city || "Not provided" },
                                         ].map((info, idx) => (
-                                            <div key={idx} className="flex items-center justify-between py-4 border-b border-gray-50 group/item">
-                                                <div className="flex items-center gap-4">
-                                                    <info.icon className="w-4 h-4 text-gray-300 group-hover/item:text-primary transition-colors" />
-                                                    <span className="text-[11px] font-black uppercase tracking-widest text-gray-300">{info.label}</span>
-                                                </div>
-                                                <span className="text-xs font-black text-dark tracking-tight italic uppercase">{info.value || "—"}</span>
+                                            <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border/10 last:border-0 last:pb-0 gap-1 sm:gap-4">
+                                                <span className="text-sm font-medium text-foreground/60">{info.label}</span>
+                                                <span className="text-sm font-semibold text-foreground truncate">{info.value}</span>
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="mt-12 flex flex-wrap gap-2">
-                                        {dashboard.profile.preferredServices.map((item) => (
-                                            <span
-                                                key={item}
-                                                className="inline-flex items-center rounded-full bg-primary/5 text-primary border border-primary/20 px-4 py-2 text-[10px] font-black uppercase tracking-widest"
-                                            >
-                                                {item}
-                                            </span>
-                                        ))}
-                                    </div>
+                                    {dashboard.profile.preferredServices.length > 0 && (
+                                        <div className="mt-8 pt-6 border-t border-border/10">
+                                            <p className="text-sm font-medium text-foreground/60 mb-3">Interested in:</p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {dashboard.profile.preferredServices.map((item) => (
+                                                    <span
+                                                        key={item}
+                                                        className="inline-flex items-center rounded-lg bg-background border border-border/20 px-3 py-1.5 text-xs font-medium text-foreground/70"
+                                                    >
+                                                        {item}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Activity Log Card */}
-                                <div className="rounded-[3rem] border border-white bg-white p-12 shadow-2xl shadow-blue-500/5 relative group">
-                                    <h2 className="text-2xl font-black text-dark tracking-tightest uppercase italic mb-10 flex items-center gap-3">
-                                        Synchronization <span className="text-primary">Log</span>
+                                <div className="rounded-3xl border border-border/20 bg-card p-8 shadow-sm">
+                                    <h2 className="text-lg font-semibold text-foreground mb-6">
+                                        Recent Activity
                                     </h2>
                                     <div className="space-y-6">
                                         {dashboard.recentActivity.length === 0 && (
-                                            <div className="py-20 text-center">
-                                                <Activity className="w-12 h-12 text-gray-100 mx-auto mb-4" />
-                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300">No activity data found</p>
+                                            <div className="py-12 text-center">
+                                                <p className="text-sm text-foreground/50">No recent activity.</p>
                                             </div>
                                         )}
                                         {dashboard.recentActivity.map((item) => (
-                                            <div key={item.id} className="relative pl-8 group/activity">
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-200 rounded-full group-hover/activity:bg-primary transition-colors" />
-                                                <p className="text-xs font-black text-dark tracking-tight uppercase italic mb-1">{item.message}</p>
-                                                <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">{new Date(item.at).toLocaleDateString()} @ {new Date(item.at).toLocaleTimeString()}</p>
+                                            <div key={item.id} className="relative pl-6 border-l-2 border-border/20">
+                                                <div className="absolute left-[-5px] top-1.5 w-2 h-2 bg-primary rounded-full" />
+                                                <p className="text-sm font-medium text-foreground mb-1">{item.message}</p>
+                                                <p className="text-xs text-foreground/50">{new Date(item.at).toLocaleDateString()} at {new Date(item.at).toLocaleTimeString()}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -564,20 +527,19 @@ export default function DashboardPage() {
                             </div>
 
                             {/* Modules Panel */}
-                            <div className="rounded-[3rem] border border-white bg-white p-12 shadow-2xl shadow-blue-500/5">
-                                <h2 className="text-2xl font-black text-dark tracking-tightest uppercase italic mb-10">System <span className="text-primary">Modules</span></h2>
-                                <div className="grid md:grid-cols-3 gap-8">
+                            <div className="w-full">
+                                <h2 className="text-lg font-semibold text-foreground mb-4">Quick Links</h2>
+                                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                                     {dashboard.websiteModules.map((module) => (
                                         <Link
                                             key={module.title}
                                             href={module.route}
-                                            className="group relative rounded-[2rem] border border-gray-100 p-8 hover:border-primary hover:bg-primary/5 transition-all overflow-hidden"
+                                            className="rounded-2xl border border-border/20 bg-card p-6 hover:border-primary/30 transition-colors shadow-sm flex flex-col items-start gap-2"
                                         >
-                                            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/5 rounded-full rotate-12 translate-y-12 translate-x-12 opacity-0 group-hover:opacity-100 transition-all duration-700" />
-                                            <p className="text-xl font-black text-dark group-hover:text-primary tracking-tightest leading-none uppercase italic mb-4">{module.title}</p>
-                                            <p className="text-[10px] font-bold text-gray-400 leading-relaxed uppercase tracking-widest">{module.description}</p>
-                                            <div className="mt-8 flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all">
-                                                Access Module <ChevronRight className="w-3 h-3" />
+                                            <p className="text-base font-semibold text-foreground">{module.title}</p>
+                                            <p className="text-xs text-foreground/60 flex-1">{module.description}</p>
+                                            <div className="mt-4 flex items-center gap-1 text-primary text-xs font-medium">
+                                                Open &rarr;
                                             </div>
                                         </Link>
                                     ))}

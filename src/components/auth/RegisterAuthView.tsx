@@ -237,20 +237,20 @@ export function RegisterAuthView({
                             required
                         />
 
-                        <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                        <label className="flex items-start gap-3 rounded-2xl border border-border/20 bg-background/50 px-4 py-3">
                             <input
                                 type="checkbox"
                                 checked={registerData.acceptedTerms}
                                 onChange={(event) => onAcceptedTermsChange(event.target.checked)}
-                                className="mt-1 h-4 w-4 rounded border-slate-300 text-[#01015B] focus:ring-[#1DC5FE]"
+                                className="mt-1 h-4 w-4 rounded border-border/30 text-primary focus:ring-primary/20 bg-card"
                             />
-                            <span className="text-sm leading-6 text-slate-600">
+                            <span className="text-sm leading-6 text-foreground/60">
                                 I agree to the{" "}
-                                <Link href="/terms-conditions" className="font-medium text-[#01015B] hover:text-[#1DC5FE]">
+                                <Link href="/terms-conditions" className="font-medium text-primary hover:text-primary/80 transition-colors">
                                     Terms & Conditions
                                 </Link>{" "}
                                 and{" "}
-                                <Link href="/privacy-policy" className="font-medium text-[#01015B] hover:text-[#1DC5FE]">
+                                <Link href="/privacy-policy" className="font-medium text-primary hover:text-primary/80 transition-colors">
                                     Privacy Policy
                                 </Link>
                                 .
@@ -258,9 +258,9 @@ export function RegisterAuthView({
                         </label>
 
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-foreground/50">
                                 Already have an account?{" "}
-                                <Link href="/login" className="font-medium text-[#01015B] hover:text-[#1DC5FE]">
+                                <Link href="/login" className="font-medium text-primary hover:text-primary/80 transition-colors">
                                     Login
                                 </Link>
                                 .
@@ -281,11 +281,11 @@ export function RegisterAuthView({
                         onSubmit={onRegisterVerifyOtp}
                         className="space-y-5"
                     >
-                        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-                            <h3 className="text-base font-semibold text-slate-900">Verify your email</h3>
-                            <p className="mt-2 text-sm leading-6 text-slate-600">
+                        <div className="rounded-3xl border border-border/20 bg-background/50 p-5">
+                            <h3 className="text-base font-semibold text-foreground">Verify your email</h3>
+                            <p className="mt-2 text-sm leading-6 text-foreground/60">
                                 Enter the 6-digit code we sent to{" "}
-                                <span className="font-medium text-slate-900">{registerData.email}</span>.
+                                <span className="font-medium text-foreground">{registerData.email}</span>.
                             </p>
                         </div>
 
@@ -306,7 +306,7 @@ export function RegisterAuthView({
                                     type="button"
                                     onClick={() => void onRegisterRequestOtp()}
                                     disabled={loading || otpCooldown > 0}
-                                    className="text-left text-sm font-medium text-slate-500 transition hover:text-[#01015B] disabled:text-slate-400"
+                                    className="text-left text-sm font-medium text-foreground/50 transition hover:text-primary disabled:text-foreground/40"
                                 >
                                     {otpCooldown > 0 ? `Resend available in ${otpCooldown}s` : "Resend OTP"}
                                 </button>
@@ -328,7 +328,7 @@ export function RegisterAuthView({
                         className="space-y-5"
                     >
                         {setupMode ? (
-                            <div className="rounded-3xl border border-[#1DC5FE]/30 bg-[#1DC5FE]/8 p-5 text-sm leading-6 text-slate-700">
+                            <div className="rounded-3xl border border-primary/30 bg-primary/10 p-5 text-sm leading-6 text-foreground/80">
                                 Your Google account is ready. Complete a few profile details to finish onboarding.
                             </div>
                         ) : null}
@@ -350,15 +350,15 @@ export function RegisterAuthView({
                         />
 
                         <div className="space-y-3">
-                            <p className="text-sm font-medium text-slate-800">I am a</p>
+                            <p className="text-sm font-medium text-foreground/90">I am a</p>
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <button
                                     type="button"
                                     onClick={() => onUserTypeChange("student")}
                                     className={`rounded-2xl border px-4 py-3 text-sm font-medium transition ${
                                         registerData.userType === "student"
-                                            ? "border-[#01015B] bg-[#01015B] text-white"
-                                            : "border-slate-200 bg-white text-slate-700 hover:border-[#01015B]/20 hover:text-[#01015B]"
+                                            ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                                            : "border-border/20 bg-background text-foreground/80 hover:border-border/40 hover:text-foreground"
                                     }`}
                                 >
                                     Student
@@ -368,8 +368,8 @@ export function RegisterAuthView({
                                     onClick={() => onUserTypeChange("working_professional")}
                                     className={`rounded-2xl border px-4 py-3 text-sm font-medium transition ${
                                         registerData.userType === "working_professional"
-                                            ? "border-[#01015B] bg-[#01015B] text-white"
-                                            : "border-slate-200 bg-white text-slate-700 hover:border-[#01015B]/20 hover:text-[#01015B]"
+                                            ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                                            : "border-border/20 bg-background text-foreground/80 hover:border-border/40 hover:text-foreground"
                                     }`}
                                 >
                                     Working Professional

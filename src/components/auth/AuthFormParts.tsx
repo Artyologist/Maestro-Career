@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Eye, EyeOff, LucideIcon, XCircle } from "lucide-react";
 
 const fieldBaseClassName =
-    "block w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-[15px] text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-[#01015B] focus:ring-4 focus:ring-[#1DC5FE]/20 disabled:cursor-not-allowed disabled:bg-slate-100";
+    "block w-full rounded-2xl border border-border/30 bg-card px-4 py-3.5 text-[15px] text-foreground shadow-sm outline-none transition placeholder:text-foreground/40 focus:border-primary focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:bg-background/50";
 
 type FieldWrapperProps = {
     id: string;
@@ -16,14 +16,14 @@ type FieldWrapperProps = {
 export function FieldWrapper({ id, label, hint, error, children }: FieldWrapperProps) {
     return (
         <div className="space-y-2">
-            <label htmlFor={id} className="block text-sm font-medium text-slate-800">
+            <label htmlFor={id} className="block text-sm font-medium text-foreground/90">
                 {label}
             </label>
             {children}
             {error ? (
-                <p className="text-sm text-rose-600">{error}</p>
+                <p className="text-sm text-destructive">{error}</p>
             ) : hint ? (
-                <p className="text-sm text-slate-500">{hint}</p>
+                <p className="text-sm text-foreground/50">{hint}</p>
             ) : null}
         </div>
     );
@@ -70,7 +70,7 @@ export function TextField({
         <FieldWrapper id={id} label={label} hint={hint} error={error}>
             <div className="relative">
                 {Icon ? (
-                    <Icon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <Icon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
                 ) : null}
                 <input
                     id={id}
@@ -157,7 +157,7 @@ export function PasswordField({
                 <button
                     type="button"
                     onClick={onToggle}
-                    className="absolute inset-y-0 right-0 inline-flex w-12 items-center justify-center text-slate-500 transition hover:text-[#01015B]"
+                    className="absolute inset-y-0 right-0 inline-flex w-12 items-center justify-center text-foreground/50 transition hover:text-primary"
                     aria-label={visible ? "Hide password" : "Show password"}
                 >
                     {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -181,8 +181,8 @@ export function FeedbackBanner({ tone, message }: FeedbackBannerProps) {
             animate={{ opacity: 1, y: 0 }}
             className={`rounded-2xl border px-4 py-3 text-sm ${
                 isSuccess
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                    : "border-rose-200 bg-rose-50 text-rose-700"
+                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-500"
+                    : "border-destructive/20 bg-destructive/10 text-destructive"
             }`}
         >
             <div className="flex items-start gap-3">
@@ -200,11 +200,11 @@ export function FeedbackBanner({ tone, message }: FeedbackBannerProps) {
 export function Divider({ label }: { label: string }) {
     return (
         <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+            <div className="h-px flex-1 bg-border/40" />
+            <span className="text-xs font-medium uppercase tracking-[0.22em] text-foreground/40">
                 {label}
             </span>
-            <div className="h-px flex-1 bg-slate-200" />
+            <div className="h-px flex-1 bg-border/40" />
         </div>
     );
 }
@@ -217,7 +217,7 @@ export function PrimaryButton({ children, className = "", ...props }: ButtonProp
     return (
         <button
             {...props}
-            className={`inline-flex min-h-12 items-center justify-center rounded-2xl bg-[#01015B] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#17177a] focus:outline-none focus:ring-4 focus:ring-[#1DC5FE]/25 disabled:cursor-not-allowed disabled:bg-slate-300 ${className}`.trim()}
+            className={`inline-flex min-h-12 items-center justify-center rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/25 disabled:cursor-not-allowed disabled:bg-foreground/20 disabled:text-foreground/40 ${className}`.trim()}
         >
             {children}
         </button>
@@ -228,7 +228,7 @@ export function SecondaryButton({ children, className = "", ...props }: ButtonPr
     return (
         <button
             {...props}
-            className={`inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#01015B]/20 hover:text-[#01015B] focus:outline-none focus:ring-4 focus:ring-[#1DC5FE]/20 disabled:cursor-not-allowed disabled:text-slate-400 ${className}`.trim()}
+            className={`inline-flex min-h-12 items-center justify-center rounded-2xl border border-border/30 bg-card px-5 py-3 text-sm font-semibold text-foreground/80 transition hover:border-primary/20 hover:text-primary focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:text-foreground/40 ${className}`.trim()}
         >
             {children}
         </button>
@@ -247,9 +247,9 @@ export function PasswordChecklist({
                     {item.met ? (
                         <CheckCircle2 className="h-4 w-4 flex-none text-emerald-500" />
                     ) : (
-                        <div className="h-4 w-4 flex-none rounded-full border border-slate-300" />
+                        <div className="h-4 w-4 flex-none rounded-full border border-border/40" />
                     )}
-                    <span className={item.met ? "text-emerald-700" : "text-slate-500"}>{item.label}</span>
+                    <span className={item.met ? "text-emerald-500" : "text-foreground/50"}>{item.label}</span>
                 </div>
             ))}
         </div>
@@ -304,10 +304,10 @@ export function StepProgress({
                     <div key={step} className="space-y-2">
                         <div
                             className={`h-2 rounded-full transition ${
-                                complete || active ? "bg-[#01015B]" : "bg-slate-200"
+                                complete || active ? "bg-primary" : "bg-border/30"
                             }`}
                         />
-                        <p className={`text-xs font-medium ${active ? "text-[#01015B]" : "text-slate-500"}`}>
+                        <p className={`text-xs font-medium ${active ? "text-primary" : "text-foreground/50"}`}>
                             Step {stepNumber}: {step}
                         </p>
                     </div>
@@ -331,7 +331,7 @@ export function GoogleAuthButton({
             type="button"
             onClick={onClick}
             disabled={disabled}
-            className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-sm transition hover:border-[#01015B]/15 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-[#1DC5FE]/20 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-2xl border border-border/30 bg-card px-5 py-3 text-sm font-medium text-foreground/80 shadow-sm transition hover:border-primary/15 hover:bg-background/50 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60"
         >
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                 <path

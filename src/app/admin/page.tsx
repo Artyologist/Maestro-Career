@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ShieldCheck, ArrowRight, Lock, User } from "lucide-react";
 
 export default function AdminLoginPage() {
     const [userId, setUserId] = useState("");
@@ -44,79 +43,53 @@ export default function AdminLoginPage() {
             <Header />
 
             <div className="relative min-h-[90vh] flex flex-col items-center justify-center p-4">
-                {/* Background Kinetic FX */}
-                <div className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse pointer-events-none" />
-                <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-accent-purple/10 rounded-full blur-[120px] mix-blend-screen animate-pulse pointer-events-none" />
-
-                <div className="relative w-full max-w-xl z-10">
-                    <div className="rounded-[3rem] border border-white/10 bg-black/40 backdrop-blur-3xl p-12 md:p-20 shadow-3xl shadow-primary/5 text-center overflow-hidden">
-
-                        <div className="mb-12 inline-flex items-center gap-4 px-6 py-3 bg-white/5 rounded-full border border-white/10 shadow-inner">
-                            <ShieldCheck className="w-4 h-4 text-primary" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/50">Admin Interface v4.0</span>
-                        </div>
-
-                        <div className="mb-16">
-                            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tightest leading-none uppercase italic">
-                                Control <span className="text-primary">Center</span>
+                <div className="w-full max-w-md">
+                    <div className="rounded-3xl border border-border/20 bg-card p-10 shadow-sm text-center">
+                        <div className="mb-10">
+                            <h1 className="text-3xl font-bold text-foreground">
+                                Admin Login
                             </h1>
-                            <p className="mt-4 text-white/30 font-bold uppercase tracking-[0.2em] text-xs">Enter your authorization credentials</p>
+                            <p className="mt-2 text-foreground/60 text-sm">Enter your credentials to access the dashboard</p>
                         </div>
 
-                        <form onSubmit={handleLogin} className="space-y-8">
-                            <div className="space-y-3 text-left">
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Digital Signature ID</label>
-                                <div className="relative">
-                                    <User className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                    <input
-                                        type="text"
-                                        value={userId}
-                                        onChange={(e) => setUserId(e.target.value)}
-                                        className="w-full rounded-2xl border border-white/5 bg-white/[0.03] pl-14 pr-6 py-6 focus:bg-white/[0.05] focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-white uppercase placeholder:text-white/10"
-                                        placeholder="USER ID"
-                                        required
-                                    />
-                                </div>
+                        <form onSubmit={handleLogin} className="space-y-6">
+                            <div className="space-y-2 text-left">
+                                <label className="block text-sm font-medium text-foreground/80">Username</label>
+                                <input
+                                    type="text"
+                                    value={userId}
+                                    onChange={(e) => setUserId(e.target.value)}
+                                    className="w-full rounded-xl border border-border/30 bg-background px-4 py-3 text-sm focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition placeholder:text-foreground/40"
+                                    placeholder="Enter username"
+                                    required
+                                />
                             </div>
 
-                            <div className="space-y-3 text-left">
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Cryptographic Key</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                    <input
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full rounded-2xl border border-white/5 bg-white/[0.03] pl-14 pr-6 py-6 focus:bg-white/[0.05] focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-white placeholder:text-white/10"
-                                        placeholder="••••••••••••"
-                                        required
-                                    />
-                                </div>
+                            <div className="space-y-2 text-left">
+                                <label className="block text-sm font-medium text-foreground/80">Password</label>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full rounded-xl border border-border/30 bg-background px-4 py-3 text-sm focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition placeholder:text-foreground/40"
+                                    placeholder="Enter password"
+                                    required
+                                />
                             </div>
 
                             {error && (
-                                <div className="p-5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-[10px] font-black uppercase tracking-widest animate-shake">
+                                <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
                                     {error}
                                 </div>
                             )}
 
                             <button
                                 disabled={loading}
-                                className="w-full group relative overflow-hidden rounded-[1.5rem] bg-primary hover:bg-primary-dark text-white font-black uppercase tracking-[0.4em] text-[10px] py-7 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 shadow-2xl shadow-primary/40"
+                                className="w-full relative flex items-center justify-center bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50 mt-2"
                             >
-                                {loading ? "Synchronizing..." : (
-                                    <div className="flex items-center justify-center gap-3">
-                                        Grant Access <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                                    </div>
-                                )}
+                                {loading ? "Logging in..." : "Login"}
                             </button>
                         </form>
-                    </div>
-
-                    <div className="mt-12 text-center">
-                        <p className="text-white/10 text-[9px] font-bold uppercase tracking-[0.5em] select-none">
-                            Secured by Maestro Career Cyber-Intelligence
-                        </p>
                     </div>
                 </div>
             </div>

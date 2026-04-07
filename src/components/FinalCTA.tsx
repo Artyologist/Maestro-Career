@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Send, Sparkles, MessageSquare, User } from "lucide-react";
 import React, { useState } from "react";
 
 export default function FinalCTA() {
@@ -14,91 +13,75 @@ export default function FinalCTA() {
   };
 
   return (
-    <section id="contact" className="relative py-48 overflow-hidden bg-background">
-      {/* Background Architectural Wash */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-foreground/5 blur-[150px] -z-10" />
-
+    <section id="contact" className="relative py-32 overflow-hidden bg-background">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-24">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
 
-          {/* Left: Narrative Message */}
-          <div className="flex-1 space-y-12">
-            <h2 className="text-7xl md:text-9xl font-black text-foreground tracking-tightest leading-[0.82] uppercase mb-12">
-              Ready to <br />
-              <span>Decide?</span>
+          {/* Left Side: Narrative Content */}
+          <div className="flex-1 space-y-8 text-left">
+            <h2 className="text-5xl md:text-7xl font-bold text-foreground tracking-tight leading-tight">
+              Ready to take the <br />
+              <span className="text-primary italic">next step?</span>
             </h2>
-
-            <p className="text-xl md:text-2xl text-foreground/40 font-bold max-w-xl leading-relaxed uppercase tracking-tight">
-              The longest journey begins with a single, high-precision decision. Join the elite who stopped guessing.
+            <p className="text-xl text-foreground/60 max-w-xl leading-relaxed">
+              Find your path with precision. Get in touch with our career experts today and start your journey with confidence. Join the elite who stopped guessing.
             </p>
-
-            <div className="flex items-center space-x-8">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="w-12 h-12 border border-foreground/10 bg-secondary flex items-center justify-center grayscale opacity-50">
-                    <User className="w-6 h-6 text-foreground" />
-                  </div>
-                ))}
-              </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">
-                Synchronized with <span className="text-foreground">15,000+</span> profiles
+            <div className="pt-4 border-t border-border/10">
+              <p className="text-sm font-medium text-foreground/40 uppercase tracking-widest">
+                Trusted by 15,000+ professionals
               </p>
             </div>
           </div>
 
-          {/* Right: Architectural Monolith Form */}
+          {/* Right Side: Form Container */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
             className="flex-1 w-full max-w-xl"
           >
-            <div className="bg-secondary/30 p-12 md:p-16 border border-foreground/5 shadow-2xl relative">
+            <div className="rounded-3xl border border-border/20 bg-card p-8 md:p-12 shadow-sm transition-all">
               {formState === "sent" ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="h-full flex flex-col items-center justify-center text-center space-y-8 py-24"
+                  className="flex flex-col items-center justify-center space-y-6 py-12 text-center"
                 >
-                  <div className="w-16 h-16 bg-foreground text-background flex items-center justify-center">
-                    <Sparkles className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-3xl font-black text-foreground uppercase tracking-tightest">Inquiry Received.</h3>
-                  <p className="text-foreground/40 font-bold uppercase tracking-widest text-[10px]">Processing via Career Architects...</p>
+                  <div className="text-emerald-500 font-bold text-lg">Thank you!</div>
+                  <h3 className="text-2xl font-bold text-foreground">Inquiry Received</h3>
+                  <p className="text-foreground/60 text-sm">One of our career architects will get back to you shortly.</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
-                  <div className="space-y-8">
-                    <div className="relative border-b-2 border-foreground/10 focus-within:border-foreground transition-all">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground/80">Full Name</label>
                       <input
                         required
                         type="text"
-                        placeholder="IDENTIFY: YOUR NAME"
-                        className="w-full bg-transparent py-5 text-sm font-black text-foreground placeholder:text-foreground/20 outline-none uppercase tracking-widest"
+                        placeholder="Enter your Name"
+                        className="w-full rounded-xl border border-border/30 bg-background px-4 py-3 text-sm focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition placeholder:text-foreground/30"
                       />
-                      <MessageSquare className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
                     </div>
-                    <div className="relative border-b-2 border-foreground/10 focus-within:border-foreground transition-all">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground/80">Email Address</label>
                       <input
                         required
                         type="email"
-                        placeholder="IDENTIFY: EMAIL ADDRESS"
-                        className="w-full bg-transparent py-5 text-sm font-black text-foreground placeholder:text-foreground/20 outline-none uppercase tracking-widest"
+                        placeholder="Enter your email"
+                        className="w-full rounded-xl border border-border/30 bg-background px-4 py-3 text-sm focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition placeholder:text-foreground/30"
                       />
-                      <Send className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
                     </div>
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <button
                     disabled={formState === "submitting"}
-                    className="w-full relative bg-foreground text-background py-8 text-sm font-black uppercase tracking-[0.4em] transition-all disabled:opacity-50"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 rounded-xl text-sm font-semibold transition-all shadow-sm active:scale-[0.98] disabled:opacity-50 mt-4"
                   >
-                    <span className="relative z-10">{formState === "submitting" ? "Processing..." : "Launch Discovery"}</span>
-                    <div className="absolute inset-0 bg-background/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </motion.button>
+                    {formState === "submitting" ? "Sending..." : "Submit Inquiry"}
+                  </button>
 
-                  <p className="text-center text-[9px] font-black text-foreground/20 uppercase tracking-[0.5em] mt-8">
+                  <p className="text-center text-[11px] text-foreground/40 font-medium mt-6 uppercase tracking-widest">
                     Absolute Confidentiality Guaranteed
                   </p>
                 </form>
